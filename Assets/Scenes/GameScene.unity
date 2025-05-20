@@ -123114,7 +123114,9 @@ MonoBehaviour:
   trashCount: 0
   maxTrash: 5
   trashPoint: {fileID: 1417616430}
-  trashPrefab: {fileID: 8416497446307305252, guid: 2c69fce69352f334691ed7cc68dddf69, type: 3}
+  trashPrefabs:
+  - {fileID: 8416497446307305252, guid: 2c69fce69352f334691ed7cc68dddf69, type: 3}
+  - {fileID: 6131146986273092514, guid: 27fb49b0a0d46764e98e85b7a5d925bd, type: 3}
 --- !u!114 &1981473772
 MonoBehaviour:
   m_ObjectHideFlags: 0
