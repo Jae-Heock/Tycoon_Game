@@ -67,6 +67,7 @@
     <Compile Include="Assets\1Scripts\PotZone.cs" />
     <Compile Include="Assets\1Scripts\FlourZone.cs" />
     <Compile Include="Assets\1Scripts\Table.cs" />
+    <Compile Include="Assets\1Scripts\Test.cs" />
     <Compile Include="Assets\QuickOutline\Scripts\Outline.cs" />
     <Compile Include="Assets\1Scripts\SkillManager.cs" />
     <Compile Include="Assets\1Scripts\SosageZone.cs" />
