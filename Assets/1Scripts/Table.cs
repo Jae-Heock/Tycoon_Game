@@ -125,4 +125,5 @@ public class Table : MonoBehaviour
         currentFoodObject = null;
         currentFoodName = null;
     }
+    //주석 추가가
 }
