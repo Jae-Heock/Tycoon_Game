@@ -99,7 +99,6 @@ public class Hottuk : MonoBehaviour
     private IEnumerator MakeHottukCoroutine()
     {
         isMaking = true;
-        player.isMove = false;  // 플레이어 이동 제한
         Debug.Log("호떡 제작 시작...");
 
         yield return new WaitForSeconds(makeTime);
@@ -111,7 +110,6 @@ public class Hottuk : MonoBehaviour
         Debug.Log($"호떡 제작 완료! (현재 보유: {player.hottukCount}개)");
 
         // 상태 초기화
-        player.isMove = true;
         isMaking = false;
         player.EndCooking(); 
         player.currentZone = null;
