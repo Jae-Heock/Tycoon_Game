@@ -15232,7 +15232,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8911396821164960440, guid: b53c053e178f65a4faeb66ddb7c443fb, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1564822965}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b53c053e178f65a4faeb66ddb7c443fb, type: 3}
       insertIndex: -1
@@ -15274,21 +15277,21 @@ MonoBehaviour:
   cookTime: 5
   isCooking: 0
   Point: 0
-  sugarCount: 0
-  flourCount: 0
-  sosageCount: 0
-  potCount: 0
-  dalgonaCount: 10
-  hottukCount: 10
-  hotdogCount: 10
-  boungCount: 10
+  sugarCount: 10
+  flourCount: 10
+  sosageCount: 10
+  potCount: 10
+  dalgonaCount: 0
+  hottukCount: 0
+  hotdogCount: 0
+  boungCount: 0
   customerSuccessCount: 0
   basePoint: 4
   bonusPoint: 0
-  hotdogPoint: {fileID: 1537033617}
-  dalgonaPoint: {fileID: 1537033617}
-  hottukPoint: {fileID: 857241241}
-  boungPoint: {fileID: 857241241}
+  hotdogPoint: {fileID: 1564822965}
+  dalgonaPoint: {fileID: 1564822965}
+  hottukPoint: {fileID: 1564822965}
+  boungPoint: {fileID: 1564822965}
   hotdogPrefab: {fileID: 5749120129996273074, guid: a26679c0c936e134084a64e5c6e3b5de, type: 3}
   dalgonaPrefab: {fileID: 8048990508181713190, guid: 8b4cfc2ccca70924389702c525ff14b4, type: 3}
   hottukPrefab: {fileID: 2454262325924655879, guid: 81a727b4e6476ad4ca6c3b7acfb290af, type: 3}
@@ -61977,11 +61980,6 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
---- !u!4 &1537033617 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1977467706236970760, guid: b53c053e178f65a4faeb66ddb7c443fb, type: 3}
-  m_PrefabInstance: {fileID: 571734498}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1539548071
 GameObject:
   m_ObjectHideFlags: 0
@@ -62359,6 +62357,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1556500323}
   m_CullTransparentMesh: 1
+--- !u!1 &1564822964
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1564822965}
+  m_Layer: 0
+  m_Name: Point
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1564822965
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1564822964}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.4980974, y: 0.07547912, z: -0.043577895, w: 0.8627299}
+  m_LocalPosition: {x: 0.0257, y: -0.0661, z: 0.0369}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 857241241}
+  m_LocalEulerAnglesHint: {x: 60, y: 10, z: 0}
 --- !u!1 &1568413105
 GameObject:
   m_ObjectHideFlags: 0

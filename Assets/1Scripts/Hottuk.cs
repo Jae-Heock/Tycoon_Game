@@ -8,6 +8,7 @@ using UnityEngine.UI;
 /// </summary>
 public class Hottuk : MonoBehaviour
 {
+    Animator anim;
     private bool isPlayerInZone = false;    // 플레이어가 구역 안에 있는지 여부
     private Player player;                  // 플레이어 참조
     private bool isMaking = false;          // 현재 호떡을 만들고 있는지 여부
@@ -24,6 +25,7 @@ public class Hottuk : MonoBehaviour
     {
         cookSlider.gameObject.SetActive(false);
         dishZone = FindFirstObjectByType<DishZone>();
+        anim = GetComponent<Animator>();
     }
 
     /// <summary>
@@ -64,6 +66,7 @@ public class Hottuk : MonoBehaviour
     /// </summary>
     private void Update()
     {
+        
         if (isPlayerInZone && Input.GetKeyDown(KeyCode.E) && !isMaking)
         {
             // 재료 확인 후 요리 시작
@@ -88,7 +91,8 @@ public class Hottuk : MonoBehaviour
         // 재료 소모
         player.flourCount -= requiredFlour;
         player.sugarCount -= requiredSugar;
-
+         // ✅ 플레이어 애니메이션: 음식 들기 (Hold 애니메이션)
+        player.PlayHoldAnimation();
         // 제작 시작
         StartCoroutine(MakeHottukCoroutine());
     }
@@ -108,7 +112,11 @@ public class Hottuk : MonoBehaviour
         player.HoldItem("hottuk");
         dishZone.AddDish();  // 접시 추가
         Debug.Log($"호떡 제작 완료! (현재 보유: {player.hottukCount}개)");
-
+        // ✅ 음식 들고 있다면 Pick 애니메이션 실행
+        if (!string.IsNullOrEmpty(player.currentFood))
+        {
+            player.PlayPickAnimation();
+        }
         // 상태 초기화
         isMaking = false;
         player.EndCooking(); 

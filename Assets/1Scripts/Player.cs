@@ -293,6 +293,14 @@ public class Player : MonoBehaviour
         isCooking = false;
         isMove = true;   // 요리 끝날 때 이동 가능
     }
+    public void PlayHoldAnimation()
+    {
+        anim.SetTrigger("doHold");
+    }
 
+    public void PlayPickAnimation()
+    {
+        anim.SetTrigger("doPick");
+    }
 }
 
