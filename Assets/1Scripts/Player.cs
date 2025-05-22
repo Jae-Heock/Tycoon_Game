@@ -302,5 +302,10 @@ public class Player : MonoBehaviour
     {
         anim.SetTrigger("doPick");
     }
+
+    public void PlayDownAnimation()
+    {
+        anim.SetTrigger("doDown");
+    }
 }
 

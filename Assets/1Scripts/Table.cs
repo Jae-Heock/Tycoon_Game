@@ -39,6 +39,7 @@ public class Table : MonoBehaviour
         // E키: 플레이어가 음식 테이블에 놓기
         if (Input.GetKeyDown(KeyCode.E))
         {
+            player.PlayDownAnimation();
             PlaceFoodFromPlayer();
         }
 

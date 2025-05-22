@@ -91,8 +91,10 @@ public class Hottuk : MonoBehaviour
         // 재료 소모
         player.flourCount -= requiredFlour;
         player.sugarCount -= requiredSugar;
-         // ✅ 플레이어 애니메이션: 음식 들기 (Hold 애니메이션)
+
+
         player.PlayHoldAnimation();
+    
         // 제작 시작
         StartCoroutine(MakeHottukCoroutine());
     }
@@ -113,10 +115,10 @@ public class Hottuk : MonoBehaviour
         dishZone.AddDish();  // 접시 추가
         Debug.Log($"호떡 제작 완료! (현재 보유: {player.hottukCount}개)");
         // ✅ 음식 들고 있다면 Pick 애니메이션 실행
-        if (!string.IsNullOrEmpty(player.currentFood))
-        {
-            player.PlayPickAnimation();
-        }
+        // if (!string.IsNullOrEmpty(player.currentFood))
+        // {
+        //     player.PlayPickAnimation();
+        // }
         // 상태 초기화
         isMaking = false;
         player.EndCooking(); 
