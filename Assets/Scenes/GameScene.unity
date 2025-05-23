@@ -15168,15 +15168,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: b53c053e178f65a4faeb66ddb7c443fb, type: 3}
       propertyPath: m_LocalScale.x
-      value: 7
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b53c053e178f65a4faeb66ddb7c443fb, type: 3}
       propertyPath: m_LocalScale.y
-      value: 7
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b53c053e178f65a4faeb66ddb7c443fb, type: 3}
       propertyPath: m_LocalScale.z
-      value: 7
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b53c053e178f65a4faeb66ddb7c443fb, type: 3}
       propertyPath: m_LocalPosition.x
@@ -23092,7 +23092,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.16666667
   m_MinRegionArea: 2
-  m_NavMeshData: {fileID: 23800000, guid: 5a5f17188f087aa4b8eb7c7faf730b9c, type: 2}
+  m_NavMeshData: {fileID: 0}
   m_BuildHeightMesh: 0
 --- !u!1 &882998664
 GameObject:
@@ -24529,7 +24529,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 571734504}
-  offset: {x: 0, y: 7, z: -5}
+  offset: {x: 0, y: 8, z: -7}
   followSpeed: 5
 --- !u!1 &970808412
 GameObject:

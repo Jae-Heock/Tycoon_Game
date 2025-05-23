@@ -81,7 +81,6 @@ public class Custom : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             isPlayerInZone = false;
-            isRequesting = false;
         }
     }
 
