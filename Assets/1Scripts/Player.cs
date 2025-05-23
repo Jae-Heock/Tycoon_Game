@@ -86,8 +86,14 @@ public class Player : MonoBehaviour
         if (isStunned) return; // 기절 중이면 아무것도 못함
         Move();                  // 이동 처리
         UpdateItemVisibility();  // 아이템 표시 업데이트
-        // 현재 음식 들고 있음 여부에 따라 애니메이션 상태 설정
-        anim.SetBool("isPick", !string.IsNullOrEmpty(currentFood));
+        // 음식이 있으면 true, 없으면 false
+        bool hasFood = !string.IsNullOrEmpty(currentFood);
+
+        // Animator 파라미터 설정
+        anim.SetBool("isPick", hasFood);
+
+        // ✅ [중요] New Layer 가중치 설정
+        anim.SetLayerWeight(1, hasFood ? 0.65f : 0f); // 0이면 아예 PICK 레이어 꺼짐
     }
 
     /// <summary>
@@ -155,35 +161,51 @@ public class Player : MonoBehaviour
     void UpdateItemVisibility()
     {
         // 핫도그 개수 제한
-        while (hotdogList.Count > hotdogCount)
+        if (hotdogList != null)
         {
-            GameObject lastHotdog = hotdogList[hotdogList.Count - 1];
-            hotdogList.RemoveAt(hotdogList.Count - 1);
-            Destroy(lastHotdog);
+            while (hotdogList.Count > hotdogCount && hotdogList.Count > 0)
+            {
+                GameObject lastHotdog = hotdogList[hotdogList.Count - 1];
+                hotdogList.RemoveAt(hotdogList.Count - 1);
+                if (lastHotdog != null)
+                    Destroy(lastHotdog);
+            }
         }
 
         // 달고나 개수 제한
-        while (dalgonaList.Count > dalgonaCount)
+        if (dalgonaList != null)
         {
-            GameObject lastDalgona = dalgonaList[dalgonaList.Count - 1];
-            dalgonaList.RemoveAt(dalgonaList.Count - 1);
-            Destroy(lastDalgona);
+            while (dalgonaList.Count > dalgonaCount && dalgonaList.Count > 0)
+            {
+                GameObject lastDalgona = dalgonaList[dalgonaList.Count - 1];
+                dalgonaList.RemoveAt(dalgonaList.Count - 1);
+                if (lastDalgona != null)
+                    Destroy(lastDalgona);
+            }
         }
 
         // 호떡 개수 제한
-        while (hottukList.Count > hottukCount)
+        if (hottukList != null)
         {
-            GameObject lastHottuk = hottukList[hottukList.Count - 1];
-            hottukList.RemoveAt(hottukList.Count - 1);
-            Destroy(lastHottuk);
+            while (hottukList.Count > hottukCount && hottukList.Count > 0)
+            {
+                GameObject lastHottuk = hottukList[hottukList.Count - 1];
+                hottukList.RemoveAt(hottukList.Count - 1);
+                if (lastHottuk != null)
+                    Destroy(lastHottuk);
+            }
         }
 
         // 붕어빵 개수 제한
-        while (boungList.Count > boungCount)
+        if (boungList != null)
         {
-            GameObject lastBoung = boungList[boungList.Count - 1];
-            boungList.RemoveAt(boungList.Count - 1);
-            Destroy(lastBoung);
+            while (boungList.Count > boungCount && boungList.Count > 0)
+            {
+                GameObject lastBoung = boungList[boungList.Count - 1];
+                boungList.RemoveAt(boungList.Count - 1);
+                if (lastBoung != null)
+                    Destroy(lastBoung);
+            }
         }
     }
 
@@ -245,6 +267,8 @@ public class Player : MonoBehaviour
         //anim.SetTrigger("doDown");      // DOWN 애니메이션 실행
         string foodToRemove = currentFood;  // 먼저 저장
         currentFood = null;
+        anim.SetBool("isPick", false);  // PICK 레이어 비활성화
+        anim.SetLayerWeight(1, 0f); // 직접 꺼주기
 
         // 해당 음식 오브젝트도 제거
         switch (foodToRemove)  // currentFood 대신 foodToRemove 사용

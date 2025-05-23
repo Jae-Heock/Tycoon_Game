@@ -196,7 +196,7 @@ public class Custom : MonoBehaviour
     {
         if (itemCount > 0)
         {
-            itemCount--;
+            // itemCount--;
             player.Point += player.basePoint + player.bonusPoint;
             player.customerSuccessCount++;
             GameManager.instance.HappyCat();
