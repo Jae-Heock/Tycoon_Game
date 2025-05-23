@@ -36,7 +36,7 @@ public class FoodCounter : MonoBehaviour
         }
 
         // Space 키 입력 시 AI 한 명 추가 생성 (디버깅용)
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.G))
         {
             SpawnNewAI();
         }

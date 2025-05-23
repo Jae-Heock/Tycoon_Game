@@ -15348,7 +15348,7 @@ CapsuleCollider:
   m_Radius: 0.07
   m_Height: 0.25
   m_Direction: 1
-  m_Center: {x: 0, y: 0.1, z: 0}
+  m_Center: {x: 0, y: 0.12, z: 0}
 --- !u!95 &571734503
 Animator:
   serializedVersion: 7
@@ -24531,6 +24531,9 @@ MonoBehaviour:
   target: {fileID: 571734504}
   offset: {x: 0, y: 8, z: -7}
   followSpeed: 5
+  sensitivity: 5
+  minDistance: 3
+  maxDistance: 20
 --- !u!1 &970808412
 GameObject:
   m_ObjectHideFlags: 0

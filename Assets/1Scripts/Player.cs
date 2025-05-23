@@ -108,20 +108,32 @@ public class Player : MonoBehaviour
     /// </summary>
     void Move()
     {
-        if (!isMove || isCooking) return;  // 이동 불가 상태거나 요리 중이면 리턴
+        if (!isMove || isCooking) return;
 
         // 입력값 받기
         hAxis = Input.GetAxisRaw("Horizontal");
         vAxis = Input.GetAxisRaw("Vertical");
-        moveVec = new Vector3(hAxis, 0, vAxis).normalized;
-        anim.SetBool("isWalk", moveVec != Vector3.zero);
+
+        // 카메라 기준 방향
+        Vector3 camForward = Camera.main.transform.forward;
+        Vector3 camRight = Camera.main.transform.right;
+        camForward.y = 0;
+        camRight.y = 0;
+        camForward.Normalize();
+        camRight.Normalize();
+
+        // 방향 계산
+        moveVec = (camForward * vAxis + camRight * hAxis).normalized;
+
         // 이동 적용
         transform.position += moveVec * moveSpeed * Time.deltaTime;
         if (moveVec != Vector3.zero)
         {
-            transform.LookAt(transform.position + moveVec); // 회전
+            transform.LookAt(transform.position + moveVec); // 캐릭터가 이동 방향으로 회전
         }
-    }
+
+        anim.SetBool("isWalk", moveVec != Vector3.zero); // 걷기 애니메이션
+}
 
     public void HoldItem(string itemName)
     {
@@ -356,4 +368,3 @@ public class Player : MonoBehaviour
     }
     
 }
-
