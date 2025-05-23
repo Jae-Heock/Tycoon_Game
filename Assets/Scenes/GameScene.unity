@@ -2184,7 +2184,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 230980185}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 6.83}
+  m_LocalPosition: {x: 0, y: 0, z: 6.71}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2192,7 +2192,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 5.99, y: 5.06}
+  m_AnchoredPosition: {x: 5.73, y: 5.08}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &242621305
@@ -17939,7 +17939,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dishPoint: {fileID: 230980186}
-  dishPrefab: {fileID: 5597512309409946296, guid: 99b705366262f244d99ca9f3de2ecc94, type: 3}
+  dishPrefab: {fileID: 7830639293650073276, guid: 4ffe068ea5f05a044af4229eaac7f6b0, type: 3}
   maxDishes: 5
   pointReductionInterval: 2
   pointReductionAmount: 1
@@ -24451,13 +24451,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.4029435, y: -0.01729409, z: 0.0076268963, w: -0.91502964}
+  m_LocalRotation: {x: -0.38261482, y: -0.017460946, z: 0.0072458866, w: -0.9237146}
   m_LocalPosition: {x: -6.3686, y: 9.485603, z: -9.845029}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 60, y: -180, z: 0}
+  m_LocalEulerAnglesHint: {x: 45, y: -357.835, z: -0.002}
 --- !u!114 &963194229
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24471,7 +24471,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 571734504}
-  offset: {x: 0, y: 10, z: -10}
+  offset: {x: 0, y: 7, z: -5}
   followSpeed: 5
 --- !u!1 &970808412
 GameObject:
@@ -56756,7 +56756,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1417616429}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0.54}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -56764,7 +56764,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 5.74, y: 1.23}
+  m_AnchoredPosition: {x: 5.83, y: 1.31}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1444097799
@@ -124178,8 +124178,7 @@ MonoBehaviour:
   maxTrash: 5
   trashPoint: {fileID: 1417616430}
   trashPrefabs:
-  - {fileID: 8416497446307305252, guid: 2c69fce69352f334691ed7cc68dddf69, type: 3}
-  - {fileID: 6131146986273092514, guid: 27fb49b0a0d46764e98e85b7a5d925bd, type: 3}
+  - {fileID: 2682043904627411605, guid: db8e822c21d30314ea971c365facb31f, type: 3}
 --- !u!114 &1981473772
 MonoBehaviour:
   m_ObjectHideFlags: 0

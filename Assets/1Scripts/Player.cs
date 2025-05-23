@@ -75,7 +75,6 @@ public class Player : MonoBehaviour
     private void Awake()
     {
         anim = GetComponentInChildren<Animator>();
-        // 물리 컴포넌트 초기화 및 회전 제한 설정
         rigid = GetComponent<Rigidbody>();
         rigid.constraints = RigidbodyConstraints.FreezeRotation;
         isMove = true;
@@ -83,18 +82,26 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        if (isStunned) return; // 기절 중이면 아무것도 못함
-        Move();                  // 이동 처리
-        UpdateItemVisibility();  // 아이템 표시 업데이트
-        // 음식이 있으면 true, 없으면 false
+        if (isStunned) return;
+
+        Move();
+        UpdateItemVisibility();
+
         bool hasFood = !string.IsNullOrEmpty(currentFood);
+        bool isDalgonaCooking = isCooking; // 요리 중
 
-        // Animator 파라미터 설정
-        anim.SetBool("isPick", hasFood);
+        // PICK 애니메이션 Layer 1
+        anim.SetBool("isPick", hasFood && !isDalgonaCooking);
 
-        // ✅ [중요] New Layer 가중치 설정
-        anim.SetLayerWeight(1, hasFood ? 0.65f : 0f); // 0이면 아예 PICK 레이어 꺼짐
+        // Layer 1 Weight 조정
+        if (isDalgonaCooking)
+            anim.SetLayerWeight(1, 1f);      // 요리 중엔 1f
+        else if (hasFood)
+            anim.SetLayerWeight(1, 0.65f);   // 음식만 들고 있으면 0.65f
+        else
+            anim.SetLayerWeight(1, 0f);      // 아무것도 없으면 0f
     }
+
 
     /// <summary>
     /// 플레이어 이동 처리
@@ -336,5 +343,17 @@ public class Player : MonoBehaviour
         anim.SetTrigger("doDown");
     }
 
+    public void PlayDalgonaAnimation()
+    {
+        Debug.Log("PlayDalgonaAnimation 호출됨");
+        anim.SetTrigger("doDal");
+    }
+
+    public void StopDalgonaAnimation()
+    {
+        Debug.Log("StopDalgonaAnimation 호출됨");
+        anim.SetTrigger("doDal");
+    }
+    
 }
 

@@ -89,28 +89,27 @@ public class TrashZone : MonoBehaviour
         }
     }
 
-public void HoldItem(string itemName)
-{
-    if (itemName == "trash")
+    public void HoldItem(string itemName)
     {
-        // ✅ 프리팹이 비어있지 않다면 랜덤으로 선택
-        if (trashPrefabs.Length == 0) return;
+        if (itemName == "trash")
+        {
+            // ✅ 프리팹이 비어있지 않다면 랜덤으로 선택
+            if (trashPrefabs.Length == 0) return;
 
-        GameObject prefabToUse = trashPrefabs[Random.Range(0, trashPrefabs.Length)];
-        GameObject trash = Instantiate(prefabToUse, trashPoint);
+            GameObject prefabToUse = trashPrefabs[Random.Range(0, trashPrefabs.Length)];
+            GameObject trash = Instantiate(prefabToUse, trashPoint);
 
-        // 원형 반경 내 무작위 위치에 생성
-        Vector2 circle = Random.insideUnitCircle * 0.7f;
-        Vector3 offset = new Vector3(circle.x, 0.1f, circle.y);
+            // 원형 반경 내 무작위 위치에 생성 (X,Z) + Y축으로 쌓기
+            Vector2 circle = Random.insideUnitCircle * 0.7f;
+            Vector3 offset = new Vector3(circle.x, trashList.Count * 0.3f, circle.y); // Y축으로 쌓기
 
-        trash.transform.localPosition = offset;
-        trash.transform.localRotation = Quaternion.Euler(0f, Random.Range(0f, 360f), 0f);
-        trash.transform.localScale = Vector3.one * 0.1f;
+            trash.transform.localPosition = offset;
+            trash.transform.localRotation = Quaternion.Euler(0f, Random.Range(0f, 360f), 0f);
+            trash.transform.localScale = Vector3.one * 60f;
 
-        trashList.Add(trash);
+            trashList.Add(trash);
+        }
     }
-}
-
 
     private void OnTriggerEnter(Collider other)
     {

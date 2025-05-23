@@ -90,8 +90,10 @@ public class DalgonaZone : MonoBehaviour
         isMaking = true;
         player.isMove = false;
         Debug.Log("달고나 제작 시작...");
-
+        
+        player.PlayDalgonaAnimation();
         yield return new WaitForSeconds(GetCurrentMakeTime());
+        player.StopDalgonaAnimation();
 
         player.dalgonaCount++;
         player.HoldItem("dalgona");
