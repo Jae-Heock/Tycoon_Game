@@ -15,7 +15,7 @@ public class TrashZone : MonoBehaviour
 
     public Transform trashPoint;         // 쓰레기 생성 위치
     private List<GameObject> trashList = new List<GameObject>();  // 생성된 쓰레기 오브젝트 목록
-    public GameObject[] trashPrefabs;       // 쓰레기 프리팹
+    public GameObject trashPrefab;       // 쓰레기 프리팹(단일)
 
     private void Awake()
     {
@@ -93,11 +93,8 @@ public class TrashZone : MonoBehaviour
     {
         if (itemName == "trash")
         {
-            // ✅ 프리팹이 비어있지 않다면 랜덤으로 선택
-            if (trashPrefabs.Length == 0) return;
-
-            GameObject prefabToUse = trashPrefabs[Random.Range(0, trashPrefabs.Length)];
-            GameObject trash = Instantiate(prefabToUse, trashPoint);
+            if (trashPrefab == null) return;
+            GameObject trash = Instantiate(trashPrefab, trashPoint);
 
             // 원형 반경 내 무작위 위치에 생성 (X,Z) + Y축으로 쌓기
             Vector2 circle = Random.insideUnitCircle * 0.7f;
