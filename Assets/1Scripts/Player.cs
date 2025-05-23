@@ -86,6 +86,8 @@ public class Player : MonoBehaviour
         if (isStunned) return; // 기절 중이면 아무것도 못함
         Move();                  // 이동 처리
         UpdateItemVisibility();  // 아이템 표시 업데이트
+        // 현재 음식 들고 있음 여부에 따라 애니메이션 상태 설정
+        anim.SetBool("isPick", !string.IsNullOrEmpty(currentFood));
     }
 
     /// <summary>
@@ -110,7 +112,8 @@ public class Player : MonoBehaviour
 
     public void HoldItem(string itemName)
     {
-        currentFood = itemName; // ← 여기 추가!
+        //anim.SetTrigger("doHold");      // HOLD 애니메이션 실행
+        currentFood = itemName;
 
         switch (itemName)
         {
@@ -239,6 +242,7 @@ public class Player : MonoBehaviour
 
     public void ClearHeldFood()
     {
+        //anim.SetTrigger("doDown");      // DOWN 애니메이션 실행
         string foodToRemove = currentFood;  // 먼저 저장
         currentFood = null;
 
@@ -307,5 +311,6 @@ public class Player : MonoBehaviour
     {
         anim.SetTrigger("doDown");
     }
+
 }
 

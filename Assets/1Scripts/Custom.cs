@@ -94,6 +94,7 @@ public class Custom : MonoBehaviour
 
         GameObject prefabToSpawn = null;
 
+        // 기존 아이콘이 있으면 삭제
         if (orderIconObject != null)
         {
             switch (requestedFood)
@@ -200,6 +201,7 @@ public class Custom : MonoBehaviour
             player.customerSuccessCount++;
             GameManager.instance.HappyCat();
             Debug.Log($"{itemName} 전달 성공!");
+            player.ClearHeldFood(); // ← 이 줄 추가!
             return true;
         }
         else
