@@ -57,7 +57,6 @@ public class BoungZone : MonoBehaviour
     {
         if (isPlayerInZone && Input.GetKeyDown(KeyCode.E) && !isMaking)
         {
-            // 재료 확인 후 요리 시작
             if (player.flourCount >= requiredFlour && player.potCount >= requiredPot)
             {
                 StartCoroutine(CookProcess());
@@ -72,6 +71,11 @@ public class BoungZone : MonoBehaviour
         // Q키로 붕어빵 수집
         if (currentBoung != null && Input.GetKeyDown(KeyCode.Q))
         {
+            if (!string.IsNullOrEmpty(player.currentFood))
+            {
+                Debug.Log("이미 음식을 들고 있습니다!");
+                return;
+            }
             CollectBoung();
         }
     }

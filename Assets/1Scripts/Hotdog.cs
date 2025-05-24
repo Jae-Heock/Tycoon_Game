@@ -57,7 +57,6 @@ public class Hotdog : MonoBehaviour
     {
         if (isPlayerInZone && Input.GetKeyDown(KeyCode.E) && !isMaking)
         {
-            // 재료 확인 후 요리 시작
             if (player.flourCount >= requiredFlour && player.sosageCount >= requiredSosage)
             {
                 StartCoroutine(CookProcess());
@@ -72,6 +71,11 @@ public class Hotdog : MonoBehaviour
         // Q키로 핫도그 수집
         if (currentHotdog != null && Input.GetKeyDown(KeyCode.Q))
         {
+            if (!string.IsNullOrEmpty(player.currentFood))
+            {
+                Debug.Log("이미 음식을 들고 있습니다!");
+                return;
+            }
             CollectHotdog();
         }
     }
