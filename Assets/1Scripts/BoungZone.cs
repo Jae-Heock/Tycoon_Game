@@ -10,6 +10,7 @@ public class BoungZone : MonoBehaviour
     private bool isPlayerInZone = false;    // 플레이어가 구역 안에 있는지 여부
     private Player player;                  // 플레이어 참조
     private bool isMaking = false;          // 현재 붕어빵을 만들고 있는지 여부
+    private GameObject currentBoung;        // 현재 생성된 붕어빵
     DishZone dishZone;
     public Slider cookSlider;           // 연결된 슬라이더
 
@@ -17,6 +18,8 @@ public class BoungZone : MonoBehaviour
     [SerializeField] private float makeTime = 5f;     // 붕어빵 제작 시간
     [SerializeField] private int requiredFlour = 2;   // 필요 밀가루 개수
     [SerializeField] private int requiredPot = 1;    // 필요 팥 개수
+    [SerializeField] private Transform boungSpawnPoint; // 붕어빵이 생성될 위치
+    [SerializeField] private GameObject boungPrefab;    // 붕어빵 프리팹
 
     void Start()
     {
@@ -57,7 +60,6 @@ public class BoungZone : MonoBehaviour
             // 재료 확인 후 요리 시작
             if (player.flourCount >= requiredFlour && player.potCount >= requiredPot)
             {
-                if(!player.TryStartCooking()) return;
                 StartCoroutine(CookProcess());
                 TryMakeBoung();
             }
@@ -65,6 +67,12 @@ public class BoungZone : MonoBehaviour
             {
                 Debug.Log("재료가 부족합니다! (필요: 밀가루 2개, 팥 1개)");
             }
+        }
+
+        // Q키로 붕어빵 수집
+        if (currentBoung != null && Input.GetKeyDown(KeyCode.Q))
+        {
+            CollectBoung();
         }
     }
 
@@ -81,20 +89,28 @@ public class BoungZone : MonoBehaviour
     private IEnumerator MakeBoungCoroutine()
     {
         isMaking = true;
-        player.isMove = false;
         Debug.Log("붕어빵 제작 시작...");
-
         yield return new WaitForSeconds(makeTime);
 
-        player.boungCount++;
-        player.HoldItem("boung");
+        // 붕어빵 프리팹 생성
+        currentBoung = Instantiate(boungPrefab, boungSpawnPoint.position, Quaternion.identity);
         dishZone.AddDish();
-        Debug.Log($"붕어빵 제작 완료! (현재 보유: {player.boungCount}개)");
+        Debug.Log("붕어빵 제작 완료!");
 
         isMaking = false;
-        player.isMove = true;
-        player.EndCooking(); 
         player.currentZone = null;
+    }
+
+    private void CollectBoung()
+    {
+        if (currentBoung != null && player != null)
+        {
+            player.boungCount++;
+            player.HoldItem("boung");
+            Debug.Log($"붕어빵 획득! (현재 보유: {player.boungCount}개)");
+            Destroy(currentBoung);
+            currentBoung = null;
+        }
     }
 
     IEnumerator CookProcess()
@@ -114,6 +130,5 @@ public class BoungZone : MonoBehaviour
         cookSlider.gameObject.SetActive(false); // 완료 후 숨기기
         Debug.Log("요리 완료!");
         isMaking = false;
-        player.EndCooking();  // 요리 완료 시 EndCooking 호출
     }
 }

@@ -73,7 +73,7 @@ public class Table : MonoBehaviour
             currentFoodObject = Instantiate(prefab, point);
             currentFoodObject.transform.localPosition = Vector3.zero;
             currentFoodObject.transform.localRotation = Quaternion.identity;
-            currentFoodObject.transform.localScale = Vector3.one * 3f;
+            currentFoodObject.transform.localScale = new Vector3(0.002f, 0.002f, 0.01f);
 
             currentFoodName = foodName;
             // 손에 든 음식 제거!

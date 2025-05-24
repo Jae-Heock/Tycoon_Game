@@ -102,7 +102,6 @@ public class FoodCounter : MonoBehaviour
             storedCount++;
         }
 
-
         
         if (storedCount > 0)
         {

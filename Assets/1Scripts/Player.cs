@@ -366,5 +366,4 @@ public class Player : MonoBehaviour
         Debug.Log("StopDalgonaAnimation 호출됨");
         anim.SetTrigger("doDal");
     }
-    
 }
