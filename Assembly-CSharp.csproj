@@ -84,11 +84,13 @@
     <Compile Include="Assets\1Scripts\SceneChanger.cs" />
     <Compile Include="Assets\1Scripts\DishZone.cs" />
     <Compile Include="Assets\1Scripts\OutlineSelection.cs" />
+    <Compile Include="Assets\1Scripts\HotdogCollectZone.cs" />
     <Compile Include="Assets\1Scripts\FoodDeliveryAi.cs" />
     <Compile Include="Assets\1Scripts\Hottuk.cs" />
     <Compile Include="Assets\1Scripts\SkillData.cs" />
     <Compile Include="Assets\1Scripts\Skill.cs" />
     <Compile Include="Assets\1Scripts\Hotdog.cs" />
+    <Compile Include="Assets\1Scripts\BoungCollectZone.cs" />
     <Compile Include="Assets\1Scripts\GameManager.cs" />
     <Compile Include="Assets\1Scripts\LevelUp.cs" />
     <Compile Include="Assets\1Scripts\CustomSpawner.cs" />

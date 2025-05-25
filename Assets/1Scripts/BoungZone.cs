@@ -10,7 +10,7 @@ public class BoungZone : MonoBehaviour
     private bool isPlayerInZone = false;    // 플레이어가 구역 안에 있는지 여부
     private Player player;                  // 플레이어 참조
     private bool isMaking = false;          // 현재 붕어빵을 만들고 있는지 여부
-    private GameObject currentBoung;        // 현재 생성된 붕어빵
+    public GameObject currentBoung;        // 현재 생성된 붕어빵
     DishZone dishZone;
     public Slider cookSlider;           // 연결된 슬라이더
 
@@ -67,17 +67,6 @@ public class BoungZone : MonoBehaviour
                 Debug.Log("재료가 부족합니다! (필요: 밀가루 2개, 팥 1개)");
             }
         }
-
-        // Q키로 붕어빵 수집
-        if (currentBoung != null && Input.GetKeyDown(KeyCode.Q))
-        {
-            if (!string.IsNullOrEmpty(player.currentFood))
-            {
-                Debug.Log("이미 음식을 들고 있습니다!");
-                return;
-            }
-            CollectBoung();
-        }
     }
 
     private void TryMakeBoung()
@@ -105,7 +94,7 @@ public class BoungZone : MonoBehaviour
         player.currentZone = null;
     }
 
-    private void CollectBoung()
+    public void CollectBoung()
     {
         if (currentBoung != null && player != null)
         {

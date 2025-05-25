@@ -10,7 +10,7 @@ public class Hotdog : MonoBehaviour
     private bool isPlayerInZone = false;    // 플레이어가 구역 안에 있는지 여부
     private Player player;                  // 플레이어 참조
     private bool isMaking = false;          // 현재 핫도그를 만들고 있는지 여부
-    private GameObject currentHotdog;       // 현재 생성된 핫도그
+    public GameObject currentHotdog;       // 현재 생성된 핫도그
     private DishZone dishZone;              // 접시 관리 구역 참조
     public Slider cookSlider;           // 연결된 슬라이더
 
@@ -67,17 +67,6 @@ public class Hotdog : MonoBehaviour
                 Debug.Log("재료가 부족합니다! (필요: 밀가루 1개, 소시지 1개)");
             }
         }
-
-        // Q키로 핫도그 수집
-        if (currentHotdog != null && Input.GetKeyDown(KeyCode.Q))
-        {
-            if (!string.IsNullOrEmpty(player.currentFood))
-            {
-                Debug.Log("이미 음식을 들고 있습니다!");
-                return;
-            }
-            CollectHotdog();
-        }
     }
 
     private void TryMakeHotdog()
@@ -105,7 +94,7 @@ public class Hotdog : MonoBehaviour
         player.currentZone = null;
     }
 
-    private void CollectHotdog()
+    public void CollectHotdog()
     {
         if (currentHotdog != null && player != null)
         {

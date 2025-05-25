@@ -7,11 +7,10 @@ public class FoodDeliveryAI : MonoBehaviour
     public Transform homePosition; // AI가 생성된 위치와 대기할 위치 (홈 위치)
 
     private string foodName;                       // AI가 배달할 음식 이름
-    private Custom targetCustomer;             // 현재 배달할 손님
+    private Custom targetCustomer;                 // 현재 배달할 손님
     private NavMeshAgent agent;                    // Unity의 네비게이션 이동 컴포넌트
     private bool isBusy = false;                   // 현재 배달 중인 상태
     private bool isReturningHome = false;          // 홈으로 복귀 중인 상태
-
     Player player;                                 // 플레이어 참조
 
     private void Start()
