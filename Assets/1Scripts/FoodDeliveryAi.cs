@@ -157,32 +157,54 @@ public class FoodDeliveryAI : MonoBehaviour
         aiState = State.Idle;
     }
 
-    void FindCustomerForHeldFood()
+void FindCustomerForHeldFood()
+{
+    if (heldFoodObject == null) return;
+
+    // ✅ Dish 프리팹 이름을 정규화된 음식 이름으로 변환
+    string prefabName = heldFoodObject.name.Replace("(Clone)", "").Trim();  // 예: "Dish_핫도그"
+    string foodName = ConvertDishPrefabNameToFoodName(prefabName);          // 결과: "hotdog"
+
+    Debug.Log($"🍱 들고 있는 음식: {prefabName} → 비교용 이름: {foodName}");
+
+    if (string.IsNullOrEmpty(foodName)) return;
+
+    Custom[] customers = Object.FindObjectsByType<Custom>(FindObjectsSortMode.None);
+    foreach (var customer in customers)
     {
-        if (heldFoodObject == null) return;
-
-        string foodName = heldFoodObject.name.Replace("(Clone)", "").ToLower();
-
-        Custom[] customers = Object.FindObjectsByType<Custom>(FindObjectsSortMode.None);
-        foreach (var customer in customers)
+        if (customer.RequestedFood.ToLower() == foodName && !customer.IsBeingDelivered)
         {
-            if (customer.RequestedFood.ToLower() == foodName && !customer.IsBeingDelivered)
-            {
-                targetCustomer = customer;
-                customer.MarkBeingDelivered();
-                agent.SetDestination(customer.transform.position);
-                aiState = State.MovingToCustomer;
-                Debug.Log($"💡 기존에 들고 있던 {foodName}을 새로운 손님에게 배달 시작!");
-                return;
-            }
-        }
-
-        // 아직 배달할 손님이 없다면 홈 포지션으로 이동
-        if (homePosition != null)
-        {
-            agent.SetDestination(homePosition.position);
+            targetCustomer = customer;
+            customer.MarkBeingDelivered();
+            agent.SetDestination(customer.transform.position);
+            aiState = State.MovingToCustomer;
+            Debug.Log($"💡 기존에 들고 있던 {foodName}을 새로운 손님에게 배달 시작!");
+            return;
         }
     }
+
+    // 아직 배달할 손님이 없다면 홈 포지션으로 이동
+    if (homePosition != null)
+    {
+        agent.SetDestination(homePosition.position);
+    }
+}
+
+string ConvertDishPrefabNameToFoodName(string prefabName)
+{
+    if (prefabName.StartsWith("Dish_"))
+    {
+        string localName = prefabName.Substring(5); // "핫도그", "붕어빵" 등
+        switch (localName)
+        {
+            case "핫도그": return "hotdog";
+            case "달고나": return "dalgona";
+            case "호떡": return "hottuk";
+            case "붕어빵": return "boung";
+        }
+    }
+    return null;
+}
 
 
 }
