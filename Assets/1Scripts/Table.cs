@@ -14,6 +14,13 @@ public class Table : MonoBehaviour
     private GameObject currentFoodObject;   // 테이블 위의 음식 오브젝트
     private string currentFoodName = null;  // 음식 이름 (hotdog, dalgona 등)
 
+    public Transform pickupPoint; // Inspector에서 지정
+
+    public bool isLockedByAI = false;
+
+    public void LockTable() { isLockedByAI = true; }
+    public void UnlockTable() { isLockedByAI = false; }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
@@ -124,10 +131,24 @@ public class Table : MonoBehaviour
 
         player.HoldItem(currentFoodName);
         Destroy(currentFoodObject);
-
-        Debug.Log($"{currentFoodName}을(를) 플레이어가 가져갔습니다.");
-
         currentFoodObject = null;
         currentFoodName = null;
+
+        Debug.Log($"{currentFoodName}을(를) 플레이어가 가져갔습니다.");
+    }
+
+    public string GetCurrentFoodName()
+    {
+        return currentFoodName;
+    }
+
+    public GameObject PickupFood()
+    {
+        if (currentFoodObject == null) { isLockedByAI = false; return null; }
+        GameObject food = currentFoodObject;
+        currentFoodObject = null;
+        currentFoodName = null;
+        isLockedByAI = false;
+        return food;
     }
 }

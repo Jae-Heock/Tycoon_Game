@@ -31,7 +31,7 @@ public class TrashZone : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(Random.Range(5, 10));
+            yield return new WaitForSeconds(Random.Range(100, 200));
 
             if (trashCount < maxTrash)
             {

@@ -80,7 +80,6 @@
     <Compile Include="Assets\1Scripts\InventoryToggle.cs" />
     <Compile Include="Assets\1Scripts\BoungZone.cs" />
     <Compile Include="Assets\1Scripts\SugarZone.cs" />
-    <Compile Include="Assets\1Scripts\FoodCounter.cs" />
     <Compile Include="Assets\1Scripts\Clock.cs" />
     <Compile Include="Assets\1Scripts\SceneChanger.cs" />
     <Compile Include="Assets\1Scripts\DishZone.cs" />

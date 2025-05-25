@@ -154,7 +154,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.16666667
   m_MinRegionArea: 2
-  m_NavMeshData: {fileID: 0}
+  m_NavMeshData: {fileID: 23800000, guid: 61974c77483b43c43b0bd8acf25553bc, type: 2}
   m_BuildHeightMesh: 0
 --- !u!1001 &26769261
 PrefabInstance:
@@ -2061,6 +2061,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   foodSpawnPoint: {fileID: 889097260}
+  pickupPoint: {fileID: 1670116695}
 --- !u!65 &223592907
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2144,7 +2145,7 @@ Transform:
   m_GameObject: {fileID: 229001393}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.27, y: 0.725, z: -0.6200001}
+  m_LocalPosition: {x: -1.3, y: 0.78, z: -0.6200001}
   m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2872,6 +2873,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillLevel: 0
   selectedSkill: {fileID: 0}
+  deliveryAIPrefab: {fileID: 6708540696741240777, guid: 6337aae703736f440bf84c1714aefb4d, type: 3}
+  spawnPoints:
+  - {fileID: 1670116695}
 --- !u!4 &296153148
 Transform:
   m_ObjectHideFlags: 0
@@ -15517,16 +15521,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseMoveSpeed: 3
-  moveSpeed: 3
+  moveSpeed: 7
   skillSpeed: -1
   isMove: 0
   cookTime: 5
   isCooking: 0
   Point: 0
-  sugarCount: 10
-  flourCount: 10
-  sosageCount: 10
-  potCount: 10
+  sugarCount: 100
+  flourCount: 100
+  sosageCount: 100
+  potCount: 100
   dalgonaCount: 0
   hottukCount: 0
   hotdogCount: 0
@@ -58848,7 +58852,6 @@ GameObject:
   - component: {fileID: 1478716066}
   - component: {fileID: 1478716065}
   - component: {fileID: 1478716064}
-  - component: {fileID: 1478716069}
   - component: {fileID: 1478716070}
   m_Layer: 0
   m_Name: Counter
@@ -63705,23 +63708,6 @@ RectTransform:
   m_AnchoredPosition: {x: -9.34, y: 0}
   m_SizeDelta: {x: 187, y: 230}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1478716069
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1478716063}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 18b1c274bf80fba41b3dfe169d9a4614, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  aiPrefab: {fileID: 6708540696741240777, guid: 6337aae703736f440bf84c1714aefb4d, type: 3}
-  aiSpawnPoints:
-  - {fileID: 1670116695}
-  deliveryAIs: []
-  debugFoodList: []
 --- !u!114 &1478716070
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -84801,7 +84787,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1670116690}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -7.13}
+  m_LocalPosition: {x: 0, y: 0, z: -0.03}
   m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -84809,7 +84795,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -11.34, y: 0}
+  m_AnchoredPosition: {x: -12.9, y: 0}
   m_SizeDelta: {x: 187, y: 230}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1678967583
@@ -85376,6 +85362,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   foodSpawnPoint: {fileID: 2064031832}
+  pickupPoint: {fileID: 1670116695}
 --- !u!65 &1737087278
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -90762,7 +90749,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cookSlider: {fileID: 1156285372}
-  makeTime: 1
+  makeTime: 10
   requiredFlour: 1
   requiredSosage: 1
   hotdogSpawnPoint: {fileID: 229001394}
@@ -116437,7 +116424,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cookSlider: {fileID: 1700789008}
-  makeTime: 5
+  makeTime: 1
   requiredFlour: 2
   requiredPot: 1
   boungSpawnPoint: {fileID: 671266656}
@@ -136890,6 +136877,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   foodSpawnPoint: {fileID: 1898252550}
+  pickupPoint: {fileID: 0}
 --- !u!65 &8942506515094063130
 BoxCollider:
   m_ObjectHideFlags: 0
