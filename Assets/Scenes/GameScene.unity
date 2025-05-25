@@ -2062,6 +2062,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   foodSpawnPoint: {fileID: 889097260}
   pickupPoint: {fileID: 1670116695}
+  isLockedByAI: 0
 --- !u!65 &223592907
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -85363,6 +85364,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   foodSpawnPoint: {fileID: 2064031832}
   pickupPoint: {fileID: 1670116695}
+  isLockedByAI: 0
 --- !u!65 &1737087278
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -136878,6 +136880,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   foodSpawnPoint: {fileID: 1898252550}
   pickupPoint: {fileID: 0}
+  isLockedByAI: 0
 --- !u!65 &8942506515094063130
 BoxCollider:
   m_ObjectHideFlags: 0
