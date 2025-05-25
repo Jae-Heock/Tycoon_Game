@@ -67,9 +67,10 @@ public class Player : MonoBehaviour
 
     [Header("# 기절")]
     public bool isStunned = false; // 기절 상태
-
+    [Header("# 이펙트")]
+    public GameObject stunEffectObject;  // 머리 위 헤롱헤롱 파티클
+    [Header("존")]
     public MonoBehaviour currentZone;  // 현재 사용 중인 존
-
     public string currentFood;  // 현재 들고 있는 음식 타입
 
     private void Awake()
@@ -270,12 +271,25 @@ private void Update()
     {
         isStunned = true;
         isMove = false;
+
+        // 🔥 이펙트 ON
+        if (stunEffectObject != null)
+            stunEffectObject.SetActive(true);
+
         Debug.Log($"플레이어가 {duration}초간 기절!");
+
         yield return new WaitForSeconds(duration);
+
         isStunned = false;
         isMove = true;
+
+        // 🔥 이펙트 OFF
+        if (stunEffectObject != null)
+            stunEffectObject.SetActive(false);
+
         Debug.Log("플레이어 기절 해제");
-    }
+}
+
 
     public GameObject GetFoodPrefab(string itemName)
     {

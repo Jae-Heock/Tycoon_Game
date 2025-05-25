@@ -47,7 +47,10 @@ public class Custom : MonoBehaviour
             GameManager.instance.badCustomer = this;
 
             if (badType == BadType.Stun)
+            {
+                player = FindFirstObjectByType<Player>();
                 stunCoroutine = StartCoroutine(StunPlayerRoutine());
+            }
         }
     }
 
@@ -153,9 +156,9 @@ public class Custom : MonoBehaviour
                     }
                     return;
                 case BadType.Stun:
-                    if (player.boungCount >= 2)
+                    if (player.boungCount >= 1)
                     {
-                        player.boungCount -= 2;
+                        player.boungCount -= 1;
                         player.Point += 10;
                         if (stunCoroutine != null) StopCoroutine(stunCoroutine);
                         Debug.Log("붕어빵 2개를 줘서 나쁜 손님 제거!");
@@ -274,9 +277,9 @@ public class Custom : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(10f);
+            yield return new WaitForSeconds(12f);
             if (player != null)
-                player.Stun(0.5f);
+                player.Stun(2f);
         }
     }
 }
