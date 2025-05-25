@@ -36,15 +36,23 @@ public class FoodDeliveryAI : MonoBehaviour
                     aiState = State.PickingUp;
                 }
                 break;
+
             case State.PickingUp:
                 PickUpFood();
                 break;
+                
             case State.MovingToCustomer:
-                if (targetCustomer != null && agent.remainingDistance < 0.2f && !agent.pathPending)
+                if (targetCustomer == null || !targetCustomer.gameObject.activeSelf)
+                {
+                    HandleMissingCustomer(); // 👈 추가된 함수 호출
+                    break;
+                }
+                if (agent.remainingDistance < 0.2f && !agent.pathPending)
                 {
                     aiState = State.Delivering;
                 }
                 break;
+
             case State.Delivering:
                 DeliverFood();
                 break;
@@ -123,4 +131,31 @@ public class FoodDeliveryAI : MonoBehaviour
         }
         aiState = State.Idle;
     }
+
+    private void HandleMissingCustomer()
+    {
+        Debug.Log("❗ 배달 도중 손님이 사라졌습니다. AI가 음식 반환 후 대기 위치로 복귀합니다.");
+
+        if (heldFoodObject != null)
+        {
+            Destroy(heldFoodObject);
+            heldFoodObject = null;
+        }
+
+        if (targetTable != null)
+        {
+            targetTable.UnlockTable(); // 테이블 잠금 해제
+            targetTable = null;
+        }
+
+        targetCustomer = null;
+
+        if (homePosition != null)
+        {
+            agent.SetDestination(homePosition.position);
+        }
+
+        aiState = State.Idle;
+}
+
 }
