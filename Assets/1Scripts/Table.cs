@@ -20,6 +20,7 @@ public class Table : MonoBehaviour
         {
             player = other.GetComponent<Player>();
             isPlayerInZone = true;
+            player.currentZone = this;
         }
     }
 
@@ -28,7 +29,10 @@ public class Table : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             isPlayerInZone = false;
-            player = null;
+            if (player != null && player.currentZone == this)
+            {
+                player.currentZone = null;
+            }
         }
     }
 

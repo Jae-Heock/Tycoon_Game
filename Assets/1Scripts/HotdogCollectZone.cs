@@ -4,11 +4,11 @@ public class HotdogCollectZone : MonoBehaviour
 {
     private bool isPlayerInZone = false;
     private Player player;
-    private Hotdog hotdogZone;
+    private HotdogZone hotdogZone;
 
     private void Start()
     {
-        hotdogZone = FindFirstObjectByType<Hotdog>();
+        hotdogZone = FindFirstObjectByType<HotdogZone>();
     }
 
     private void OnTriggerEnter(Collider other)

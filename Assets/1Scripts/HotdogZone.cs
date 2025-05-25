@@ -5,7 +5,7 @@ using UnityEngine.UI;
 /// 핫도그를 만드는 구역을 관리하는 클래스
 /// 플레이어가 이 구역에 들어와서 E키를 누르면 핫도그를 만들 수 있음
 /// </summary>
-public class Hotdog : MonoBehaviour
+public class HotdogZone : MonoBehaviour
 {
     private bool isPlayerInZone = false;    // 플레이어가 구역 안에 있는지 여부
     private Player player;                  // 플레이어 참조

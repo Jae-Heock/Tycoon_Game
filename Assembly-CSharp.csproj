@@ -73,6 +73,7 @@
     <Compile Include="Assets\1Scripts\SosageZone.cs" />
     <Compile Include="Assets\1Scripts\DalgonaZone.cs" />
     <Compile Include="Assets\1Scripts\Custom.cs" />
+    <Compile Include="Assets\1Scripts\HotdogZone.cs" />
     <Compile Include="Assets\1Scripts\FollowCamera.cs" />
     <Compile Include="Assets\1Scripts\Hud.cs" />
     <Compile Include="Assets\1Scripts\TrashZone.cs" />
@@ -89,7 +90,6 @@
     <Compile Include="Assets\1Scripts\Hottuk.cs" />
     <Compile Include="Assets\1Scripts\SkillData.cs" />
     <Compile Include="Assets\1Scripts\Skill.cs" />
-    <Compile Include="Assets\1Scripts\Hotdog.cs" />
     <Compile Include="Assets\1Scripts\BoungCollectZone.cs" />
     <Compile Include="Assets\1Scripts\GameManager.cs" />
     <Compile Include="Assets\1Scripts\LevelUp.cs" />
