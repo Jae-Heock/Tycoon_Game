@@ -39,7 +39,7 @@ public class BoungCollectZone : MonoBehaviour
     {
         if (isPlayerInZone && Input.GetKeyDown(KeyCode.Q))
         {
-            if (boungZone != null && boungZone.currentBoung != null)
+            if (boungZone != null && boungZone.boungList.Count > 0)
             {
                 if (!string.IsNullOrEmpty(player.currentFood))
                 {

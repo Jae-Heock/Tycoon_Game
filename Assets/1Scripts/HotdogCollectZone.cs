@@ -39,7 +39,7 @@ public class HotdogCollectZone : MonoBehaviour
     {
         if (isPlayerInZone && Input.GetKeyDown(KeyCode.Q))
         {
-            if (hotdogZone != null && hotdogZone.currentHotdog != null)
+            if (hotdogZone != null && hotdogZone.hotdogList.Count > 0)
             {
                 if (!string.IsNullOrEmpty(player.currentFood))
                 {

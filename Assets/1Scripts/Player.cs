@@ -80,27 +80,28 @@ public class Player : MonoBehaviour
         isMove = true;
     }
 
-    private void Update()
-    {
-        if (isStunned) return;
+private void Update()
+{
+    if (isStunned) return;
 
-        Move();
-        UpdateItemVisibility();
+    Move();
+    UpdateItemVisibility();
 
-        bool hasFood = !string.IsNullOrEmpty(currentFood);
-        bool isDalgonaCooking = isCooking; // 요리 중
+    bool isCookedFood = currentFood == "hotdog" || currentFood == "dalgona" || currentFood == "hottuk" || currentFood == "boung";
+    bool isDalgonaCooking = isCooking;
 
-        // PICK 애니메이션 Layer 1
-        anim.SetBool("isPick", hasFood && !isDalgonaCooking);
+    // PICK 애니메이션 Layer 1
+    anim.SetBool("isPick", isCookedFood && !isDalgonaCooking);
 
-        // Layer 1 Weight 조정
-        if (isDalgonaCooking)
-            anim.SetLayerWeight(1, 1f);      // 요리 중엔 1f
-        else if (hasFood)
-            anim.SetLayerWeight(1, 0.65f);   // 음식만 들고 있으면 0.65f
-        else
-            anim.SetLayerWeight(1, 0f);      // 아무것도 없으면 0f
-    }
+    // Layer 1 Weight 조정
+    if (isDalgonaCooking)
+        anim.SetLayerWeight(1, 1f);      // 요리 중엔 1f
+    else if (isCookedFood)
+        anim.SetLayerWeight(1, 0.65f);   // 음식만 들고 있으면 0.65f
+    else
+        anim.SetLayerWeight(1, 0f);      // 아무것도 없으면 0f
+}
+
 
 
     /// <summary>
@@ -137,6 +138,13 @@ public class Player : MonoBehaviour
 
     public void HoldItem(string itemName)
     {
+        // 완성된 음식이 아닐 경우 들 수 없음
+        if (itemName != "hotdog" && itemName != "dalgona" && itemName != "hottuk" && itemName != "boung")
+        {
+            Debug.Log($"'{itemName}'은 들 수 없는 재료입니다. currentFood 설정 생략.");
+            return;
+        }
+        
         //anim.SetTrigger("doHold");      // HOLD 애니메이션 실행
         currentFood = itemName;
 
