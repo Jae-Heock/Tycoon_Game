@@ -90751,7 +90751,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cookSlider: {fileID: 1156285372}
-  makeTime: 10
+  makeTime: 1
   requiredFlour: 1
   requiredSosage: 1
   hotdogSpawnPoint: {fileID: 229001394}
