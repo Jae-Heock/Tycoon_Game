@@ -973,7 +973,7 @@ MonoBehaviour:
   - {fileID: 428002659}
   - {fileID: 445820217}
   - {fileID: 1049063657}
-  badCustomerChance: 0.7
+  badCustomerChance: 0.1
 --- !u!1 &98055351
 GameObject:
   m_ObjectHideFlags: 0
@@ -100422,7 +100422,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cookSlider: {fileID: 1156285372}
-  makeTime: 1
+  makeTime: 5
   requiredFlour: 1
   requiredSosage: 1
   hotdogSpawnPoint: {fileID: 229001394}

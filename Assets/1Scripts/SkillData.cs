@@ -20,9 +20,7 @@ public class SkillData : ScriptableObject
         PlusPoint,           // 점수 증가
         ReduceBadCustomerChance, // 나쁜손님 등장 확률 감소
         AutoCleanDish,            // 자동 설거지
-        // 위까진 구현 성공
         AutoFlour,               // 자동 밀가루 생성
-        
     }
 
     [Header("# 기본 정보")]

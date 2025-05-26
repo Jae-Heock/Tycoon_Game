@@ -4,14 +4,14 @@ using System.Collections.Generic;
 
 public class CustomSpawner : MonoBehaviour
 {
-    public GameObject[] customerPrefabs;
-    public GameObject[] badCustomerPrefabs;
-    public Transform[] spawnPoints;
-    public float badCustomerChance = 0.1f;
+    public GameObject[] customerPrefabs;        // 일반손님 프리팹
+    public GameObject[] badCustomerPrefabs;     // 나쁜손님 프리팹
+    public Transform[] spawnPoints;             // 스폰 포인트
+    public float badCustomerChance = 0.1f;     // 나쁜손님 등장 확률
 
-    private int clearedCustomerCount = 0;
-    private List<Transform> availableSpawnPoints = new List<Transform>();
-    private HashSet<Transform> occupiedSpawnPoints = new HashSet<Transform>();
+    private int clearedCustomerCount = 0;       // 청소된 손님 수
+    private List<Transform> availableSpawnPoints = new List<Transform>(); // 사용 가능한 스폰 포인트
+    private HashSet<Transform> occupiedSpawnPoints = new HashSet<Transform>(); // 점유된 스폰 포인트
     private Dictionary<GameObject, Transform> customerSpawnPoints = new Dictionary<GameObject, Transform>(); // 손님과 스폰 포인트 매핑
     private Dictionary<Transform, float> spawnPointCooldowns = new Dictionary<Transform, float>(); // 스폰 포인트 쿨다운 관리
 

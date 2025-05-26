@@ -69,7 +69,7 @@ public class HotdogZone : MonoBehaviour
         else
         {
             SetHotdogBlocked(false);
-    }
+        }
 
         if (isHotdogBlocked)
         {
@@ -81,11 +81,11 @@ public class HotdogZone : MonoBehaviour
                 hotdogBlockParticle.SetActive(true);
             return;
         }
+        
         if (isPlayerInZone && Input.GetKeyDown(KeyCode.E) && !isMaking)
         {
             if (player.flourCount >= requiredFlour && player.sosageCount >= requiredSosage)
             {
-                if(!player.TryStartCooking()) return;
                 StartCoroutine(CookProcess());
                 TryMakeHotdog();
             }
@@ -119,11 +119,8 @@ public class HotdogZone : MonoBehaviour
     private IEnumerator MakeHotdogCoroutine()
     {
         isMaking = true;
-        player.isMove = false;
         Debug.Log("핫도그 제작 시작...");
         yield return new WaitForSeconds(makeTime);
-        player.isMove = true;
-        player.EndCooking();
 
         // 핫도그 프리팹 생성 위치 계산
         int index = hotdogList.Count;
@@ -164,7 +161,6 @@ public class HotdogZone : MonoBehaviour
         cookSlider.gameObject.SetActive(false);
         Debug.Log("요리 완료!");
         isMaking = false;
-        player.EndCooking();
     }
 
     public void SetHotdogBlocked(bool blocked)

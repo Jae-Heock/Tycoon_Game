@@ -6,7 +6,6 @@ public class FoodDeliveryAI : MonoBehaviour
 {
     public Transform homePosition; // AI가 생성된 위치와 대기할 위치 (홈 위치)
     public Transform foodHoldPoint; // Inspector에서 지정 (AI가 음식을 들 위치)
-
     private GameObject heldFoodObject;
     private Table targetTable;
     private Custom targetCustomer;
@@ -161,7 +160,7 @@ void FindCustomerForHeldFood()
 {
     if (heldFoodObject == null) return;
 
-    // ✅ Dish 프리팹 이름을 정규화된 음식 이름으로 변환
+    // Dish 프리팹 이름을 정규화된 음식 이름으로 변환
     string prefabName = heldFoodObject.name.Replace("(Clone)", "").Trim();  // 예: "Dish_핫도그"
     string foodName = ConvertDishPrefabNameToFoodName(prefabName);          // 결과: "hotdog"
 

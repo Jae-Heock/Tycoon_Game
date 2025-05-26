@@ -89,7 +89,7 @@ public class SkillManager : MonoBehaviour
                 SpawnAutoDeliveryAI(value);
                 break;
             case SkillType.PlusPoint:
-                player.bonusPoint = Mathf.RoundToInt(value);  // 예: 1, 2, 3
+                player.bonusPoint = Mathf.RoundToInt(value); 
                 break;
             case SkillType.ReduceBadCustomerChance:
                 if (customSpawner != null)
