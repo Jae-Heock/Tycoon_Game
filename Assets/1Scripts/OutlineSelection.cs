@@ -15,7 +15,7 @@ public class OutlineSelection : MonoBehaviour
                 outline = targetObject.AddComponent<Outline>();
             }
 
-            outline.OutlineColor = Color.red;
+            outline.OutlineColor = Color.white;
             outline.OutlineWidth = 7f;
             outline.enabled = false;
         }
