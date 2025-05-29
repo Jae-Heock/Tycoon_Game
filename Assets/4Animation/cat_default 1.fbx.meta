@@ -7,18 +7,13 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: belt1
-    second: {fileID: 2100000, guid: 98d5ef04413e9e24884f7a2397f9188f, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
       name: cloth_b1
     second: {fileID: 2100000, guid: 0f33525cc16c1814b9d8fb429e807825, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: cloth_s
-    second: {fileID: 2100000, guid: 76ecf9c0718a3234194f3225b5444979, type: 2}
+    second: {fileID: 2100000, guid: 98d5ef04413e9e24884f7a2397f9188f, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
