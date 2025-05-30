@@ -15535,10 +15535,10 @@ MonoBehaviour:
   flourCount: 100
   sosageCount: 100
   potCount: 100
-  dalgonaCount: 0
-  hottukCount: 0
-  hotdogCount: 0
-  boungCount: 0
+  dalgonaCount: 1
+  hottukCount: 1
+  hotdogCount: 1
+  boungCount: 1
   customerSuccessCount: 0
   basePoint: 4
   bonusPoint: 0
