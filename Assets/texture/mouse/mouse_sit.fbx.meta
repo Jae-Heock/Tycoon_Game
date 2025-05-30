@@ -1,9 +1,69 @@
 fileFormatVersion: 2
-guid: b53c053e178f65a4faeb66ddb7c443fb
+guid: a676d44d483e6274788cf7fb4ddf01d1
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Extract1
+    second: {fileID: 2100000, guid: 1a29f28709c22fd43941223a7803ea55, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Extract12
+    second: {fileID: 2100000, guid: af6dfa8552841d44088d9ab6622d5f55, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Extract17
+    second: {fileID: 2100000, guid: 1b3d48bc1f20efb4ca4ac4e409b83076, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Extract1_copy1
+    second: {fileID: 2100000, guid: 217d119678529344a98eb92f88c314d3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Extract6
+    second: {fileID: 2100000, guid: 431953385866cb248823c56c893dee82, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Extract9
+    second: {fileID: 2100000, guid: e3c867eeb7ca872428fb734ab872e21a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: PM3D_Cube3D1
+    second: {fileID: 2100000, guid: 600201115fe92964d9809404cb816f70, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: PM3D_Cylinder3D1
+    second: {fileID: 2100000, guid: f1f03e1c4288bd4449209b921dad387f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: PM3D_Cylinder3D1_1
+    second: {fileID: 2100000, guid: ab5fb08332d9512419c8fd5124e3a446, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: PM3D_Sphere3D1
+    second: {fileID: 2100000, guid: 448d4d41ef0dd0243b67dac4199ec5fd, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Skin_ZSphere_1
+    second: {fileID: 2100000, guid: 47a4e740f560d684e819381949ea7318, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: pCube2
+    second: {fileID: 2100000, guid: 00bfe944ab6c8a44ead31631aec3a671, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -29,36 +89,7 @@ ModelImporter:
     animationWrapMode: 0
     extraExposedTransformPaths: []
     extraUserProperties: []
-    clipAnimations:
-    - serializedVersion: 16
-      name: IDLE
-      takeName: Take 001
-      internalID: 1827226128182048838
-      firstFrame: 0
-      lastFrame: 42
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 1
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
+    clipAnimations: []
     isReadable: 0
   meshes:
     lODScreenPercentages: []
@@ -98,7 +129,7 @@ ModelImporter:
     strictVertexDataChecks: 0
   tangentSpace:
     normalSmoothAngle: 60
-    normalImportMode: 1
+    normalImportMode: 0
     tangentImportMode: 3
     normalCalculationMode: 4
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0

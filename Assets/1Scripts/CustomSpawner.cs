@@ -49,19 +49,28 @@ public class CustomSpawner : MonoBehaviour
 
     IEnumerator SpawnLoop()
     {
+        // 무한 루프를 돌며 주기적으로 손님을 스폰하는 코루틴
         while (true)
         {
+            // 현재 활성화된 손님 수 계산 (태그가 "Custom"인 객체들)
             int activeCustomers = GameObject.FindGameObjectsWithTag("Custom").Length;
-            int maxCustomers = Mathf.Clamp(clearedCustomerCount < 3 ? 6 : 12, 1, 12);
 
+            // 최대 손님 수를 계산
+            // clearedCustomerCount가 3 미만이면 최대 6명, 그 이상이면 최대 12명
+            // 하지만 최대값은 무조건 12, 최소는 1로 Clamp 처리
+            int maxCustomers = Mathf.Clamp(clearedCustomerCount < 3 ? 6 : 4, 1, 9);
+
+            // 현재 손님 수가 최대값보다 작다면 손님 스폰
             if (activeCustomers < maxCustomers)
             {
-                SpawnRandomCustomer();
+                SpawnRandomCustomer(); // 랜덤 위치에 손님 스폰
             }
 
+            // 다음 스폰을 위해 10초 대기
             yield return new WaitForSeconds(10f);
         }
-    }
+    }   
+
 
     public void SpawnRandomCustomer()
     {
