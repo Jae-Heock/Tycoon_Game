@@ -64,6 +64,7 @@
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\6000.0.41f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.UIToolkit.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\1Scripts\CustomTrash.cs" />
     <Compile Include="Assets\1Scripts\PotZone.cs" />
     <Compile Include="Assets\1Scripts\FlourZone.cs" />
     <Compile Include="Assets\1Scripts\Table.cs" />
