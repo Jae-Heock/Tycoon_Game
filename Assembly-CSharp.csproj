@@ -96,6 +96,7 @@
     <Compile Include="Assets\1Scripts\CustomSpawner.cs" />
     <Compile Include="Assets\1Scripts\ReceiptToggle.cs" />
     <Compile Include="Assets\1Scripts\Player.cs" />
+    <Compile Include="Assets\1Scripts\SkillUIManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

@@ -43,6 +43,8 @@ public class Custom : MonoBehaviour
     public Slider waitSlider;         // 손님 대기시간 슬라이더
     public Canvas waitCanvas;         // 슬라이더가 붙은 World Space 캔버스
 
+    [Header("Icon Rotation")]
+    public float iconRotationSpeed = 100f; // 아이콘 회전 속도 (도/초)
 
     private void Start()
     {
@@ -91,6 +93,11 @@ public class Custom : MonoBehaviour
         if (waitSlider != null)
             waitSlider.value = waitTimer / maxWaitTime;
 
+        // 아이콘 회전
+        if (orderIconObject != null)
+        {
+            orderIconObject.transform.Rotate(Vector3.up * iconRotationSpeed * Time.deltaTime);
+        }
     }
 
 
