@@ -81,16 +81,12 @@ public class Player : MonoBehaviour
         rigid.constraints = RigidbodyConstraints.FreezeRotation;
         isMove = true;
     }
-
-    void FixedUpdate()
-    {
-        StopToWall();
-    }
-
+    
     private void Update()
     {
         if (isStunned) return;
 
+        StopToWall();
         Move();
         UpdateItemVisibility();
 
@@ -147,9 +143,21 @@ public class Player : MonoBehaviour
 
     void StopToWall()
     {
-        // 이동 방향으로 레이캐스트 체크
-        Debug.DrawRay(transform.position, moveVec * 0.5f, Color.red);
-        isBorder = Physics.Raycast(transform.position, moveVec, 0.5f, LayerMask.GetMask("Wall"));
+        if (moveVec == Vector3.zero)
+        {
+            isBorder = false;
+            return;
+        }
+
+        Vector3 rayStart = transform.position + Vector3.up * 0.3f + moveVec * 0.1f;
+        float radius = 0.2f;
+        float castDistance = 0.5f;
+
+        RaycastHit hit;
+        isBorder = Physics.SphereCast
+        (rayStart, radius, moveVec, out hit, castDistance, LayerMask.GetMask("Wall"), QueryTriggerInteraction.Ignore);
+        
+        Debug.DrawRay(rayStart, moveVec * castDistance, isBorder ? Color.red : Color.green);
     }
 
     public void HoldItem(string itemName)
@@ -302,18 +310,18 @@ public class Player : MonoBehaviour
             stunEffectObject.SetActive(false);
 
         Debug.Log("플레이어 기절 해제");
-}
+    }
 
 
     public GameObject GetFoodPrefab(string itemName)
     {
-    switch (itemName)
-    {
-        case "hotdog": return hotdogPrefab;
-        case "dalgona": return dalgonaPrefab;
-        case "hottuk": return hottukPrefab;
-        case "boung": return boungPrefab;
-        default: return null;
+        switch (itemName)
+        {
+            case "hotdog": return hotdogPrefab;
+            case "dalgona": return dalgonaPrefab;
+            case "hottuk": return hottukPrefab;
+            case "boung": return boungPrefab;
+            default: return null;
         }
     }
 
