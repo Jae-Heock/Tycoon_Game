@@ -31,7 +31,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
+<<<<<<< HEAD:Assets/4Animation/walk 1.fbx.meta
       name: walk
+=======
+      name: Take 001
+>>>>>>> f2131d50efe44c1b808cf6039e2c4764d8b72d4b:Assets/4Animation/walk.fbx.meta
       takeName: Take 001
       internalID: 1827226128182048838
       firstFrame: 0
@@ -42,7 +46,11 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
+<<<<<<< HEAD:Assets/4Animation/walk 1.fbx.meta
       loopTime: 0
+=======
+      loopTime: 1
+>>>>>>> f2131d50efe44c1b808cf6039e2c4764d8b72d4b:Assets/4Animation/walk.fbx.meta
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
