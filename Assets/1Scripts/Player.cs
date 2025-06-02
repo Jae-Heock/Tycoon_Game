@@ -15,6 +15,7 @@ public class Player : MonoBehaviour
 
     float hAxis;                         // 수평 입력값
     float vAxis;                         // 수직 입력값
+    bool isBorder;
 
     public bool isMove;                  // 이동 가능 여부 (true: 이동 가능 / false: 이동 불가)
     public float cookTime = 5f;          // 기본 조리 시간 5초, 스킬로 감소 가능
@@ -81,6 +82,11 @@ public class Player : MonoBehaviour
         isMove = true;
     }
 
+    void FixedUpdate()
+    {
+        StopToWall();
+    }
+
     private void Update()
     {
         if (isStunned) return;
@@ -126,14 +132,25 @@ public class Player : MonoBehaviour
         moveVec = (camForward * vAxis + camRight * hAxis).normalized;
 
         // 이동 적용
-        transform.position += moveVec * moveSpeed * Time.deltaTime;
+        if (!isBorder)
+        {
+            transform.position += moveVec * moveSpeed * Time.deltaTime;
+        }
+
         if (moveVec != Vector3.zero)
         {
             transform.LookAt(transform.position + moveVec); // 캐릭터가 이동 방향으로 회전
         }
 
         anim.SetBool("isWalk", moveVec != Vector3.zero); // 걷기 애니메이션
-}
+    }
+
+    void StopToWall()
+    {
+        // 이동 방향으로 레이캐스트 체크
+        Debug.DrawRay(transform.position, moveVec * 0.5f, Color.red);
+        isBorder = Physics.Raycast(transform.position, moveVec, 0.5f, LayerMask.GetMask("Wall"));
+    }
 
     public void HoldItem(string itemName)
     {
