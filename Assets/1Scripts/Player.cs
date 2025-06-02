@@ -9,7 +9,7 @@ using System.Collections.Generic;
 public class Player : MonoBehaviour
 {
     // 이동 관련 변수
-    public float baseMoveSpeed = 3f;     // 기본 이동 속도
+    public float baseMoveSpeed = 5f;     // 기본 이동 속도
     public float moveSpeed = 3f;         // 현재 이동 속도
     public float skillSpeed = -1f;       // 스킬로 인한 속도 변화 (기본값 -1)
 
