@@ -50,6 +50,31 @@ void RefreshSkillSlots()
             skill.level = skillManager.skillLevels.ContainsKey(data) ? skillManager.skillLevels[data] : 0;
             skill.skillManager = skillManager;
             skill.UpdateUI();
+
+            // 현재 레벨 정보
+            var descText = slot.transform.Find("Text Desc").GetComponent<Text>();
+            var levelText = slot.transform.Find("Text Level").GetComponent<Text>();
+            int level = skill.level;
+            int currentLevelIndex = Mathf.Clamp(level - 1, 0, data.values.Length - 1);
+            descText.text = string.Format(data.skillDesc, data.values[currentLevelIndex]);
+            levelText.text = "Lv." + level;
+
+            // 다음 레벨 정보 (업그레이드 미리보기)
+            var nextDescText = slot.transform.Find("Text NextDesc")?.GetComponent<Text>();
+            var nextLevelText = slot.transform.Find("Text NextLevel")?.GetComponent<Text>();
+            if (nextDescText != null && nextLevelText != null)
+            {
+                if (level < data.values.Length)
+                {
+                    nextDescText.text = string.Format(data.skillDesc, data.values[level]);
+                    nextLevelText.text = "Lv." + (level + 1);
+                }
+                else
+                {
+                    nextDescText.text = "최대 레벨";
+                    nextLevelText.text = "";
+                }
+            }
         }
     }
 }

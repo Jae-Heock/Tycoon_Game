@@ -86,6 +86,8 @@ public class Skill : MonoBehaviour
     /// </summary>
     public void OnClick()
     {
+        level++;
+         Debug.Log($"[Skill] {data.skillName} 클릭됨");
         // 먼저 현재 레벨로 효과 적용
         skillManager.SetSkillLevel(data, level);
         skillManager.ActivateSkill(data);
@@ -98,7 +100,7 @@ public class Skill : MonoBehaviour
             GetComponent<Button>().interactable = false;
 
         // 마지막에 레벨 증가
-        level++;
+        
 
         Time.timeScale = 1f;
     }
