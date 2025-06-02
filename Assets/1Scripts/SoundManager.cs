@@ -1,0 +1,89 @@
+using UnityEngine;
+
+public class SoundManager : MonoBehaviour
+{
+    public static SoundManager instance;
+
+    public AudioSource bgmSource;
+    public AudioSource effectSource;
+    public AudioSource fryerSource;
+
+    [Header("BGM")]
+    public AudioClip titleBGM;
+    public AudioClip gameBGM;
+    public AudioClip fryerClip;
+
+    [Header("Effect")]
+    public AudioClip buttonClick;
+    public AudioClip getItem;
+    public AudioClip fryerFinish;
+
+    private void Start()
+    {
+        PlayTitleBGM();
+    }
+
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);  // 씬 전환에도 유지
+        }
+        else
+        {
+            Destroy(gameObject);  // 중복 제거
+            return;
+        }
+    }
+
+    public void PlayTitleBGM()
+    {
+        bgmSource.clip = titleBGM;
+        bgmSource.loop = true;
+        bgmSource.Play();
+    }
+
+    public void PlayGameBGM()
+    {
+        bgmSource.clip = gameBGM;
+        bgmSource.loop = true;
+        bgmSource.Play();
+    }
+
+    public void StopBGM()
+    {
+        bgmSource.Stop();
+    }
+
+
+    public void PlayButton(AudioClip clip)
+    {
+        effectSource.PlayOneShot(clip);
+    }
+
+    public void PlayGetItem()
+    {
+        effectSource.PlayOneShot(getItem);
+    }
+
+    public void PlayFryer()
+    {
+        fryerSource.clip = fryerClip;
+        fryerSource.Play();
+    }
+    public void StopFryer()
+    {
+       fryerSource.Stop(); // 이건 fryerSource만 멈춤
+    }
+
+    public void FryerFinish()
+    {
+        effectSource.PlayOneShot(fryerFinish);
+    }
+
+    public void ButtonClick()
+    {
+        effectSource.PlayOneShot(buttonClick);
+    }
+}

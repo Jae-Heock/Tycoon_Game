@@ -46,6 +46,7 @@ public class BoungCollectZone : MonoBehaviour
                     Debug.Log("이미 음식을 들고 있습니다!");
                     return;
                 }
+                SoundManager.instance.ButtonClick();
                 boungZone.CollectBoung();
             }
         }

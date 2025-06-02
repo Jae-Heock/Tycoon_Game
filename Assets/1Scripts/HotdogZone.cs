@@ -119,6 +119,7 @@ public class HotdogZone : MonoBehaviour
     private IEnumerator MakeHotdogCoroutine()
     {
         isMaking = true;
+        SoundManager.instance.PlayFryer();
         Debug.Log("핫도그 제작 시작...");
         yield return new WaitForSeconds(makeTime);
 
@@ -128,7 +129,9 @@ public class HotdogZone : MonoBehaviour
         GameObject newHotdog = Instantiate(hotdogPrefab, spawnPos, Quaternion.identity);
         hotdogList.Add(newHotdog);
         dishZone.AddDish();
+        SoundManager.instance.StopFryer();
         Debug.Log("핫도그 제작 완료!");
+        SoundManager.instance.FryerFinish();
         isMaking = false;
         player.currentZone = null;
     }

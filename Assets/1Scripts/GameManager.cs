@@ -48,6 +48,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        SoundManager.instance.PlayGameBGM();
         // 게임 설정 초기화
         gameTime = 0;
         

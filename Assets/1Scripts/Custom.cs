@@ -250,6 +250,7 @@ public class Custom : MonoBehaviour
             player.Point += player.basePoint + player.bonusPoint;
             player.customerSuccessCount++;
             GameManager.instance.HappyCat();
+            SoundManager.instance.ButtonClick();
             Debug.Log($"{itemName} 전달 성공!");
             player.ClearHeldFood();
             return true;
