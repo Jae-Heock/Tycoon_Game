@@ -19,6 +19,9 @@ public class SoundManager : MonoBehaviour
     public AudioClip getItem;
     public AudioClip fryerFinish;
 
+    [Range(0f, 1f)]
+    public float masterVolume = 1f;
+
     private void Start()
     {
         PlayTitleBGM();
@@ -36,6 +39,24 @@ public class SoundManager : MonoBehaviour
             Destroy(gameObject);  // 중복 제거
             return;
         }
+    }
+
+    public void SetMasterVolume(float volume)
+    {
+        masterVolume = volume;
+        bgmSource.volume = volume;
+        effectSource.volume = volume;
+        // fryerSource는 무시
+    }
+
+    public void SetBGMVolume(float volume)
+    {
+        bgmSource.volume = volume * masterVolume;
+    }
+
+    public void SetEffectVolume(float volume)
+    {
+        effectSource.volume = volume * masterVolume;
     }
 
     public void PlayTitleBGM()

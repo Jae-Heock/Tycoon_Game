@@ -9,6 +9,7 @@ using System.Collections;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
+    public SettingPanelController settingPanel;
 
     [Header("# Game Control")]
     public float gameTime;
@@ -71,7 +72,16 @@ public class GameManager : MonoBehaviour
         // 일시정지 처리
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            TogglePause();
+            if (settingPanel.transform.localScale == Vector3.zero)
+            {
+                Time.timeScale = 0;
+                settingPanel.ShowPanel();
+            }
+            else
+            {
+                Time.timeScale = 1;
+                settingPanel.HidePanel();
+            }
         }
     }
 
