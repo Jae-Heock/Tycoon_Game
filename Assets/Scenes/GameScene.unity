@@ -798,7 +798,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 65d4d7faf7580fe4b961f08481743a30, type: 3}
       propertyPath: m_Name
-      value: pig_sit
+      value: "\uB3FC\uC9C0"
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -16129,7 +16129,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 25f5a01b6359cdd4ea41bf5b7a8dc8b4, type: 3}
       propertyPath: m_Name
-      value: monkey_sit
+      value: "\uC6D0\uC22D\uC774"
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -18082,7 +18082,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: aaddbbd8a9840c84e854f905bbc5d099, type: 3}
       propertyPath: m_Name
-      value: chicken_sit
+      value: "\uB2ED"
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -18803,7 +18803,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: a676d44d483e6274788cf7fb4ddf01d1, type: 3}
       propertyPath: m_Name
-      value: mouse_sit
+      value: "\uC950"
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -80402,7 +80402,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: fa6f4e36ca6a2b14f9300a9114a13d4d, type: 2}
     - target: {fileID: 919132149155446097, guid: b52384b6b27ce78409d44ab80134ff01, type: 3}
       propertyPath: m_Name
-      value: cow_sit2
+      value: "\uC18C"
       objectReference: {fileID: 0}
     - target: {fileID: 1347899099019039797, guid: b52384b6b27ce78409d44ab80134ff01, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -111025,7 +111025,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 53e97616fb4ddc24a955cbd9416b40d0, type: 2}
     - target: {fileID: 919132149155446097, guid: 5634c813fa938ea4d95ecfaf0067a5ba, type: 3}
       propertyPath: m_Name
-      value: dragon_sit2 (1)
+      value: "\uC6A9"
       objectReference: {fileID: 0}
     - target: {fileID: 1221119020631112459, guid: 5634c813fa938ea4d95ecfaf0067a5ba, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -111142,7 +111142,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 22bc153f3deec044792e92737e852a75, type: 2}
     - target: {fileID: 919132149155446097, guid: 142fbf1d883a252408c2cdf2c3e740c4, type: 3}
       propertyPath: m_Name
-      value: snake_sit3
+      value: "\uBC40"
       objectReference: {fileID: 0}
     - target: {fileID: 1197218319328542264, guid: 142fbf1d883a252408c2cdf2c3e740c4, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -132073,7 +132073,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 61e07ccd07a001445957dd719118069b, type: 2}
     - target: {fileID: 919132149155446097, guid: eeb48710d5e3de34ea57d23c25b6b1a2, type: 3}
       propertyPath: m_Name
-      value: rabbit_sit3
+      value: "\uD1A0\uB07C"
       objectReference: {fileID: 0}
     - target: {fileID: 1792065198452088153, guid: eeb48710d5e3de34ea57d23c25b6b1a2, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
