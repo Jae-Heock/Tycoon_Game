@@ -82,7 +82,7 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: top
+      name: standardSurface1
     second: {fileID: 2100000, guid: 33c5337c198577549852661eeaf2f059, type: 2}
   - first:
       type: UnityEngine:Material
@@ -154,7 +154,7 @@ ModelImporter:
     strictVertexDataChecks: 0
   tangentSpace:
     normalSmoothAngle: 60
-    normalImportMode: 0
+    normalImportMode: 1
     tangentImportMode: 3
     normalCalculationMode: 4
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0

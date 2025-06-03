@@ -92,7 +92,7 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: top
+      name: standardSurface1
     second: {fileID: 2100000, guid: 0457332ef4bcb864a834826f008d4caa, type: 2}
   - first:
       type: UnityEngine:Material
