@@ -72,15 +72,16 @@ public class GameManager : MonoBehaviour
         // 일시정지 처리
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (settingPanel.transform.localScale == Vector3.zero)
+            SoundManager.instance.ButtonClick();
+            if (!settingPanel.isOpen)
             {
-                Time.timeScale = 0;
+                SoundManager.instance.PauseBGM();
                 settingPanel.ShowPanel();
             }
             else
             {
-                Time.timeScale = 1;
                 settingPanel.HidePanel();
+                SoundManager.instance.ResumeBGM();
             }
         }
     }

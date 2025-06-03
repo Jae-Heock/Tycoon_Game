@@ -4,25 +4,18 @@ public class SettingPanelController : MonoBehaviour
 {
     private Vector3 hiddenScale = Vector3.zero;
     private Vector3 shownScale = Vector3.one;
-    private bool isOpen = false;
+    public bool isOpen = false;
 
     void Start()
     {
         transform.localScale = hiddenScale;
     }
 
-    void Update()
-    {
-        if (isOpen && Input.GetKeyDown(KeyCode.Escape))
-        {
-            HidePanel();
-        }
-    }
-
     public void ShowPanel()
     {
         transform.localScale = shownScale;
         isOpen = true;
+        Time.timeScale = 0;
     }
 
     public void HidePanel()
@@ -30,5 +23,6 @@ public class SettingPanelController : MonoBehaviour
         SoundManager.instance.ButtonClick();
         transform.localScale = hiddenScale;
         isOpen = false;
+        Time.timeScale = 1;
     }
 } 
