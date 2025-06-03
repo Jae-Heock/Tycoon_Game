@@ -15,6 +15,7 @@ public class SoundManager : MonoBehaviour
 
     [Header("Effect")]
     public AudioClip buttonClick;
+    public AudioClip buttonHover;
     public AudioClip getItem;
     public AudioClip fryerFinish;
 
@@ -85,5 +86,10 @@ public class SoundManager : MonoBehaviour
     public void ButtonClick()
     {
         effectSource.PlayOneShot(buttonClick);
+    }
+
+    public void ButtonHover()
+    {
+        effectSource.PlayOneShot(buttonHover);
     }
 }
