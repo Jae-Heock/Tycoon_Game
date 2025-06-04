@@ -8,6 +8,7 @@ TagManager:
   - Sugar
   - Table
   - Trash
+  - CustomTable
   layers:
   - Default
   - TransparentFX

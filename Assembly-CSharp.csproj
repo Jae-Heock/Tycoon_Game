@@ -102,6 +102,7 @@
     <Compile Include="Assets\1Scripts\ReceiptToggle.cs" />
     <Compile Include="Assets\1Scripts\Player.cs" />
     <Compile Include="Assets\1Scripts\SkillUIManager.cs" />
+    <Compile Include="Assets\1Scripts\CustomTable.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

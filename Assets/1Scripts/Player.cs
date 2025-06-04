@@ -90,6 +90,29 @@ public class Player : MonoBehaviour
         Move();
         UpdateItemVisibility();
 
+        
+        // CustomTable에 음식 올리기
+        if (currentZone is CustomTable customTable && Input.GetKeyDown(KeyCode.E))
+        {
+            if (!string.IsNullOrEmpty(currentFood))
+            {
+                GameObject prefab = GetFoodPrefab(currentFood);
+                if (customTable.PlaceFood(currentFood, prefab))
+                {
+                    ClearHeldFood();
+                    Debug.Log($"{currentFood}을(를) 테이블에 올렸습니다.");
+                }
+                else
+                {
+                    Debug.Log("테이블에 이미 음식이 있습니다.");
+                }
+            }
+            else
+            {
+                Debug.Log("플레이어가 들고 있는 음식이 없습니다.");
+            }
+        }
+
         bool isCookedFood = currentFood == "hotdog" || currentFood == "dalgona" || currentFood == "hottuk" || currentFood == "boung";
         bool isDalgonaCooking = isCooking;
 
