@@ -4,7 +4,7 @@ using UnityEngine;
 
 /// <summary>
 /// 쓰레기 구역을 관리하는 클래스
-/// 주기적으로 쓰레기를 생성하고, 플레이어가 E키를 눌러 정리할 수 있음
+/// 플레이어가 들고있는 음식을 버릴 수 있고, E키를 눌러 정리할 수 있음
 /// </summary>
 public class TrashZone : MonoBehaviour
 {
@@ -15,37 +15,10 @@ public class TrashZone : MonoBehaviour
 
     public Transform trashPoint;         // 쓰레기 생성 위치
     private List<GameObject> trashList = new List<GameObject>();  // 생성된 쓰레기 오브젝트 목록
-    public GameObject trashPrefab;       // 쓰레기 프리팹(단일)
 
     private void Awake()
     {
         player = Object.FindFirstObjectByType<Player>();
-
-        if (player != null)
-        {
-            StartCoroutine(SpawnTrash());
-        }
-    }
-
-    private IEnumerator SpawnTrash()
-    {
-        while (true)
-        {
-            yield return new WaitForSeconds(Random.Range(100, 200));
-
-            if (trashCount < maxTrash)
-            {
-                trashCount++;
-                HoldItem("trash");
-                Debug.Log($"쓰레기 생성: {trashCount}");
-
-                if (trashCount == maxTrash)
-                {
-                    Debug.Log("쓰레기가 너무 많습니다! 이동 속도 감소!");
-                    player.ApplySpeedPenalty(); // 이동속도 감소
-                }
-            }
-        }
     }
 
     private void Update()
@@ -58,14 +31,55 @@ public class TrashZone : MonoBehaviour
                 return;
             }
 
-            CleanTrash();
+            // 플레이어가 음식을 들고 있고, 쓰레기통이 가득 차지 않았다면
+            if (!string.IsNullOrEmpty(player.currentFood) && trashCount < maxTrash)
+            {
+                // 플레이어가 들고있는 음식을 쓰레기통에 버림
+                string foodType = player.currentFood;
+                GameObject foodToTrash = player.GetFoodPrefab(foodType);
+                if (foodToTrash != null)
+                {
+                    foodToTrash = Instantiate(foodToTrash, trashPoint);
+                    player.ClearHeldFood(); // 플레이어의 음식 제거
+                    
+                    // 쓰레기통에 음식 추가
+                    trashCount++;
+                    AddTrash(foodToTrash);
+                    Debug.Log($"음식을 버렸습니다. 현재 쓰레기: {trashCount}");
+
+                    if (trashCount == maxTrash)
+                    {
+                        Debug.Log("쓰레기통이 가득 찼습니다! E키를 눌러 비워주세요.");
+                    }
+                }
+            }
+            // 쓰레기통이 가득 찼다면 정리
+            else if (trashCount >= maxTrash)
+            {
+                CleanTrash();
+            }
         }
+    }
+
+    private void AddTrash(GameObject food)
+    {
+        if (food == null) return;
+
+        // 원형 반경 내 무작위 위치에 생성 (X,Z) + Y축으로 쌓기
+        Vector2 circle = Random.insideUnitCircle * 0.7f;
+        Vector3 offset = new Vector3(circle.x, trashList.Count * 0.3f, circle.y);
+
+        food.transform.SetParent(trashPoint);
+        food.transform.localPosition = offset;
+        food.transform.localRotation = Quaternion.Euler(0f, Random.Range(0f, 360f), 0f);
+        food.transform.localScale = Vector3.one * 3f;
+
+        trashList.Add(food);
     }
 
     public void CleanTrash()
     {
         trashCount = 0;
-        player.RemoveSpeedPenalty(); // 이동속도 복구
         Debug.Log("Cleaning Complete! 쓰레기 정리 완료!");
 
         foreach (GameObject trash in trashList)
@@ -85,26 +99,7 @@ public class TrashZone : MonoBehaviour
             trashList.RemoveAt(trashList.Count - 1);
             trashCount--;
 
-            Debug.Log("코루틴으로 쓰레기 1개 제거!");
-        }
-    }
-
-    public void HoldItem(string itemName)
-    {
-        if (itemName == "trash")
-        {
-            if (trashPrefab == null) return;
-            GameObject trash = Instantiate(trashPrefab, trashPoint);
-
-            // 원형 반경 내 무작위 위치에 생성 (X,Z) + Y축으로 쌓기
-            Vector2 circle = Random.insideUnitCircle * 0.7f;
-            Vector3 offset = new Vector3(circle.x, trashList.Count * 0.3f, circle.y); // Y축으로 쌓기
-
-            trash.transform.localPosition = offset;
-            trash.transform.localRotation = Quaternion.Euler(0f, Random.Range(0f, 360f), 0f);
-            trash.transform.localScale = Vector3.one * 60f;
-
-            trashList.Add(trash);
+            Debug.Log("쓰레기 1개 제거!");
         }
     }
 
@@ -115,7 +110,7 @@ public class TrashZone : MonoBehaviour
             player = other.GetComponent<Player>();
             isPlayerInZone = true;
             player.currentZone = this;
-            Debug.Log("쓰레기 구역에 들어왔습니다. E키를 눌러 쓰레기를 버리세요.");
+            Debug.Log("쓰레기통에 접근했습니다. E키를 눌러 음식을 버리거나 쓰레기를 정리하세요.");
         }
     }
 
@@ -129,7 +124,7 @@ public class TrashZone : MonoBehaviour
             if (player != null && player.currentZone == this)
             {
                 player.currentZone = null;
-                Debug.Log("쓰레기 구역을 나갔습니다.");
+                Debug.Log("쓰레기통에서 벗어났습니다.");
             }
         }
     }
