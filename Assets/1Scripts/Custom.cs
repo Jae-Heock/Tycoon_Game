@@ -144,6 +144,14 @@ public class Custom : MonoBehaviour
             {
                 // 성공 처리: 손님, 음식 모두 제거
                 assignedTable.ClearTable();
+                
+                // 점수 증가
+                Player player = FindFirstObjectByType<Player>();
+                if (player != null)
+                {
+                    player.Point += player.basePoint + player.bonusPoint;
+                }
+                
                 if (spawner != null)
                 {
                     spawner.OnCustomerCleared();
