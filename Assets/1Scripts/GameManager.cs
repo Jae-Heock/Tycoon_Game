@@ -38,6 +38,9 @@ public class GameManager : MonoBehaviour
     [Header("고양이 표정")]
     public GameObject happyCat;
     public GameObject sadCat;
+    [Header("나쁜 손님 UI")]
+    public BadCustomerUIManager badCustomerUI;
+
 
     private void Awake()
     {

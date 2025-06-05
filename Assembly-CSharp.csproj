@@ -104,6 +104,7 @@
     <Compile Include="Assets\1Scripts\Player.cs" />
     <Compile Include="Assets\1Scripts\SkillUIManager.cs" />
     <Compile Include="Assets\1Scripts\CustomTable.cs" />
+    <Compile Include="Assets\1Scripts\BadCustomerUIManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

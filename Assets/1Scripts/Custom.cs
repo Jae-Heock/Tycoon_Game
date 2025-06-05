@@ -12,9 +12,15 @@ public class Custom : MonoBehaviour
     private bool isBeingDelivered = false;
     private float waitTimer = 0f;
     private float maxWaitTime = 40f; // 손님 대기 시간 (초)
+    private bool isPlayerInZone = false;    // 플레이어가 구역 안에 있는지 여부
     
     private Player player;
     private string requestedFood = "";
+
+    // 나쁜 손님 관련 변수 추가
+    private int requiredSugar = 10;    // 달고나 나쁜손님에게 필요한 설탕
+    private int requiredSosage = 10;   // 핫도그 나쁜손님에게 필요한 소시지
+    private int requiredFlour = 10;    // 스턴 나쁜손님에게 필요한 밀가루
 
     public bool IsBeingDelivered => isBeingDelivered;
     public string RequestedFood => requestedFood;
@@ -75,17 +81,24 @@ public class Custom : MonoBehaviour
             transform.LookAt(lookPos);
         }
 
-        if (isBadCustomer)
-        {
-            GameManager.instance.hasBadCustomer = true;
-            GameManager.instance.badCustomer = this;
+if (isBadCustomer)
+{
+    GameManager.instance.hasBadCustomer = true;
+    GameManager.instance.badCustomer = this;
 
-            if (badType == BadType.Stun)
-            {
-                player = FindFirstObjectByType<Player>();
-                stunCoroutine = StartCoroutine(StunPlayerRoutine());
-            }
-        }
+    // UI 이미지 출력
+    if (GameManager.instance.badCustomerUI != null)
+    {
+        GameManager.instance.badCustomerUI.ShowBadCustomer((BadType)badType);
+    }
+
+    if (badType == BadType.Stun)
+    {
+        player = FindFirstObjectByType<Player>();
+        stunCoroutine = StartCoroutine(StunPlayerRoutine());
+    }
+}
+
          // 슬라이더 초기화
         if (waitCanvas != null)
             waitCanvas.enabled = false;
@@ -131,6 +144,47 @@ public class Custom : MonoBehaviour
         if (orderIconObject != null)
         {
             orderIconObject.transform.Rotate(Vector3.up * iconRotationSpeed * Time.deltaTime);
+        }
+
+        // E키를 눌렀을 때 나쁜 손님에게 자원 전달
+        if (isPlayerInZone && Input.GetKeyDown(KeyCode.E) && isBadCustomer && player != null)
+        {
+            switch (badType)
+            {
+                case BadType.Dalgona:
+                    if (player.sugarCount >= requiredSugar)
+                    {
+                        player.sugarCount -= requiredSugar;
+                        RemoveBadCustomer();
+                    }
+                    else
+                    {
+                        Debug.Log($"설탕이 부족합니다! (필요: {requiredSugar}개)");
+                    }
+                    break;
+                case BadType.Hotdog:
+                    if (player.sosageCount >= requiredSosage)
+                    {
+                        player.sosageCount -= requiredSosage;
+                        RemoveBadCustomer();
+                    }
+                    else
+                    {
+                        Debug.Log($"소시지가 부족합니다! (필요: {requiredSosage}개)");
+                    }
+                    break;
+                case BadType.Stun:
+                    if (player.flourCount >= requiredFlour)
+                    {
+                        player.flourCount -= requiredFlour;
+                        RemoveBadCustomer();
+                    }
+                    else
+                    {
+                        Debug.Log($"밀가루가 부족합니다! (필요: {requiredFlour}개)");
+                    }
+                    break;
+            }
         }
     }
 
@@ -259,12 +313,44 @@ public class Custom : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            player = other.GetComponent<Player>();
+            isPlayerInZone = true;
+            player.currentZone = this;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            isPlayerInZone = false;
+            if (player != null && player.currentZone == this)
+            {
+                player.currentZone = null;
+            }
+        }
+    }
+
     public void RemoveBadCustomer()
     {
         if (isBadCustomer)
         {
+            // 스턴 효과가 있다면 중지
+            if (badType == BadType.Stun && stunCoroutine != null)
+            {
+                StopCoroutine(stunCoroutine);
+                stunCoroutine = null;
+            }
+
+            // GameManager에서 나쁜 손님 상태 제거
             GameManager.instance.hasBadCustomer = false;
             GameManager.instance.badCustomer = null;
+
+            // 나쁜 손님 제거
             StartCoroutine(DestroyAndRespawn(false));
         }
     }
