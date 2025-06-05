@@ -36,7 +36,7 @@ public class BadCustomerUIManager : MonoBehaviour
         }
 
         panel.SetActive(true);
-        StartCoroutine(HideAfterDelay(2f));
+        StartCoroutine(HideAfterDelay(3f));
     }
 
     private IEnumerator HideAfterDelay(float delay)

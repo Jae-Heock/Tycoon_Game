@@ -52,7 +52,7 @@ public class Custom : MonoBehaviour
     [Header("Icon Rotation")]
     public float iconRotationSpeed = 100f; // 아이콘 회전 속도 (도/초)
 
-    private CustomTable assignedTable; // 손님이 배정받은 테이블
+    public CustomTable assignedTable; // 손님이 배정받은 테이블
 
     private void Start()
     {
