@@ -17,6 +17,10 @@ public class DalgonaZone : MonoBehaviour
     [SerializeField] public float makeTime = 5f;     // 기본 달고나 제작 시간
     [SerializeField] private int requiredSugar = 1;   // 필요 설탕 개수
 
+    [Header("파티클/이펙트")]
+    public GameObject dalgonaBlockParticle;
+    private bool isDalgonaBlocked = false;
+
     private void Start()
     {
         cookSlider.gameObject.SetActive(false);
@@ -60,8 +64,36 @@ public class DalgonaZone : MonoBehaviour
 
     private void Update()
     {
+        // 나쁜 손님 상태 확인
+        if (GameManager.instance != null && GameManager.instance.hasBadCustomer &&
+            GameManager.instance.badCustomer != null &&
+            GameManager.instance.badCustomer.badType == Custom.BadType.Dalgona)
+        {
+            SetDalgonaBlocked(true);
+        }
+        else
+        {
+            SetDalgonaBlocked(false);
+        }
+
+        if (isDalgonaBlocked)
+        {
+            if (isPlayerInZone && Input.GetKeyDown(KeyCode.E))
+            {
+                Debug.Log("🐔 달고나 제작이 차단되었습니다! (나쁜 손님 효과)");
+            }
+            if (dalgonaBlockParticle != null && !dalgonaBlockParticle.activeSelf)
+                dalgonaBlockParticle.SetActive(true);
+            return;
+        }
+        
         if (isPlayerInZone && Input.GetKeyDown(KeyCode.E) && !isMaking)
         {
+            if (!string.IsNullOrEmpty(player.currentFood))
+            {
+                Debug.Log("이미 음식을 들고 있어 요리를 시작할 수 없습니다!");
+                return;
+            }
             // 재료 확인 후 요리 시작
             if (player.sugarCount >= requiredSugar)
             {
@@ -124,5 +156,12 @@ public class DalgonaZone : MonoBehaviour
         Debug.Log("요리 완료!");
         isMaking = false;
         player.EndCooking();  // 요리 완료 시 EndCooking 호출
+    }
+
+    public void SetDalgonaBlocked(bool blocked)
+    {
+        isDalgonaBlocked = blocked;
+        if (dalgonaBlockParticle != null)
+            dalgonaBlockParticle.SetActive(blocked);
     }
 }

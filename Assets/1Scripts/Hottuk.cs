@@ -66,9 +66,13 @@ public class Hottuk : MonoBehaviour
     /// </summary>
     private void Update()
     {
-        
         if (isPlayerInZone && Input.GetKeyDown(KeyCode.E) && !isMaking)
         {
+            if (!string.IsNullOrEmpty(player.currentFood))
+            {
+                Debug.Log("이미 음식을 들고 있어 요리를 시작할 수 없습니다!");
+                return;
+            }
             // 재료 확인 후 요리 시작
             if (player.flourCount >= requiredFlour && player.sugarCount >= requiredSugar)
             {

@@ -9,12 +9,13 @@ using System.Collections.Generic;
 public class Player : MonoBehaviour
 {
     // 이동 관련 변수
-    public float baseMoveSpeed = 3f;     // 기본 이동 속도
+    public float baseMoveSpeed = 5f;     // 기본 이동 속도
     public float moveSpeed = 3f;         // 현재 이동 속도
     public float skillSpeed = -1f;       // 스킬로 인한 속도 변화 (기본값 -1)
 
     float hAxis;                         // 수평 입력값
     float vAxis;                         // 수직 입력값
+    bool isBorder;
 
     public bool isMove;                  // 이동 가능 여부 (true: 이동 가능 / false: 이동 불가)
     public float cookTime = 5f;          // 기본 조리 시간 5초, 스킬로 감소 가능
@@ -67,9 +68,10 @@ public class Player : MonoBehaviour
 
     [Header("# 기절")]
     public bool isStunned = false; // 기절 상태
-
+    [Header("# 이펙트")]
+    public GameObject stunEffectObject;  // 머리 위 헤롱헤롱 파티클
+    [Header("존")]
     public MonoBehaviour currentZone;  // 현재 사용 중인 존
-
     public string currentFood;  // 현재 들고 있는 음식 타입
 
     private void Awake()
@@ -79,53 +81,117 @@ public class Player : MonoBehaviour
         rigid.constraints = RigidbodyConstraints.FreezeRotation;
         isMove = true;
     }
-
+    
     private void Update()
     {
         if (isStunned) return;
 
+        StopToWall();
         Move();
         UpdateItemVisibility();
 
-        bool hasFood = !string.IsNullOrEmpty(currentFood);
-        bool isDalgonaCooking = isCooking; // 요리 중
+        
+        // CustomTable에 음식 올리기
+        if (currentZone is CustomTable customTable && Input.GetKeyDown(KeyCode.E))
+        {
+            if (!string.IsNullOrEmpty(currentFood))
+            {
+                GameObject prefab = GetFoodPrefab(currentFood);
+                if (customTable.PlaceFood(currentFood, prefab))
+                {
+                    ClearHeldFood();
+                    Debug.Log($"{currentFood}을(를) 테이블에 올렸습니다.");
+                }
+                else
+                {
+                    Debug.Log("테이블에 이미 음식이 있습니다.");
+                }
+            }
+            else
+            {
+                Debug.Log("플레이어가 들고 있는 음식이 없습니다.");
+            }
+        }
+
+        bool isCookedFood = currentFood == "hotdog" || currentFood == "dalgona" || currentFood == "hottuk" || currentFood == "boung";
+        bool isDalgonaCooking = isCooking;
 
         // PICK 애니메이션 Layer 1
-        anim.SetBool("isPick", hasFood && !isDalgonaCooking);
+        anim.SetBool("isPick", isCookedFood && !isDalgonaCooking);
 
         // Layer 1 Weight 조정
         if (isDalgonaCooking)
             anim.SetLayerWeight(1, 1f);      // 요리 중엔 1f
-        else if (hasFood)
+        else if (isCookedFood)
             anim.SetLayerWeight(1, 0.65f);   // 음식만 들고 있으면 0.65f
         else
             anim.SetLayerWeight(1, 0f);      // 아무것도 없으면 0f
     }
-
 
     /// <summary>
     /// 플레이어 이동 처리
     /// </summary>
     void Move()
     {
-        if (!isMove || isCooking) return;  // 이동 불가 상태거나 요리 중이면 리턴
+        if (!isMove || isCooking) return;
 
         // 입력값 받기
         hAxis = Input.GetAxisRaw("Horizontal");
         vAxis = Input.GetAxisRaw("Vertical");
-        moveVec = new Vector3(hAxis, 0, vAxis).normalized;
-        anim.SetBool("isWalk", moveVec != Vector3.zero);
+
+        // 카메라 기준 방향
+        Vector3 camForward = Camera.main.transform.forward;
+        Vector3 camRight = Camera.main.transform.right;
+        camForward.y = 0;
+        camRight.y = 0;
+        camForward.Normalize();
+        camRight.Normalize();
+
+        // 방향 계산
+        moveVec = (camForward * vAxis + camRight * hAxis).normalized;
+
         // 이동 적용
-        transform.position += moveVec * moveSpeed * Time.deltaTime;
+        if (!isBorder)
+        {
+            transform.position += moveVec * moveSpeed * Time.deltaTime;
+        }
+
         if (moveVec != Vector3.zero)
         {
-            transform.LookAt(transform.position + moveVec); // 회전
+            transform.LookAt(transform.position + moveVec); // 캐릭터가 이동 방향으로 회전
         }
+
+        anim.SetBool("isWalk", moveVec != Vector3.zero); // 걷기 애니메이션
+    }
+
+    void StopToWall()
+    {
+        if (moveVec == Vector3.zero)
+        {
+            isBorder = false;
+            return;
+        }
+
+        Vector3 rayStart = transform.position + Vector3.up * 0.3f + moveVec * 0.1f;
+        float radius = 0.2f;
+        float castDistance = 0.5f;
+
+        RaycastHit hit;
+        isBorder = Physics.SphereCast
+        (rayStart, radius, moveVec, out hit, castDistance, LayerMask.GetMask("Wall"), QueryTriggerInteraction.Ignore);
+        
+        Debug.DrawRay(rayStart, moveVec * castDistance, isBorder ? Color.red : Color.green);
     }
 
     public void HoldItem(string itemName)
     {
-        //anim.SetTrigger("doHold");      // HOLD 애니메이션 실행
+        // 완성된 음식이 아닐 경우 들 수 없음
+        if (itemName != "hotdog" && itemName != "dalgona" && itemName != "hottuk" && itemName != "boung")
+        {
+            Debug.Log($"'{itemName}'은 들 수 없는 재료입니다. currentFood 설정 생략.");
+            return;
+        }
+
         currentFood = itemName;
 
         switch (itemName)
@@ -250,22 +316,35 @@ public class Player : MonoBehaviour
     {
         isStunned = true;
         isMove = false;
+
+        // 🔥 이펙트 ON
+        if (stunEffectObject != null)
+            stunEffectObject.SetActive(true);
+
         Debug.Log($"플레이어가 {duration}초간 기절!");
+
         yield return new WaitForSeconds(duration);
+
         isStunned = false;
         isMove = true;
+
+        // 🔥 이펙트 OFF
+        if (stunEffectObject != null)
+            stunEffectObject.SetActive(false);
+
         Debug.Log("플레이어 기절 해제");
     }
 
+
     public GameObject GetFoodPrefab(string itemName)
     {
-    switch (itemName)
-    {
-        case "hotdog": return hotdogPrefab;
-        case "dalgona": return dalgonaPrefab;
-        case "hottuk": return hottukPrefab;
-        case "boung": return boungPrefab;
-        default: return null;
+        switch (itemName)
+        {
+            case "hotdog": return hotdogPrefab;
+            case "dalgona": return dalgonaPrefab;
+            case "hottuk": return hottukPrefab;
+            case "boung": return boungPrefab;
+            default: return null;
         }
     }
 
@@ -354,6 +433,4 @@ public class Player : MonoBehaviour
         Debug.Log("StopDalgonaAnimation 호출됨");
         anim.SetTrigger("doDal");
     }
-    
 }
-
