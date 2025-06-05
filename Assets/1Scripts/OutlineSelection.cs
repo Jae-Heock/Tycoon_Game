@@ -15,8 +15,9 @@ public class OutlineSelection : MonoBehaviour
                 outline = targetObject.AddComponent<Outline>();
             }
 
-            outline.OutlineColor = Color.red;
+            outline.OutlineColor = Color.white;
             outline.OutlineWidth = 7f;
+            outline.OutlineMode = Outline.Mode.OutlineVisible;  // 올바른 아웃라인 모드로 수정
             outline.enabled = false;
         }
     }

@@ -87,9 +87,9 @@ public class DishZone : MonoBehaviour
         {
             case "dish":
                 GameObject dish = Instantiate(dishPrefab, dishPoint);
-                dish.transform.localPosition = Vector3.zero + Vector3.up * dishList.Count * 0.5f;
+                dish.transform.localPosition = Vector3.zero + Vector3.up * dishList.Count * 0.3f;
                 dish.transform.localRotation = Quaternion.identity;
-                dish.transform.localScale = Vector3.one * 1f;
+                dish.transform.localScale = Vector3.one * 100f;
                 dishList.Add(dish);
                 break;
         }

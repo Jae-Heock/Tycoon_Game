@@ -14,12 +14,20 @@ public class Table : MonoBehaviour
     private GameObject currentFoodObject;   // 테이블 위의 음식 오브젝트
     private string currentFoodName = null;  // 음식 이름 (hotdog, dalgona 등)
 
+    public Transform pickupPoint; // Inspector에서 지정
+
+    public bool isLockedByAI = false;
+
+    public void LockTable() { isLockedByAI = true; }
+    public void UnlockTable() { isLockedByAI = false; }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
             player = other.GetComponent<Player>();
             isPlayerInZone = true;
+            player.currentZone = this;
         }
     }
 
@@ -28,7 +36,10 @@ public class Table : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             isPlayerInZone = false;
-            player = null;
+            if (player != null && player.currentZone == this)
+            {
+                player.currentZone = null;
+            }
         }
     }
 
@@ -39,12 +50,14 @@ public class Table : MonoBehaviour
         // E키: 플레이어가 음식 테이블에 놓기
         if (Input.GetKeyDown(KeyCode.E))
         {
+            player.PlayDownAnimation();
             PlaceFoodFromPlayer();
         }
 
         // F키: 플레이어가 테이블 음식 가져가기
         if (Input.GetKeyDown(KeyCode.F))
         {
+            SoundManager.instance.ButtonClick();
             TakeFoodToPlayer();
         }
     }
@@ -72,12 +85,12 @@ public class Table : MonoBehaviour
             currentFoodObject = Instantiate(prefab, point);
             currentFoodObject.transform.localPosition = Vector3.zero;
             currentFoodObject.transform.localRotation = Quaternion.identity;
-            currentFoodObject.transform.localScale = Vector3.one * 3f;
+            currentFoodObject.transform.localScale = new Vector3(0.002f, 0.01f, 0.01f);
 
             currentFoodName = foodName;
             // 손에 든 음식 제거!
             player.ClearHeldFood();
-
+            SoundManager.instance.ButtonClick();
             Debug.Log($"{foodName}을(를) 테이블에 올렸습니다.");
         }
         else
@@ -119,10 +132,24 @@ public class Table : MonoBehaviour
 
         player.HoldItem(currentFoodName);
         Destroy(currentFoodObject);
-
-        Debug.Log($"{currentFoodName}을(를) 플레이어가 가져갔습니다.");
-
         currentFoodObject = null;
         currentFoodName = null;
+
+        Debug.Log($"{currentFoodName}을(를) 플레이어가 가져갔습니다.");
+    }
+
+    public string GetCurrentFoodName()
+    {
+        return currentFoodName;
+    }
+
+    public GameObject PickupFood()
+    {
+        if (currentFoodObject == null) { isLockedByAI = false; return null; }
+        GameObject food = currentFoodObject;
+        currentFoodObject = null;
+        currentFoodName = null;
+        isLockedByAI = false;
+        return food;
     }
 }

@@ -9,6 +9,7 @@ using System.Collections;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
+    public SettingPanelController settingPanel;
 
     [Header("# Game Control")]
     public float gameTime;
@@ -41,10 +42,14 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
+                // 자동으로 Player 찾아서 연결 (안 되어 있으면)
+        if (player == null)
+            player = FindFirstObjectByType<Player>();
     }
 
     private void Start()
     {
+        SoundManager.instance.PlayGameBGM();
         // 게임 설정 초기화
         gameTime = 0;
         
@@ -67,7 +72,17 @@ public class GameManager : MonoBehaviour
         // 일시정지 처리
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            TogglePause();
+            SoundManager.instance.ButtonClick();
+            if (!settingPanel.isOpen)
+            {
+                SoundManager.instance.PauseBGM();
+                settingPanel.ShowPanel();
+            }
+            else
+            {
+                settingPanel.HidePanel();
+                SoundManager.instance.ResumeBGM();
+            }
         }
     }
 

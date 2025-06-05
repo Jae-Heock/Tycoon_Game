@@ -39,6 +39,7 @@ public class PotZone : MonoBehaviour
     {
         if (isPlayerInZone && Input.GetKeyDown(KeyCode.E))
         {
+            SoundManager.instance.PlayGetItem();
             player.potCount++;
             player.HoldItem("pot");
             Debug.Log($"팥 +1 (현재: {player.potCount})");
