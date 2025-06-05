@@ -430,15 +430,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 71612808c48150b4e9d150f5b574a442, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -1.6880091
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 71612808c48150b4e9d150f5b574a442, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.5932076
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 71612808c48150b4e9d150f5b574a442, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -17.582518
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 71612808c48150b4e9d150f5b574a442, type: 3}
       propertyPath: m_LocalRotation.w
@@ -572,7 +572,7 @@ MonoBehaviour:
   isBadCustomer: 0
   spawnPoint: {fileID: 0}
   trashPrefab: {fileID: 8416497446307305252, guid: 2c69fce69352f334691ed7cc68dddf69, type: 3}
-  orderIconObject: {fileID: 0}
+  orderIconObject: {fileID: 1585166732353821636}
   iconSpawnPoint: {fileID: 4553940600711391776}
   dalgonaIconPrefab: {fileID: 8113031875897835828, guid: 972b7607e80213c469944c76fa7f0b34, type: 3}
   hottukIconPrefab: {fileID: 3090714449135239856, guid: d5468c0cc10349d4da6e554f06daeb4c, type: 3}
