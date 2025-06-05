@@ -3,7 +3,52 @@ guid: 28d8b23ec629e064b8a1249d1e459a60
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: a3
+    second: {fileID: 2100000, guid: cc71ce505ce0a02418e6ad7f5145e006, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: body9
+    second: {fileID: 2100000, guid: 976ec08f6f7e1ea4c8b801bb6cdf0afc, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: c29
+    second: {fileID: 2100000, guid: 062deb3364b5f0540932e08e4b255f5e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: c30
+    second: {fileID: 2100000, guid: 25014488a0c100c43b165e44d992359b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: c31
+    second: {fileID: 2100000, guid: cba2edd6d7dfc6d49848e3be9700384e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: c32
+    second: {fileID: 2100000, guid: 59fb60d53393a784c965338217a038c1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: eye9
+    second: {fileID: 2100000, guid: 72ee5ed71ef70474aae087a8659a409b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: eyeliner9
+    second: {fileID: 2100000, guid: 22bc153f3deec044792e92737e852a75, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: flower2
+    second: {fileID: 2100000, guid: d055154553a94a941a1e102980563224, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -69,7 +114,7 @@ ModelImporter:
     strictVertexDataChecks: 0
   tangentSpace:
     normalSmoothAngle: 60
-    normalImportMode: 0
+    normalImportMode: 1
     tangentImportMode: 3
     normalCalculationMode: 4
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
