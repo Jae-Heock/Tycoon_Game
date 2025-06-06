@@ -25,9 +25,16 @@ public class DishZone : MonoBehaviour
     [Header("현재 접시 개수")]
     [SerializeField] public int currentDishCount;    // 현재 접시 개수
 
+    [Header("설거지 파티클")]
+    public ParticleSystem dishParticle;
+
     private void Start()
     {
         player = FindFirstObjectByType<Player>();
+        if (dishParticle != null)
+        {
+            dishParticle.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+        }
     }
 
     /// <summary>
@@ -99,9 +106,16 @@ public class DishZone : MonoBehaviour
     {
         // 플레이어가 다른 존을 사용 중인지 확인
         if (player.currentZone != null && player.currentZone != this)
-        {
+        {  
             Debug.Log("다른 존을 사용 중입니다.");
             return;
+        }
+
+        // 파티클 재생
+        if (dishParticle != null)
+        {
+            dishParticle.Play(); // 파티클 시작
+        StartCoroutine(StopDishParticleAfterDelay(3f)); // 3초 후 꺼짐
         }
 
         // 모든 접시 초기화
@@ -111,11 +125,22 @@ public class DishZone : MonoBehaviour
             Destroy(dish);
         }
         dishList.Clear();
+
         // 포인트 감소 중지
         isReducingPoints = false;
 
         Debug.Log("설거지 완료! 모든 접시가 정리되었습니다.");
     }
+
+    private IEnumerator StopDishParticleAfterDelay(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        if (dishParticle != null)
+        {
+            dishParticle.Stop();
+        }
+    }
+
 
     public void CleanOneDish()
     {

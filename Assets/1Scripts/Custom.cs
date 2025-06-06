@@ -8,14 +8,19 @@ public class Custom : MonoBehaviour
     public BadType badType = BadType.None;
 
     // ====== 상태 ======
-    private bool isPlayerInZone = false;
     private bool isRequesting = false;
     private bool isBeingDelivered = false;
     private float waitTimer = 0f;
     private float maxWaitTime = 40f; // 손님 대기 시간 (초)
+    private bool isPlayerInZone = false;    // 플레이어가 구역 안에 있는지 여부
     
     private Player player;
     private string requestedFood = "";
+
+    // 나쁜 손님 관련 변수 추가
+    private int requiredSugar = 10;    // 달고나 나쁜손님에게 필요한 설탕
+    private int requiredSosage = 10;   // 핫도그 나쁜손님에게 필요한 소시지
+    private int requiredFlour = 10;    // 스턴 나쁜손님에게 필요한 밀가루
 
     public bool IsBeingDelivered => isBeingDelivered;
     public string RequestedFood => requestedFood;
@@ -25,7 +30,12 @@ public class Custom : MonoBehaviour
     public bool isBadCustomer = false;
     public Transform spawnPoint;
 
+    // ====== 쓰레기 관련 ======
+    public GameObject trashPrefab;          // 쓰레기 프리팹
+    private GameObject currentTrash;        // 현재 생성된 쓰레기
+
     private Coroutine stunCoroutine;
+    private Coroutine tableCheckCoroutine;
     public void MarkBeingDelivered() => isBeingDelivered = true;
 
     // ======= UI 요소=======
@@ -35,20 +45,66 @@ public class Custom : MonoBehaviour
     public GameObject hottukIconPrefab;
     public GameObject hotdogIconPrefab;
     public GameObject boungIconPrefab;
+    [Header("Wait UI")]
+    public Slider waitSlider;         // 손님 대기시간 슬라이더
+    public Canvas waitCanvas;         // 슬라이더가 붙은 World Space 캔버스
+
+    [Header("Icon Rotation")]
+    public float iconRotationSpeed = 100f; // 아이콘 회전 속도 (도/초)
+
+    public CustomTable assignedTable; // 손님이 배정받은 테이블
 
     private void Start()
     {
         if (!isRequesting && !isBadCustomer)
             RequestRandomFood();
 
-        if (isBadCustomer)
+        // 가장 가까운 CustomTable 찾기
+        GameObject[] tables = GameObject.FindGameObjectsWithTag("CustomTable");
+        float minDist = float.MaxValue;
+        CustomTable closestTable = null;
+        foreach (var t in tables)
         {
-            GameManager.instance.hasBadCustomer = true;
-            GameManager.instance.badCustomer = this;
-
-            if (badType == BadType.Stun)
-                stunCoroutine = StartCoroutine(StunPlayerRoutine());
+            float dist = Vector3.Distance(transform.position, t.transform.position);
+            if (dist < minDist)
+            {
+                minDist = dist;
+                closestTable = t.GetComponent<CustomTable>();
+            }
         }
+        if (closestTable != null)
+        {
+            assignedTable = closestTable;
+            // Y축만 맞춰서 테이블 바라보기
+            Vector3 lookPos = assignedTable.transform.position;
+            lookPos.y = transform.position.y;
+            transform.LookAt(lookPos);
+        }
+
+if (isBadCustomer)
+{
+    GameManager.instance.hasBadCustomer = true;
+    GameManager.instance.badCustomer = this;
+
+    // UI 이미지 출력
+    if (GameManager.instance.badCustomerUI != null)
+    {
+        GameManager.instance.badCustomerUI.ShowBadCustomer((BadType)badType);
+    }
+
+    if (badType == BadType.Stun)
+    {
+        player = FindFirstObjectByType<Player>();
+        stunCoroutine = StartCoroutine(StunPlayerRoutine());
+    }
+}
+
+         // 슬라이더 초기화
+        if (waitCanvas != null)
+            waitCanvas.enabled = false;
+
+        if (waitSlider != null)
+            waitSlider.value = 0f;
     }
 
     private void Update()
@@ -61,27 +117,104 @@ public class Custom : MonoBehaviour
             StartCoroutine(DestroyAndRespawn(false));
         }
 
-        if (isPlayerInZone && Input.GetKeyDown(KeyCode.E)) TryDeliver();
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Player"))
+        // 테이블 위 음식 체크 (매 프레임 → 음식이 새로 올라간 경우에만 1초 후 체크)
+        if (assignedTable != null && assignedTable.HasFood())
         {
-            isPlayerInZone = true;
-            player = other.GetComponent<Player>();
+            if (tableCheckCoroutine == null)
+            {
+                tableCheckCoroutine = StartCoroutine(CheckTableFoodAfterDelay());
+            }
+        }
+        else
+        {
+            if (tableCheckCoroutine != null)
+            {
+                StopCoroutine(tableCheckCoroutine);
+                tableCheckCoroutine = null;
+            }
+        }
 
-            if (!isRequesting && !isBadCustomer)
-                RequestRandomFood();
+        if (waitCanvas != null)
+            waitCanvas.enabled = true;
+
+        if (waitSlider != null)
+            waitSlider.value = waitTimer / maxWaitTime;
+
+        // 아이콘 회전
+        if (orderIconObject != null)
+        {
+            orderIconObject.transform.Rotate(Vector3.up * iconRotationSpeed * Time.deltaTime);
+        }
+
+        // E키를 눌렀을 때 나쁜 손님에게 자원 전달
+        if (isPlayerInZone && Input.GetKeyDown(KeyCode.E) && isBadCustomer && player != null)
+        {
+            switch (badType)
+            {
+                case BadType.Dalgona:
+                    if (player.sugarCount >= requiredSugar)
+                    {
+                        player.sugarCount -= requiredSugar;
+                        RemoveBadCustomer();
+                    }
+                    else
+                    {
+                        Debug.Log($"설탕이 부족합니다! (필요: {requiredSugar}개)");
+                    }
+                    break;
+                case BadType.Hotdog:
+                    if (player.sosageCount >= requiredSosage)
+                    {
+                        player.sosageCount -= requiredSosage;
+                        RemoveBadCustomer();
+                    }
+                    else
+                    {
+                        Debug.Log($"소시지가 부족합니다! (필요: {requiredSosage}개)");
+                    }
+                    break;
+                case BadType.Stun:
+                    if (player.flourCount >= requiredFlour)
+                    {
+                        player.flourCount -= requiredFlour;
+                        RemoveBadCustomer();
+                    }
+                    else
+                    {
+                        Debug.Log($"밀가루가 부족합니다! (필요: {requiredFlour}개)");
+                    }
+                    break;
+            }
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    private IEnumerator CheckTableFoodAfterDelay()
     {
-        if (other.CompareTag("Player"))
+        yield return new WaitForSeconds(2f);
+        if (assignedTable != null && assignedTable.HasFood())
         {
-            isPlayerInZone = false;
+            string tableFood = assignedTable.GetFoodName();
+            if (tableFood == requestedFood)
+            {
+                // 성공 처리: 손님, 음식 모두 제거
+                assignedTable.ClearTable();
+                
+                // 점수 증가
+                Player player = FindFirstObjectByType<Player>();
+                if (player != null)
+                {
+                    player.Point += player.basePoint + player.bonusPoint;
+                }
+                
+                if (spawner != null)
+                {
+                    spawner.OnCustomerCleared();
+                    spawner.OnCustomerDestroyed(gameObject);
+                }
+                Destroy(gameObject);
+            }
         }
+        tableCheckCoroutine = null;
     }
 
     private void RequestRandomFood()
@@ -117,96 +250,6 @@ public class Custom : MonoBehaviour
         if (prefabToSpawn != null && iconSpawnPoint != null)
         {
             orderIconObject = Instantiate(prefabToSpawn, iconSpawnPoint.position, Quaternion.identity, iconSpawnPoint);
-        }
-    }
-
-    private void TryDeliver()
-    {
-        if (isBadCustomer)
-        {
-            switch (badType)
-            {
-                case BadType.Dalgona:
-                    if (player.sugarCount >= 10)
-                    {
-                        player.sugarCount -= 10;
-                        player.Point += 10;
-                        Debug.Log("설탕 10개를 줘서 나쁜 손님 제거!");
-                        RemoveBadCustomer();
-                    }
-                    else
-                    {
-                        Debug.Log("설탕이 부족합니다!");
-                    }
-                    return;
-                case BadType.Hotdog:
-                    if (player.sosageCount >= 10)
-                    {
-                        player.sosageCount -= 10;
-                        player.Point += 10;
-                        Debug.Log("소세지 10개를 줘서 나쁜 손님 제거!");
-                        RemoveBadCustomer();
-                    }
-                    else
-                    {
-                        Debug.Log("소세지가 부족합니다!");
-                    }
-                    return;
-                case BadType.Stun:
-                    if (player.boungCount >= 2)
-                    {
-                        player.boungCount -= 2;
-                        player.Point += 10;
-                        if (stunCoroutine != null) StopCoroutine(stunCoroutine);
-                        Debug.Log("붕어빵 2개를 줘서 나쁜 손님 제거!");
-                        RemoveBadCustomer();
-                    }
-                    else
-                    {
-                        Debug.Log("붕어빵이 부족합니다!");
-                    }
-                    return;
-            }
-        }
-
-        bool delivered = false;
-
-        switch (requestedFood)
-        {
-            case "dalgona":
-                delivered = TryGive(ref player.dalgonaCount, "달고나");
-                break;
-            case "hottuk":
-                delivered = TryGive(ref player.hottukCount, "호떡");
-                break;
-            case "hotdog":
-                delivered = TryGive(ref player.hotdogCount, "핫도그");
-                break;
-            case "boung":
-                delivered = TryGive(ref player.boungCount, "붕어빵");
-                break;
-        }
-
-        if (delivered)
-            StartCoroutine(DestroyAndRespawn(true));
-    }
-
-    private bool TryGive(ref int itemCount, string itemName)
-    {
-        if (itemCount > 0)
-        {
-            // itemCount--;
-            player.Point += player.basePoint + player.bonusPoint;
-            player.customerSuccessCount++;
-            GameManager.instance.HappyCat();
-            Debug.Log($"{itemName} 전달 성공!");
-            player.ClearHeldFood(); // ← 이 줄 추가!
-            return true;
-        }
-        else
-        {
-            Debug.Log($"{itemName} 부족!");
-            return false;
         }
     }
 
@@ -249,6 +292,12 @@ public class Custom : MonoBehaviour
             orderIconObject = null;
         }
 
+        // 손님이 사라질 때 테이블 음식도 제거
+        if (assignedTable != null)
+        {
+            assignedTable.ClearTable();
+        }
+
         yield return null;
 
         if (spawner != null)
@@ -256,7 +305,33 @@ public class Custom : MonoBehaviour
             if (success)
                 spawner.OnCustomerCleared();
 
-            spawner.RespawnCustomer(this.gameObject);
+            // 쓰레기가 있는 경우에는 새로운 손님을 생성하지 않음
+            if (currentTrash == null)
+            {
+                spawner.RespawnCustomer(this.gameObject);
+            }
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            player = other.GetComponent<Player>();
+            isPlayerInZone = true;
+            player.currentZone = this;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            isPlayerInZone = false;
+            if (player != null && player.currentZone == this)
+            {
+                player.currentZone = null;
+            }
         }
     }
 
@@ -264,8 +339,18 @@ public class Custom : MonoBehaviour
     {
         if (isBadCustomer)
         {
+            // 스턴 효과가 있다면 중지
+            if (badType == BadType.Stun && stunCoroutine != null)
+            {
+                StopCoroutine(stunCoroutine);
+                stunCoroutine = null;
+            }
+
+            // GameManager에서 나쁜 손님 상태 제거
             GameManager.instance.hasBadCustomer = false;
             GameManager.instance.badCustomer = null;
+
+            // 나쁜 손님 제거
             StartCoroutine(DestroyAndRespawn(false));
         }
     }
@@ -274,9 +359,9 @@ public class Custom : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(10f);
+            yield return new WaitForSeconds(12f);
             if (player != null)
-                player.Stun(0.5f);
+                player.Stun(2f);
         }
     }
 }

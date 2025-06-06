@@ -57,6 +57,7 @@ public class Table : MonoBehaviour
         // F키: 플레이어가 테이블 음식 가져가기
         if (Input.GetKeyDown(KeyCode.F))
         {
+            SoundManager.instance.ButtonClick();
             TakeFoodToPlayer();
         }
     }
@@ -89,7 +90,7 @@ public class Table : MonoBehaviour
             currentFoodName = foodName;
             // 손에 든 음식 제거!
             player.ClearHeldFood();
-
+            SoundManager.instance.ButtonClick();
             Debug.Log($"{foodName}을(를) 테이블에 올렸습니다.");
         }
         else

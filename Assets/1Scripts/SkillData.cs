@@ -12,7 +12,7 @@ public class SkillData : ScriptableObject
     public enum SkillType
     {
         AutoSugar,           // 자동 설탕 생성
-        AutoDalgona,         // 자동 달고나 생성
+        AutoSosage,         // 자동 소세지지 생성
         PlayerSpeed,         // 플레이어 이동 속도
         CookSpeed,           // 조리 시간 감소 - 이거는뺏음 
         AutoCleanTrash,      // 쓰레기 자동 처리
@@ -20,9 +20,7 @@ public class SkillData : ScriptableObject
         PlusPoint,           // 점수 증가
         ReduceBadCustomerChance, // 나쁜손님 등장 확률 감소
         AutoCleanDish,            // 자동 설거지
-        // 위까진 구현 성공
         AutoFlour,               // 자동 밀가루 생성
-        
     }
 
     [Header("# 기본 정보")]

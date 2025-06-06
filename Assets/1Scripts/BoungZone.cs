@@ -22,13 +22,20 @@ public class BoungZone : MonoBehaviour
     [SerializeField] private int requiredPot = 1;               // 필요 팥
     [SerializeField] private Transform boungSpawnPoint;         // 붕어빵이 생성될 위치
     [SerializeField] private GameObject boungPrefab;            // 붕어빵 프리팹
-
+    [Header("붕어빵 기계 애니메이션")]
+    public Animator boungMachineAnimator;
+    public ParticleSystem boungParticle;
+    
     public List<GameObject> boungList = new List<GameObject>(); // 생성된 붕어빵들
 
     void Start()
     {
         cookSlider.gameObject.SetActive(false);
         dishZone = FindFirstObjectByType<DishZone>();
+        if (boungParticle != null)
+        {
+            boungParticle.Stop();
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -98,6 +105,13 @@ public class BoungZone : MonoBehaviour
     private IEnumerator MakeBoungCoroutine()
     {
         isMaking = true;
+
+        // 애니메이션 시작
+        if (boungMachineAnimator != null)
+        {
+            boungMachineAnimator.SetBool("Boung", true);
+        }
+
         Debug.Log("붕어빵 제작 시작...");
         yield return new WaitForSeconds(makeTime);
 
@@ -110,6 +124,20 @@ public class BoungZone : MonoBehaviour
 
         dishZone.AddDish();
         Debug.Log("붕어빵 제작 완료!");
+
+        // 애니메이션 종료
+        if (boungMachineAnimator != null)
+        {
+            boungMachineAnimator.SetBool("Boung", false);
+        }
+
+        // 제작 완료 후 파티클 재생
+        if (boungParticle != null)
+        {
+            boungParticle.Play();
+            yield return new WaitForSeconds(2f); // 2초 동안 파티클 표시
+            boungParticle.Stop();
+        }
 
         isMaking = false;
         player.currentZone = null;
