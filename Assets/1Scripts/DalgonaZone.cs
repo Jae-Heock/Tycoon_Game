@@ -126,9 +126,9 @@ public class DalgonaZone : MonoBehaviour
         dalgonaParticle.Play();
         Debug.Log("달고나 제작 시작...");
         
-        player.PlayDalgonaAnimation();
+        player.anim.SetBool("isDal", true);
         yield return new WaitForSeconds(GetCurrentMakeTime());
-        player.StopDalgonaAnimation();
+        player.anim.SetBool("isDal", false);
 
         player.dalgonaCount++;
         player.HoldItem("dalgona");

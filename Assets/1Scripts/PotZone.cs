@@ -37,7 +37,7 @@ public class PotZone : MonoBehaviour
 
     private void Update()
     {
-        if (isPlayerInZone && Input.GetKeyDown(KeyCode.E))
+        if (isPlayerInZone && Input.GetKeyDown(KeyCode.E) && player.currentZone == this )
         {
             SoundManager.instance.PlayGetItem();
             player.potCount++;

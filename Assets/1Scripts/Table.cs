@@ -25,9 +25,13 @@ public class Table : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            player = other.GetComponent<Player>();
-            player.currentZone = this;
-            isPlayerInZone = true;
+            if (!isPlayerInZone)
+            {
+                player = other.GetComponent<Player>();
+                player.currentZone = this;
+                isPlayerInZone = true;
+                // 안내 메시지, 사운드 등
+            }
         }
     }
 
@@ -35,10 +39,14 @@ public class Table : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            isPlayerInZone = false;
-            player = other.GetComponent<Player>();
-            if (player != null && player.currentZone == this)
-                player.currentZone = null;
+            if (isPlayerInZone)
+            {
+                isPlayerInZone = false;
+                player = other.GetComponent<Player>();
+                if (player != null && player.currentZone == this)
+                    player.currentZone = null;
+                // 안내 메시지, 사운드 등
+            }
         }
     }
 

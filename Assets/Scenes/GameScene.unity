@@ -3616,7 +3616,7 @@ MonoBehaviour:
   ownedSkills: []
   skillLevel: 0
   selectedSkill: {fileID: 0}
-  deliveryAIPrefab: {fileID: 6708540696741240777, guid: 6337aae703736f440bf84c1714aefb4d, type: 3}
+  deliveryAIPrefab: {fileID: 8780936865683709951, guid: 9251c05cfe0033b47a72e8a7501a7802, type: 3}
   spawnPoints:
   - {fileID: 1670116695}
 --- !u!4 &296153148
@@ -5363,7 +5363,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -87091,7 +87091,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7ff150a27a80cad4783611bb42594c58, type: 2}
+  - {fileID: 2100000, guid: bf16f658fbbfbc7408b22f1b0d21ba4b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -128784,7 +128784,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 57e538171168228429436ed06417ec75, type: 2}
+  - {fileID: 2100000, guid: bf16f658fbbfbc7408b22f1b0d21ba4b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

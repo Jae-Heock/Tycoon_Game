@@ -126,7 +126,7 @@ public class DishZone : MonoBehaviour
                     if (cleanSlider != null)
                         cleanSlider.gameObject.SetActive(false);
 
-                    CleanOneDish();
+                    CleanDishes();
                     isCleaning = false;
 
                     // 접시 제거
