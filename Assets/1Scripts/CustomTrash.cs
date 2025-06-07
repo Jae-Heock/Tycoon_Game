@@ -40,6 +40,12 @@ public class CustomTrash : MonoBehaviour
 
                 if (holdTime >= requiredHoldTime)
                 {
+                    // 쓰레기 제거 시 CustomSpawner에 알림
+                    CustomSpawner spawner = FindFirstObjectByType<CustomSpawner>();
+                    if (spawner != null)
+                    {
+                        spawner.OnTrashCleaned(transform.position);
+                    }
                     Destroy(gameObject);
                 }
             }

@@ -205,6 +205,12 @@ if (isBadCustomer)
                 {
                     player.Point += player.basePoint + player.bonusPoint;
                 }
+
+                // 쓰레기 생성
+                if (trashPrefab != null && spawnPoint != null)
+                {
+                    currentTrash = Instantiate(trashPrefab, spawnPoint.position, Quaternion.identity);
+                }
                 
                 if (spawner != null)
                 {
