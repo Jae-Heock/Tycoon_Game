@@ -89,7 +89,7 @@ public class DalgonaZone : MonoBehaviour
             return;
         }
         
-        if (isPlayerInZone && Input.GetKeyDown(KeyCode.E) && !isMaking)
+        if (isPlayerInZone && player != null && player.currentZone == this && Input.GetKeyDown(KeyCode.E) && !isMaking)
         {
             if (!string.IsNullOrEmpty(player.currentFood))
             {

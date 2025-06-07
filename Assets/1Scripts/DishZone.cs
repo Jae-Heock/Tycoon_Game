@@ -82,7 +82,7 @@ public class DishZone : MonoBehaviour
 
     private void Update()
     {
-        if (isPlayerInZone && currentDishCount > 0 && player != null && string.IsNullOrEmpty(player.currentFood))
+        if (isPlayerInZone && player != null && player.currentZone == this && currentDishCount > 0 && string.IsNullOrEmpty(player.currentFood))
         {
             if (Input.GetKey(KeyCode.E))
             {

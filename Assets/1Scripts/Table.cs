@@ -44,20 +44,19 @@ public class Table : MonoBehaviour
 
     private void Update()
     {
-        if (!isPlayerInZone || player == null) return;
-
-        // E키: 플레이어가 음식 테이블에 놓기
-        if (Input.GetKeyDown(KeyCode.E))
+        if (isPlayerInZone && player != null && player.currentZone == this)
         {
-            player.PlayDownAnimation();
-            PlaceFoodFromPlayer();
-        }
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                player.PlayDownAnimation();
+                PlaceFoodFromPlayer();
+            }
 
-        // F키: 플레이어가 테이블 음식 가져가기
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            SoundManager.instance.ButtonClick();
-            TakeFoodToPlayer();
+            if (Input.GetKeyDown(KeyCode.F))
+            {
+                SoundManager.instance.ButtonClick();
+                TakeFoodToPlayer();
+            }
         }
     }
 

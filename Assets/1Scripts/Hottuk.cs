@@ -52,7 +52,6 @@ public class Hottuk : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             isPlayerInZone = false;
-            
             // 이 존이 현재 존이었다면 null로 설정
             if (player != null && player.currentZone == this)
             {
@@ -68,7 +67,7 @@ public class Hottuk : MonoBehaviour
     /// </summary>
     private void Update()
     {
-        if (isPlayerInZone && Input.GetKeyDown(KeyCode.E) && !isMaking)
+        if (isPlayerInZone && player != null && player.currentZone == this && Input.GetKeyDown(KeyCode.E) && !isMaking)
         {
             if (!string.IsNullOrEmpty(player.currentFood))
             {

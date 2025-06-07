@@ -40,8 +40,8 @@ public class HotdogZone : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             player = other.GetComponent<Player>();
-            isPlayerInZone = true;
             player.currentZone = this;
+            isPlayerInZone = true;
             Debug.Log("핫도그 제작 구역에 들어왔습니다. E키를 눌러 핫도그를 만드세요.");
         }
     }
@@ -51,11 +51,10 @@ public class HotdogZone : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             isPlayerInZone = false;
+            player = other.GetComponent<Player>();
             if (player != null && player.currentZone == this)
-            {
                 player.currentZone = null;
-                Debug.Log("핫도그 제작 구역을 나갔습니다.");
-            }
+            Debug.Log("핫도그 제작 구역을 나갔습니다.");
         }
     }
 
@@ -84,7 +83,7 @@ public class HotdogZone : MonoBehaviour
             return;
         }
         
-        if (isPlayerInZone && Input.GetKeyDown(KeyCode.E) && !isMaking)
+        if (isPlayerInZone && player != null && player.currentZone == this && Input.GetKeyDown(KeyCode.E) && !isMaking)
         {
             if (player.flourCount >= requiredFlour && player.sosageCount >= requiredSosage)
             {
