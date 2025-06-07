@@ -26,14 +26,23 @@ public class DishZone : MonoBehaviour
     [SerializeField] public int currentDishCount;    // 현재 접시 개수
 
     [Header("설거지 파티클")]
-    public ParticleSystem dishParticle;
+    public ParticleSystem cleanParticle;
+
+    public Slider cleanSlider; // 인스펙터에서 할당
+    public float cleanDuration = 5f;
+
+    private float cleanTimer = 0f;
+    private bool isCleaning = false;
 
     private void Start()
     {
         player = FindFirstObjectByType<Player>();
-        if (dishParticle != null)
+        if (cleanSlider != null)
+            cleanSlider.gameObject.SetActive(false);
+            
+        if (cleanParticle != null)
         {
-            dishParticle.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            cleanParticle.Stop(true);
         }
     }
 
@@ -45,6 +54,8 @@ public class DishZone : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             isPlayerInZone = true;
+            player = other.GetComponent<Player>();
+            player.currentZone = this;  // currentZone 설정
             Debug.Log("설거지 구역에 들어왔습니다. E키를 눌러 설거지를 하세요.");
         }
     }
@@ -57,16 +68,91 @@ public class DishZone : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             isPlayerInZone = false;
+             if (player != null && player.currentZone == this)
+            {
+                player.currentZone = null;
+            }
             Debug.Log("설거지 구역을 나갔습니다.");
         }
     }
 
     private void Update()
     {
-        // E키를 눌러 설거지
-        if (isPlayerInZone && Input.GetKeyDown(KeyCode.E))
+        if (isPlayerInZone && currentDishCount > 0)
         {
-            CleanDishes();
+            if (Input.GetKey(KeyCode.E))
+            {
+                // 설거지 시작
+                if (!isCleaning)
+                {
+                    isCleaning = true;
+                    cleanTimer = 0f;
+                    if (cleanSlider != null)
+                    {
+                        cleanSlider.value = 0f;
+                        cleanSlider.gameObject.SetActive(true);
+                    }
+                    if (cleanParticle != null)
+                        cleanParticle.Play();
+                    player.anim.SetBool("isClean", true);
+                    player.canMove = false;
+                }
+
+                // 진행
+                cleanTimer += Time.deltaTime;
+                if (cleanSlider != null)
+                    cleanSlider.value = cleanTimer / cleanDuration;
+
+                if (cleanTimer >= cleanDuration)
+                {
+                    // 설거지 완료
+                    player.anim.SetBool("isClean", false);
+                    player.canMove = true;
+                    if (cleanParticle != null)
+                        cleanParticle.Stop();
+                    if (cleanSlider != null)
+                        cleanSlider.gameObject.SetActive(false);
+
+                    CleanOneDish();
+                    isCleaning = false;
+                }
+            }
+            else
+            {
+                // E키를 뗐을 때 중단 및 리셋
+                if (isCleaning)
+                {
+                    isCleaning = false;
+                    cleanTimer = 0f;
+                    if (cleanSlider != null)
+                    {
+                        cleanSlider.value = 0f;
+                        cleanSlider.gameObject.SetActive(false);
+                    }
+                    if (cleanParticle != null)
+                        cleanParticle.Stop();
+                    player.anim.SetBool("isClean", false);
+                    player.canMove = true;
+                }
+            }
+        }
+        else
+        {
+            // 존을 벗어나거나 설거지할 그릇이 없으면 강제 리셋
+            if (isCleaning)
+            {
+                isCleaning = false;
+                cleanTimer = 0f;
+                if (cleanSlider != null)
+                {
+                    cleanSlider.value = 0f;
+                    cleanSlider.gameObject.SetActive(false);
+                }
+                if (cleanParticle != null)
+                    cleanParticle.Stop();
+                player.anim.SetBool("isClean", false);
+                player.canMove = true;
+            }
         }
 
         // 접시 개수에 따른 포인트 감소 처리
@@ -111,13 +197,6 @@ public class DishZone : MonoBehaviour
             return;
         }
 
-        // 파티클 재생
-        if (dishParticle != null)
-        {
-            dishParticle.Play(); // 파티클 시작
-        StartCoroutine(StopDishParticleAfterDelay(3f)); // 3초 후 꺼짐
-        }
-
         // 모든 접시 초기화
         currentDishCount = 0;
         foreach (GameObject dish in dishList)
@@ -132,25 +211,13 @@ public class DishZone : MonoBehaviour
         Debug.Log("설거지 완료! 모든 접시가 정리되었습니다.");
     }
 
-    private IEnumerator StopDishParticleAfterDelay(float seconds)
-    {
-        yield return new WaitForSeconds(seconds);
-        if (dishParticle != null)
-        {
-            dishParticle.Stop();
-        }
-    }
-
 
     public void CleanOneDish()
     {
-        if (dishList.Count > 0)
+        if (currentDishCount > 0)
         {
-            Destroy(dishList[dishList.Count - 1]);
-            dishList.RemoveAt(dishList.Count - 1);
             currentDishCount--;
-
-            Debug.Log($"자동으로 접시 1개 제거됨 (남은: {currentDishCount})");
+            Debug.Log($"설거지 완료! 남은 그릇: {currentDishCount}");
         }
     }
 
