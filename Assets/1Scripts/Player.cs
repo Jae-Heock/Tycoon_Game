@@ -73,8 +73,8 @@ public class Player : MonoBehaviour
     [Header("존")]
     public MonoBehaviour currentZone;  // 현재 사용 중인 존
     public string currentFood;  // 현재 들고 있는 음식 타입
+    public Transform handPoint;
 
-    public bool canMove = true;
     private void Awake()
     {
         anim = GetComponentInChildren<Animator>();
@@ -86,7 +86,7 @@ public class Player : MonoBehaviour
     private void Update()
     {
         if (isStunned) return;
-        if (!canMove) return;  // 이동이 불가능하면 입력 처리하지 않음
+        if (!isMove) return;  // 이동이 불가능하면 입력 처리하지 않음
 
         StopToWall();
         Move();

@@ -19,12 +19,14 @@ public class DalgonaZone : MonoBehaviour
 
     [Header("파티클/이펙트")]
     public GameObject dalgonaBlockParticle;
+    public ParticleSystem dalgonaParticle;
     private bool isDalgonaBlocked = false;
 
     private void Start()
     {
         cookSlider.gameObject.SetActive(false);
         dishZone = FindFirstObjectByType<DishZone>();
+        dalgonaParticle.Stop();
     }
 
     /// <summary>
@@ -121,6 +123,7 @@ public class DalgonaZone : MonoBehaviour
     {
         isMaking = true;
         player.isMove = false;
+        dalgonaParticle.Play();
         Debug.Log("달고나 제작 시작...");
         
         player.PlayDalgonaAnimation();
@@ -134,6 +137,7 @@ public class DalgonaZone : MonoBehaviour
 
         isMaking = false;
         player.isMove = true;
+        dalgonaParticle.Stop();
         player.EndCooking(); 
         player.currentZone = null;
     }

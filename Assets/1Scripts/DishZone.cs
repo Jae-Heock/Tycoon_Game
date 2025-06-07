@@ -15,7 +15,8 @@ public class DishZone : MonoBehaviour
 
     public Transform dishPoint;         // 접시 생성 위치치
     private List<GameObject> dishList = new List<GameObject>();  // 생성된 접시시 오브젝트 목록
-    public GameObject dishPrefab;       // 접시시 프리팹
+    public GameObject dishPrefab;       // 접시 프리팹
+    private GameObject dishInHandInstance; // 현재 손에 붙은 오브젝트
 
     [Header("접시 설정")]
     public int maxDishes = 5;              // 최대 접시 개수
@@ -33,6 +34,9 @@ public class DishZone : MonoBehaviour
 
     private float cleanTimer = 0f;
     private bool isCleaning = false;
+    private GameObject heldDishObject; // 손에 든 그릇
+
+    public Transform handPoint; // 인스펙터에서 손 위치(빈 오브젝트) 할당
 
     private void Start()
     {
@@ -78,7 +82,7 @@ public class DishZone : MonoBehaviour
 
     private void Update()
     {
-        if (isPlayerInZone && currentDishCount > 0)
+        if (isPlayerInZone && currentDishCount > 0 && player != null && string.IsNullOrEmpty(player.currentFood))
         {
             if (Input.GetKey(KeyCode.E))
             {
@@ -95,7 +99,16 @@ public class DishZone : MonoBehaviour
                     if (cleanParticle != null)
                         cleanParticle.Play();
                     player.anim.SetBool("isClean", true);
-                    player.canMove = false;
+                    player.isMove = false;
+
+                    // 손에 접시 붙이기
+                    if (dishInHandInstance == null && dishPrefab != null && player.handPoint != null)
+                    {
+                        dishInHandInstance = Instantiate(dishPrefab, player.handPoint);
+                        dishInHandInstance.transform.localPosition = Vector3.zero;
+                        dishInHandInstance.transform.localRotation = Quaternion.identity;
+                        dishInHandInstance.transform.localScale = Vector3.one * 5f;
+                    }
                 }
 
                 // 진행
@@ -107,7 +120,7 @@ public class DishZone : MonoBehaviour
                 {
                     // 설거지 완료
                     player.anim.SetBool("isClean", false);
-                    player.canMove = true;
+                    player.isMove = true;
                     if (cleanParticle != null)
                         cleanParticle.Stop();
                     if (cleanSlider != null)
@@ -115,6 +128,13 @@ public class DishZone : MonoBehaviour
 
                     CleanOneDish();
                     isCleaning = false;
+
+                    // 접시 제거
+                    if (dishInHandInstance != null)
+                    {
+                        Destroy(dishInHandInstance);
+                        dishInHandInstance = null;
+                    }
                 }
             }
             else
@@ -132,7 +152,14 @@ public class DishZone : MonoBehaviour
                     if (cleanParticle != null)
                         cleanParticle.Stop();
                     player.anim.SetBool("isClean", false);
-                    player.canMove = true;
+                    player.isMove = true;
+
+                    // 접시 제거
+                    if (dishInHandInstance != null)
+                    {
+                        Destroy(dishInHandInstance);
+                        dishInHandInstance = null;
+                    }
                 }
             }
         }
@@ -151,7 +178,14 @@ public class DishZone : MonoBehaviour
                 if (cleanParticle != null)
                     cleanParticle.Stop();
                 player.anim.SetBool("isClean", false);
-                player.canMove = true;
+                player.isMove = true;
+
+                // 접시 제거
+                if (dishInHandInstance != null)
+                {
+                    Destroy(dishInHandInstance);
+                    dishInHandInstance = null;
+                }
             }
         }
 

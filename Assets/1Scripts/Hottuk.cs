@@ -21,11 +21,13 @@ public class Hottuk : MonoBehaviour
 
     public Slider cookSlider;           // 연결된 슬라이더
 
+    public ParticleSystem hottukParticle;
     private void Start()
     {
         cookSlider.gameObject.SetActive(false);
         dishZone = FindFirstObjectByType<DishZone>();
         anim = GetComponent<Animator>();
+        hottukParticle.Stop();
     }
 
     /// <summary>
@@ -107,6 +109,7 @@ public class Hottuk : MonoBehaviour
         isMaking = true;
         Debug.Log("호떡 제작 시작...");
 
+        hottukParticle.Play();
         yield return new WaitForSeconds(makeTime);
 
         // 호떡 생성
@@ -115,6 +118,7 @@ public class Hottuk : MonoBehaviour
         dishZone.AddDish();  // 접시 추가
         Debug.Log($"호떡 제작 완료! (현재 보유: {player.hottukCount}개)");
         // 상태 초기화
+        hottukParticle.Stop();
         isMaking = false;
         player.EndCooking(); 
         player.currentZone = null;
