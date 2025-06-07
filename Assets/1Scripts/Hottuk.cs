@@ -20,6 +20,11 @@ public class Hottuk : MonoBehaviour
     [SerializeField] private int requiredSugar = 1;   // 필요 설탕 개수
 
     public Slider cookSlider;           // 연결된 슬라이더
+    
+    [Header("달고나 보이기")]
+    public GameObject hottukPrefab;
+    public Transform hottukPoint;
+    public GameObject hottukInHand;
 
     public ParticleSystem hottukParticle;
     private void Start()
@@ -107,16 +112,31 @@ public class Hottuk : MonoBehaviour
     {
         isMaking = true;
         Debug.Log("호떡 제작 시작...");
-
+        player.anim.SetBool("isDal", true);
         hottukParticle.Play();
+        // 호떡 프리팹 붙이기
+        if (hottukInHand == null && hottukPrefab != null && hottukPoint != null)
+        {
+            hottukInHand = Instantiate(hottukPrefab, hottukPoint);
+            hottukInHand.transform.localPosition = Vector3.zero;
+            hottukInHand.transform.localRotation = Quaternion.identity;
+            hottukInHand.transform.localScale = Vector3.one * 200f;
+        }
         yield return new WaitForSeconds(makeTime);
 
         // 호떡 생성
         player.hottukCount++;
         player.HoldItem("hottuk");
         dishZone.AddDish();  // 접시 추가
+        player.anim.SetBool("isDal", false);
         Debug.Log($"호떡 제작 완료! (현재 보유: {player.hottukCount}개)");
         // 상태 초기화
+
+        if(hottukInHand != null)
+        {
+            Destroy(hottukInHand);
+            hottukInHand = null;
+        }
         hottukParticle.Stop();
         isMaking = false;
         player.EndCooking(); 

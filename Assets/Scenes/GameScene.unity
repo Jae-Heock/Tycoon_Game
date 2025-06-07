@@ -17454,6 +17454,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 662055489}
   m_CullTransparentMesh: 1
+--- !u!1 &668925932
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 668925933}
+  m_Layer: 0
+  m_Name: Point
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &668925933
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 668925932}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 7.57, y: 6.42, z: -0.48}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1268534643}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &671266655
 GameObject:
   m_ObjectHideFlags: 0
@@ -37057,6 +37088,37 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetObject: {fileID: 892069450}
+--- !u!1 &1032802715
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1032802716}
+  m_Layer: 0
+  m_Name: Point
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1032802716
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1032802715}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 6.43, y: 6.6, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1075809206}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1041972507
 GameObject:
   m_ObjectHideFlags: 0
@@ -42224,6 +42286,7 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 401694319}
+  - {fileID: 1032802716}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!199 &1075809207
@@ -47064,6 +47127,9 @@ MonoBehaviour:
   requiredSugar: 3
   dalgonaBlockParticle: {fileID: 1858945302}
   dalgonaParticle: {fileID: 281532140}
+  dalgonaPrefab: {fileID: 8113031875897835828, guid: 972b7607e80213c469944c76fa7f0b34, type: 3}
+  dalgonaPoint: {fileID: 1032802716}
+  dalgonaInHand: {fileID: 0}
 --- !u!114 &1075809211
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -63298,10 +63364,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22f8216d05784184b89d965254db69ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  makeTime: 1
+  makeTime: 3
   requiredFlour: 1
   requiredSugar: 1
   cookSlider: {fileID: 848870215}
+  hottukPrefab: {fileID: 3090714449135239856, guid: d5468c0cc10349d4da6e554f06daeb4c, type: 3}
+  hottukPoint: {fileID: 668925933}
+  hottukInHand: {fileID: 0}
   hottukParticle: {fileID: 2138267883}
 --- !u!135 &1268534640
 SphereCollider:
@@ -68138,6 +68207,7 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 139188287}
+  - {fileID: 668925933}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!114 &1268534644

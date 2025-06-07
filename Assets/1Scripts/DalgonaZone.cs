@@ -22,6 +22,11 @@ public class DalgonaZone : MonoBehaviour
     public ParticleSystem dalgonaParticle;
     private bool isDalgonaBlocked = false;
 
+    [Header("달고나 보이기")]
+    public GameObject dalgonaPrefab;
+    public Transform dalgonaPoint;
+    public GameObject dalgonaInHand;
+
     private void Start()
     {
         cookSlider.gameObject.SetActive(false);
@@ -127,6 +132,14 @@ public class DalgonaZone : MonoBehaviour
         Debug.Log("달고나 제작 시작...");
         
         player.anim.SetBool("isDal", true);
+        // 달고나 프리팹 붙이기
+        if (dalgonaInHand == null && dalgonaPrefab != null && dalgonaPoint != null)
+        {
+            dalgonaInHand = Instantiate(dalgonaPrefab, dalgonaPoint);
+            dalgonaInHand.transform.localPosition = Vector3.zero;
+            dalgonaInHand.transform.localRotation = Quaternion.identity;
+            dalgonaInHand.transform.localScale = Vector3.one * 200f;
+        }
         yield return new WaitForSeconds(GetCurrentMakeTime());
         player.anim.SetBool("isDal", false);
 
@@ -134,6 +147,12 @@ public class DalgonaZone : MonoBehaviour
         player.HoldItem("dalgona");
         dishZone.AddDish();
         Debug.Log($"달고나 제작 완료! (현재 보유: {player.dalgonaCount}개)");
+
+        if (dalgonaInHand != null)
+        {
+            Destroy(dalgonaInHand);
+            dalgonaInHand = null;
+        }
 
         isMaking = false;
         player.isMove = true;
