@@ -57498,7 +57498,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseMoveSpeed: 3
-  moveSpeed: 7
+  moveSpeed: 5
   skillSpeed: -1
   isMove: 0
   cookTime: 5
