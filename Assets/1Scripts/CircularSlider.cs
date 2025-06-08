@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections;
 using UnityEngine.AI;
+using UnityEngine.Video;
 
 public class CircularSlider : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class CircularSlider : MonoBehaviour
     public float fillSpeed = 0.5f;       // 슬라이더 채워지는 속도
     public GameObject Ui;
     public string nextSceneName = "GameScene"; // 이동할 씬 이름
+    public VideoPlayer videoPlayer; // Inspector에서 할당
 
     [Range(0f, 1f)] private float value = 0f;
     private bool isFilling = false;
@@ -21,6 +23,24 @@ public class CircularSlider : MonoBehaviour
     {
         value = 0f;
         Ui.SetActive(true);
+
+        if (videoPlayer != null)
+            videoPlayer.loopPointReached += OnVideoEnd;
+    }
+
+    void OnDestroy()
+    {
+        if (videoPlayer != null)
+            videoPlayer.loopPointReached -= OnVideoEnd;
+    }
+
+    private void OnVideoEnd(VideoPlayer vp)
+    {
+        if (!isLoading)
+        {
+            isLoading = true;
+            StartCoroutine(LoadSceneCleanly());
+        }
     }
 
     void Update()
