@@ -46,7 +46,7 @@ public class CustomTable : MonoBehaviour
             player = other.GetComponent<Player>();
             isPlayerInZone = true;
             if (player != null)
-                player.currentZone = this;
+                player.EnterZone(this);
         }
     }
 
@@ -55,28 +55,17 @@ public class CustomTable : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             isPlayerInZone = false;
-            if (player != null && player.currentZone == this)
-            {
-                player.currentZone = null;
-            }
+            if (player != null)
+                player.ExitZone(this);
         }
     }
 
     private void Update()
     {
-        if (!isPlayerInZone || player == null) return;
-
-        // E키: 플레이어가 음식 테이블에 놓기
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            PlaceFoodFromPlayer();
-        }
-
-        // F키: 플레이어가 테이블 음식 가져가기
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            TakeFoodToPlayer();
-        }
+        // 아래 코드 전체 삭제
+        // if (!isPlayerInZone || player == null) return;
+        // if (player.currentZone != this) return;
+        // if (Input.GetKeyDown(KeyCode.E)) { ... }
     }
 
     private void PlaceFoodFromPlayer()
@@ -113,7 +102,7 @@ public class CustomTable : MonoBehaviour
         }
     }
 
-    private void TakeFoodToPlayer()
+    public void TakeFoodToPlayer()
     {
         if (placedFood == null)
         {

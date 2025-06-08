@@ -146,12 +146,17 @@ public class Player : MonoBehaviour
         UpdateItemVisibility();
         UpdateCurrentZone(); // 매 프레임마다 현재 존 업데이트
 
-        
-        // CustomTable에 음식 올리기
+        // CustomTable 상호작용: E키 하나로 음식 올리기/집기 모두 처리
         if (currentZone is CustomTable customTable && Input.GetKeyDown(KeyCode.E))
         {
-            if (!string.IsNullOrEmpty(currentFood))
+            if (string.IsNullOrEmpty(currentFood))
             {
+                // 손에 음식이 없으면 테이블에서 집기
+                customTable.TakeFoodToPlayer();
+            }
+            else
+            {
+                // 손에 음식이 있으면 테이블에 올리기
                 GameObject prefab = GetFoodPrefab(currentFood);
                 if (customTable.PlaceFood(currentFood, prefab))
                 {
@@ -162,10 +167,6 @@ public class Player : MonoBehaviour
                 {
                     Debug.Log("테이블에 이미 음식이 있습니다.");
                 }
-            }
-            else
-            {
-                Debug.Log("플레이어가 들고 있는 음식이 없습니다.");
             }
         }
 
