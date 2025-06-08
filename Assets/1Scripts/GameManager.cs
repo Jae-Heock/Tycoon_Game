@@ -59,8 +59,7 @@ public class GameManager : MonoBehaviour
         // UI 업데이트
         UpdateUI();
         
-        // 게임 시작
-        StartGame();
+        // StartGame(); // ← 이 줄을 주석 처리 또는 삭제
     }
 
     private void Update()

@@ -2,21 +2,25 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using UnityEngine.AI;
 
 public class CircularSlider : MonoBehaviour
 {
     [Header("🔘 설정")]
     public Image fillImage;              // Radial 타입 이미지
     public float fillSpeed = 0.5f;       // 슬라이더 채워지는 속도
+    public GameObject Ui;
     public string nextSceneName = "GameScene"; // 이동할 씬 이름
 
     [Range(0f, 1f)] private float value = 0f;
     private bool isFilling = false;
     private bool isLoading = false;
 
+
     void Start()
     {
         value = 0f;
+        Ui.SetActive(true);
     }
 
     void Update()
@@ -25,9 +29,19 @@ public class CircularSlider : MonoBehaviour
 
         // 키 입력 체크
         if (Input.GetKey(KeyCode.Space))
+        {
             isFilling = true;
+        }
         else
+        {
             isFilling = false;
+        }
+
+        if(value == 0f)
+            Ui.SetActive(true);
+        else
+            Ui.SetActive(false);
+           
 
         // 슬라이더 값 변화
         if (isFilling)

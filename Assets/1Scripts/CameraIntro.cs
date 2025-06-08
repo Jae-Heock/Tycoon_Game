@@ -94,5 +94,7 @@ public class CameraIntro : MonoBehaviour
             player.isMove = true;
 
         FindFirstObjectByType<GameManager>().StartGame();
+        FindFirstObjectByType<FollowCamera>().allowSpaceLock = true;
+
     }
 }

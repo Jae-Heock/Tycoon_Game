@@ -8,7 +8,7 @@ public class FollowCamera : MonoBehaviour
     public float sensitivity = 5f;
     public float minDistance = 3f; // 최소 줌 거리
     public float maxDistance = 20f; // 최대 줌 거리
-
+    public bool allowSpaceLock = false;     // 인트로중엔 움직임 금지지
     private float xRotation = 0f;
     private float yRotation = 45f; // 위에서 내려다보는 각도
     private bool isRotating = false;
@@ -30,7 +30,7 @@ public class FollowCamera : MonoBehaviour
         if (target == null) return;
 
         // 스페이스 키로 고정/해제
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (allowSpaceLock &&Input.GetKeyDown(KeyCode.Space))
         {
             isLocked = !isLocked;
             if (isLocked)
