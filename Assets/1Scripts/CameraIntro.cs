@@ -18,17 +18,35 @@ public class CameraIntro : MonoBehaviour
     Player player;
     public Text countdownText;
 
-    void Start()
+    void OnEnable()
     {
+        
+        StartCoroutine(WaitAndStartIntro());
+    }
+
+    private IEnumerator WaitAndStartIntro()
+    {
+        yield return null;
+        Debug.Log("✅ CameraIntro Init 시작됨");
+
+        // Player와 GameManager가 생성될 때까지 대기
+        while (FindFirstObjectByType<Player>() == null || FindFirstObjectByType<GameManager>() == null)
+            yield return null;
+
         player = FindFirstObjectByType<Player>();
         if (player != null)
             player.isMove = false;
         transform.LookAt(centerPoint);
+
+        // 기존 인트로 로직 실행
+        timer = 0f;
+        isTouring = true;
     }
 
     void Update()
     {
         if (!isTouring) return;
+        Debug.Log($"[CameraIntro] 회전 중, 시간: {timer}");
 
         timer += Time.deltaTime;
 
