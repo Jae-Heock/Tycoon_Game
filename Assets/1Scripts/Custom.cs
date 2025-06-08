@@ -81,25 +81,44 @@ public class Custom : MonoBehaviour
             transform.LookAt(lookPos);
         }
 
-if (isBadCustomer)
-{
-    GameManager.instance.hasBadCustomer = true;
-    GameManager.instance.badCustomer = this;
+        if (isBadCustomer)
+        {
+            GameManager.instance.hasBadCustomer = true;
+            GameManager.instance.badCustomer = this;
 
-    // UI 이미지 출력
-    if (GameManager.instance.badCustomerUI != null)
-    {
-        GameManager.instance.badCustomerUI.ShowBadCustomer((BadType)badType);
-    }
+            // UI 이미지 출력
+            if (GameManager.instance.badCustomerUI != null)
+            {
+                GameManager.instance.badCustomerUI.ShowBadCustomer((BadType)badType);
+            }
 
-    if (badType == BadType.Stun)
-    {
-        player = FindFirstObjectByType<Player>();
-        stunCoroutine = StartCoroutine(StunPlayerRoutine());
-    }
-}
+            // 나쁜손님 종류별 효과음 재생
+            if (SoundManager.instance != null)
+            {
+                switch (badType)
+                {
+                    case BadType.Dalgona:
+                        SoundManager.instance.PlayBadSound1();
+                        break;
+                    case BadType.Hotdog:
+                        SoundManager.instance.PlayBadSound2();
+                        break;
+                    case BadType.Stun:
+                        SoundManager.instance.PlayBadSound3();
+                        break;
+                }
+                // 5초간 배경음 재생
+                StartCoroutine(PlayBadCustomBackGroundForSeconds(3f));
+            }
 
-         // 슬라이더 초기화
+            if (badType == BadType.Stun)
+            {
+                player = FindFirstObjectByType<Player>();
+                stunCoroutine = StartCoroutine(StunPlayerRoutine());
+            }
+        }
+
+        // 슬라이더 초기화
         if (waitCanvas != null)
             waitCanvas.enabled = false;
 
@@ -369,5 +388,11 @@ if (isBadCustomer)
             if (player != null)
                 player.Stun(2f);
         }
+    }
+
+    private IEnumerator PlayBadCustomBackGroundForSeconds(float seconds)
+    {
+        SoundManager.instance.PlayBadCustomBackGround();
+        yield return new WaitForSeconds(seconds);
     }
 }

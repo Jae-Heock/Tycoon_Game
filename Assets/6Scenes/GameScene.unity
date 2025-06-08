@@ -1306,7 +1306,7 @@ MonoBehaviour:
   - {fileID: 428002659}
   - {fileID: 445820217}
   - {fileID: 1049063657}
-  badCustomerChance: 0.1
+  badCustomerChance: 0.7
 --- !u!1 &89410288
 GameObject:
   m_ObjectHideFlags: 0

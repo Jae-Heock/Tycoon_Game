@@ -471,8 +471,8 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2091608031}
   - {fileID: 1406594491}
+  - {fileID: 2091608031}
   - {fileID: 15986452}
   - {fileID: 533645087}
   - {fileID: 1296609363}
@@ -1490,6 +1490,18 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8300000, guid: a851a589c9ef86840997dfa983502f61, type: 3}
     - target: {fileID: 2332077355923533770, guid: 7416462cbdadad54bab7c5f8abe500af, type: 3}
+      propertyPath: badSound1
+      value: 
+      objectReference: {fileID: 8300000, guid: 8506ba37985e68946ba3bf3f1550f331, type: 3}
+    - target: {fileID: 2332077355923533770, guid: 7416462cbdadad54bab7c5f8abe500af, type: 3}
+      propertyPath: badSound2
+      value: 
+      objectReference: {fileID: 8300000, guid: 3e15512d64b06ab4a8a0d9330b0b062b, type: 3}
+    - target: {fileID: 2332077355923533770, guid: 7416462cbdadad54bab7c5f8abe500af, type: 3}
+      propertyPath: badSound3
+      value: 
+      objectReference: {fileID: 8300000, guid: 046e314e77eae3b488469b09fbacafe3, type: 3}
+    - target: {fileID: 2332077355923533770, guid: 7416462cbdadad54bab7c5f8abe500af, type: 3}
       propertyPath: buttonClick
       value: 
       objectReference: {fileID: 8300000, guid: b1672b9673fa99b4fb528ebdcb82c7a4, type: 3}
@@ -1497,6 +1509,14 @@ PrefabInstance:
       propertyPath: buttonHover
       value: 
       objectReference: {fileID: 8300000, guid: ecb8780fb9f397c49ad0ebffe68b319b, type: 3}
+    - target: {fileID: 2332077355923533770, guid: 7416462cbdadad54bab7c5f8abe500af, type: 3}
+      propertyPath: startHororagi
+      value: 
+      objectReference: {fileID: 8300000, guid: 51a1236842d042a4b84856404e0e4b0f, type: 3}
+    - target: {fileID: 2332077355923533770, guid: 7416462cbdadad54bab7c5f8abe500af, type: 3}
+      propertyPath: badCustomBackGround
+      value: 
+      objectReference: {fileID: 8300000, guid: 9b4777e723c2e41488097fa3f8f4363a, type: 3}
     - target: {fileID: 5623408269377858754, guid: 7416462cbdadad54bab7c5f8abe500af, type: 3}
       propertyPath: m_Name
       value: SoundManager

@@ -83,6 +83,13 @@ public class CameraIntro : MonoBehaviour
         {
             if (countdownText != null)
                 countdownText.text = texts[i];
+
+            // "시작!"일 때 효과음 재생
+            if (texts[i] == "시작!" && SoundManager.instance != null)
+            {
+                SoundManager.instance.PlayStartHororagi();
+            }
+
             yield return new WaitForSeconds(1f);
         }
 
@@ -94,6 +101,5 @@ public class CameraIntro : MonoBehaviour
 
         FindFirstObjectByType<GameManager>().StartGame();
         FindFirstObjectByType<FollowCamera>().allowSpaceLock = true;
-
     }
 }

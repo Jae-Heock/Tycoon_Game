@@ -7,7 +7,6 @@ public class CustomTable : MonoBehaviour
 
     private GameObject placedFood; // 테이블 위에 올려진 음식 오브젝트
     private string foodName;       // 테이블 위 음식 이름
-    private bool isPlayerInZone = false;
     private Player player;
 
     // 음식 올리기 시도 (성공 시 true)
@@ -44,7 +43,6 @@ public class CustomTable : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             player = other.GetComponent<Player>();
-            isPlayerInZone = true;
             if (player != null)
                 player.EnterZone(this);
         }
@@ -54,7 +52,6 @@ public class CustomTable : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            isPlayerInZone = false;
             if (player != null)
                 player.ExitZone(this);
         }
