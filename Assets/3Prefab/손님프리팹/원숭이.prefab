@@ -521,7 +521,7 @@ MonoBehaviour:
   spawner: {fileID: 0}
   isBadCustomer: 0
   spawnPoint: {fileID: 0}
-  trashPrefab: {fileID: 8416497446307305252, guid: 2c69fce69352f334691ed7cc68dddf69, type: 3}
+  trashPrefab: {fileID: 3524857297628762836, guid: 0199ffbd4b857284898d745ddbd66f8e, type: 3}
   orderIconObject: {fileID: 8423428197980106500}
   iconSpawnPoint: {fileID: 8293444704346344420}
   dalgonaIconPrefab: {fileID: 8113031875897835828, guid: 972b7607e80213c469944c76fa7f0b34, type: 3}
@@ -531,6 +531,7 @@ MonoBehaviour:
   waitSlider: {fileID: 6199650277094811063}
   waitCanvas: {fileID: 5938621985696465514}
   iconRotationSpeed: 100
+  assignedTable: {fileID: 0}
 --- !u!136 &5530246726223387001
 CapsuleCollider:
   m_ObjectHideFlags: 0

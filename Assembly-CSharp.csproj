@@ -76,6 +76,7 @@
     <Compile Include="Assets\1Scripts\Custom.cs" />
     <Compile Include="Assets\1Scripts\HotdogZone.cs" />
     <Compile Include="Assets\1Scripts\FollowCamera.cs" />
+    <Compile Include="Assets\1Scripts\CircularSlider.cs" />
     <Compile Include="Assets\1Scripts\Hud.cs" />
     <Compile Include="Assets\1Scripts\VolumeSliderController.cs" />
     <Compile Include="Assets\1Scripts\TrashZone.cs" />

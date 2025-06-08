@@ -24,6 +24,7 @@ public class HotdogZone : MonoBehaviour
     [Header("파티클/이펙트")]
     public GameObject hotdogBlockParticle;
     private bool isHotdogBlocked = false;
+    public ParticleSystem hotdogParticle;
 
     public List<GameObject> hotdogList = new List<GameObject>(); // 생성된 핫도그들
 
@@ -31,6 +32,7 @@ public class HotdogZone : MonoBehaviour
     {
         cookSlider.gameObject.SetActive(false);
         dishZone = FindFirstObjectByType<DishZone>();
+        hotdogParticle.Stop();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -38,8 +40,8 @@ public class HotdogZone : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             player = other.GetComponent<Player>();
-            isPlayerInZone = true;
             player.currentZone = this;
+            isPlayerInZone = true;
             Debug.Log("핫도그 제작 구역에 들어왔습니다. E키를 눌러 핫도그를 만드세요.");
         }
     }
@@ -49,11 +51,10 @@ public class HotdogZone : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             isPlayerInZone = false;
+            player = other.GetComponent<Player>();
             if (player != null && player.currentZone == this)
-            {
                 player.currentZone = null;
-                Debug.Log("핫도그 제작 구역을 나갔습니다.");
-            }
+            Debug.Log("핫도그 제작 구역을 나갔습니다.");
         }
     }
 
@@ -82,7 +83,7 @@ public class HotdogZone : MonoBehaviour
             return;
         }
         
-        if (isPlayerInZone && Input.GetKeyDown(KeyCode.E) && !isMaking)
+        if (isPlayerInZone && player != null && player.currentZone == this && Input.GetKeyDown(KeyCode.E) && !isMaking)
         {
             if (player.flourCount >= requiredFlour && player.sosageCount >= requiredSosage)
             {
@@ -121,6 +122,7 @@ public class HotdogZone : MonoBehaviour
         isMaking = true;
         SoundManager.instance.PlayFryer();
         Debug.Log("핫도그 제작 시작...");
+        hotdogParticle.Play();
         yield return new WaitForSeconds(makeTime);
 
         // 핫도그 프리팹 생성 위치 계산
@@ -132,6 +134,7 @@ public class HotdogZone : MonoBehaviour
         SoundManager.instance.StopFryer();
         Debug.Log("핫도그 제작 완료!");
         SoundManager.instance.FryerFinish();
+        hotdogParticle.Stop();
         isMaking = false;
         player.currentZone = null;
     }

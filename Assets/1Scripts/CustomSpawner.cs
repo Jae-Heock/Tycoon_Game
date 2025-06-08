@@ -14,10 +14,14 @@ public class CustomSpawner : MonoBehaviour
     private HashSet<Transform> occupiedSpawnPoints = new HashSet<Transform>(); // 점유된 스폰 포인트
     private Dictionary<GameObject, Transform> customerSpawnPoints = new Dictionary<GameObject, Transform>(); // 손님과 스폰 포인트 매핑
     private Dictionary<Transform, float> spawnPointCooldowns = new Dictionary<Transform, float>(); // 스폰 포인트 쿨다운 관리
+    private float badCustomerEnableTime = 20f; // 20초 후부터 나쁜손님 등장
+    private float normalCustomerEnableTime = 10f; // 10초 후부터 일반손님 등장
+    private float gameStartTime;
 
     private void Start()
     {
         availableSpawnPoints.AddRange(spawnPoints);
+        gameStartTime = Time.time;
         StartCoroutine(SpawnLoop());
         StartCoroutine(UpdateCooldowns()); // 쿨다운 업데이트 시작
     }
@@ -111,7 +115,19 @@ public class CustomSpawner : MonoBehaviour
         // 랜덤 선택
         Transform selectedSpawnPoint = validSpawnPoints[Random.Range(0, validSpawnPoints.Count)];
 
-        bool spawnBad = !GameManager.instance.hasBadCustomer && Random.value < badCustomerChance;
+        bool canSpawnBad = (Time.time - gameStartTime) >= badCustomerEnableTime;
+        bool canSpawnNormal = (Time.time - gameStartTime) >= normalCustomerEnableTime;
+
+        bool spawnBad = false;
+        if (canSpawnBad && !GameManager.instance.hasBadCustomer && Random.value < badCustomerChance)
+        {
+            spawnBad = true;
+        }
+        else if (!canSpawnNormal)
+        {
+            // 아직 일반손님 등장 시간 전이면, 손님을 스폰하지 않음
+            return;
+        }
 
         GameObject prefabToSpawn = spawnBad ?
             badCustomerPrefabs[Random.Range(0, badCustomerPrefabs.Length)] :

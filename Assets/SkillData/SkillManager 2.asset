@@ -16,9 +16,9 @@ MonoBehaviour:
   skillId: 2
   skillName: "\uB9C8\uAC00\uC9C4\uD589"
   skillDesc: "{0} \uB85C \uC2A4\uD53C\uB4DC \uC99D\uAC00"
-  skillIcon: {fileID: 21300000, guid: 1cc71c98ab59f0e4685f46027d323233, type: 3}
+  skillIcon: {fileID: 21300000, guid: 55d45139caae227488441e8e86f7f4d6, type: 3}
   values:
-  - 5
-  - 6
   - 7
+  - 8
+  - 9
   counts: 0000000000000000000000000000000000000000

@@ -59,8 +59,7 @@ public class GameManager : MonoBehaviour
         // UI 업데이트
         UpdateUI();
         
-        // 게임 시작
-        StartGame();
+        // StartGame(); // ← 이 줄을 주석 처리 또는 삭제
     }
 
     private void Update()
@@ -116,6 +115,10 @@ public class GameManager : MonoBehaviour
         // 게임 오버 UI 표시
         if (gameOverPanel != null)
             gameOverPanel.SetActive(true);
+
+        // 플레이어 이동 멈춤
+        if (player != null)
+            player.isMove = false; // 또는 player.canMove = false; (사용하는 변수에 따라)
     }
 
     public void TogglePause()

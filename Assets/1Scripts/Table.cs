@@ -25,9 +25,13 @@ public class Table : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            player = other.GetComponent<Player>();
-            isPlayerInZone = true;
-            player.currentZone = this;
+            if (!isPlayerInZone)
+            {
+                player = other.GetComponent<Player>();
+                player.currentZone = this;
+                isPlayerInZone = true;
+                // 안내 메시지, 사운드 등
+            }
         }
     }
 
@@ -35,30 +39,32 @@ public class Table : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            isPlayerInZone = false;
-            if (player != null && player.currentZone == this)
+            if (isPlayerInZone)
             {
-                player.currentZone = null;
+                isPlayerInZone = false;
+                player = other.GetComponent<Player>();
+                if (player != null && player.currentZone == this)
+                    player.currentZone = null;
+                // 안내 메시지, 사운드 등
             }
         }
     }
 
     private void Update()
     {
-        if (!isPlayerInZone || player == null) return;
-
-        // E키: 플레이어가 음식 테이블에 놓기
-        if (Input.GetKeyDown(KeyCode.E))
+        if (isPlayerInZone && player != null && player.currentZone == this)
         {
-            player.PlayDownAnimation();
-            PlaceFoodFromPlayer();
-        }
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                player.PlayDownAnimation();
+                PlaceFoodFromPlayer();
+            }
 
-        // F키: 플레이어가 테이블 음식 가져가기
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            SoundManager.instance.ButtonClick();
-            TakeFoodToPlayer();
+            if (Input.GetKeyDown(KeyCode.F))
+            {
+                SoundManager.instance.ButtonClick();
+                TakeFoodToPlayer();
+            }
         }
     }
 
@@ -85,7 +91,7 @@ public class Table : MonoBehaviour
             currentFoodObject = Instantiate(prefab, point);
             currentFoodObject.transform.localPosition = Vector3.zero;
             currentFoodObject.transform.localRotation = Quaternion.identity;
-            currentFoodObject.transform.localScale = new Vector3(0.002f, 0.01f, 0.01f);
+            currentFoodObject.transform.localScale = new Vector3(0.0017f, 0.007f, 0.008f);
 
             currentFoodName = foodName;
             // 손에 든 음식 제거!
