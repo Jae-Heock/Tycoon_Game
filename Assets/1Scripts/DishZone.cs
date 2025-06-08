@@ -59,7 +59,7 @@ public class DishZone : MonoBehaviour
         {
             isPlayerInZone = true;
             player = other.GetComponent<Player>();
-            player.currentZone = this;  // currentZone 설정
+            player.EnterZone(this);
             Debug.Log("설거지 구역에 들어왔습니다. E키를 눌러 설거지를 하세요.");
         }
     }
@@ -72,9 +72,9 @@ public class DishZone : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             isPlayerInZone = false;
-             if (player != null && player.currentZone == this)
+            if (player != null)
             {
-                player.currentZone = null;
+                player.ExitZone(this);
             }
             Debug.Log("설거지 구역을 나갔습니다.");
         }

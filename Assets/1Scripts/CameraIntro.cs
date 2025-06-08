@@ -46,7 +46,6 @@ public class CameraIntro : MonoBehaviour
     void Update()
     {
         if (!isTouring) return;
-        Debug.Log($"[CameraIntro] 회전 중, 시간: {timer}");
 
         timer += Time.deltaTime;
 
@@ -79,7 +78,7 @@ public class CameraIntro : MonoBehaviour
         if (player != null)
             player.isMove = false;
 
-        string[] texts = { "3", "2", "1", "Start!" };
+        string[] texts = { "3", "2", "1", "시작!" };
         for (int i = 0; i < texts.Length; i++)
         {
             if (countdownText != null)

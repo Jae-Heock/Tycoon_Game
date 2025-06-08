@@ -49,7 +49,7 @@ public class DalgonaZone : MonoBehaviour
         {
             player = other.GetComponent<Player>();
             isPlayerInZone = true;
-            player.currentZone = this;
+            player.EnterZone(this);
             Debug.Log("달고나 제작 구역에 들어왔습니다. E키를 눌러 달고나를 만드세요.");
         }
     }
@@ -59,13 +59,11 @@ public class DalgonaZone : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             isPlayerInZone = false;
-            
-            // 이 존이 현재 존이었다면 null로 설정
-            if (player != null && player.currentZone == this)
+            if (player != null)
             {
-                player.currentZone = null;
-                Debug.Log("달고나 제작 구역을 나갔습니다.");
+                player.ExitZone(this);
             }
+            Debug.Log("달고나 제작 구역을 나갔습니다.");
         }
     }
 

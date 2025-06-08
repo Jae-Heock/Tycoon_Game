@@ -28,9 +28,8 @@ public class Table : MonoBehaviour
             if (!isPlayerInZone)
             {
                 player = other.GetComponent<Player>();
-                player.currentZone = this;
+                player.EnterZone(this);
                 isPlayerInZone = true;
-                // 안내 메시지, 사운드 등
             }
         }
     }
@@ -42,10 +41,10 @@ public class Table : MonoBehaviour
             if (isPlayerInZone)
             {
                 isPlayerInZone = false;
-                player = other.GetComponent<Player>();
-                if (player != null && player.currentZone == this)
-                    player.currentZone = null;
-                // 안내 메시지, 사운드 등
+                if (player != null)
+                {
+                    player.ExitZone(this);
+                }
             }
         }
     }
@@ -56,14 +55,18 @@ public class Table : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.E))
             {
-                player.PlayDownAnimation();
-                PlaceFoodFromPlayer();
-            }
-
-            if (Input.GetKeyDown(KeyCode.F))
-            {
-                SoundManager.instance.ButtonClick();
-                TakeFoodToPlayer();
+                if (currentFoodObject == null)
+                {
+                    // 테이블이 비어있으면 음식 놓기
+                    player.PlayDownAnimation();
+                    PlaceFoodFromPlayer();
+                }
+                else
+                {
+                    // 테이블에 음식이 있으면 음식 들기
+                    SoundManager.instance.ButtonClick();
+                    TakeFoodToPlayer();
+                }
             }
         }
     }

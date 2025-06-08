@@ -75,12 +75,65 @@ public class Player : MonoBehaviour
     public string currentFood;  // 현재 들고 있는 음식 타입
     public Transform handPoint;
 
+    private List<MonoBehaviour> zonesInRange = new List<MonoBehaviour>(); // 플레이어가 감지한 모든 존
+
     private void Awake()
     {
         anim = GetComponentInChildren<Animator>();
         rigid = GetComponent<Rigidbody>();
         rigid.constraints = RigidbodyConstraints.FreezeRotation;
         isMove = true;
+    }
+
+    // 존 진입 처리
+    public void EnterZone(MonoBehaviour zone)
+    {
+        if (!zonesInRange.Contains(zone))
+        {
+            zonesInRange.Add(zone);
+            UpdateCurrentZone();
+        }
+    }
+
+    // 존 이탈 처리
+    public void ExitZone(MonoBehaviour zone)
+    {
+        if (zonesInRange.Contains(zone))
+        {
+            zonesInRange.Remove(zone);
+            if (currentZone == zone)
+            {
+                currentZone = null;
+            }
+            UpdateCurrentZone();
+        }
+    }
+
+    // 현재 존 업데이트
+    private void UpdateCurrentZone()
+    {
+        if (zonesInRange.Count > 0)
+        {
+            // 가장 가까운 존을 현재 존으로 설정
+            MonoBehaviour closestZone = zonesInRange[0];
+            float closestDistance = float.MaxValue;
+
+            foreach (MonoBehaviour zone in zonesInRange)
+            {
+                float distance = Vector3.Distance(transform.position, zone.transform.position);
+                if (distance < closestDistance)
+                {
+                    closestDistance = distance;
+                    closestZone = zone;
+                }
+            }
+
+            currentZone = closestZone;
+        }
+        else
+        {
+            currentZone = null;
+        }
     }
 
     private void Update()
@@ -91,6 +144,7 @@ public class Player : MonoBehaviour
         StopToWall();
         Move();
         UpdateItemVisibility();
+        UpdateCurrentZone(); // 매 프레임마다 현재 존 업데이트
 
         
         // CustomTable에 음식 올리기

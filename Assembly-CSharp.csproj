@@ -102,8 +102,8 @@
     <Compile Include="Assets\1Scripts\LevelUp.cs" />
     <Compile Include="Assets\1Scripts\CustomSpawner.cs" />
     <Compile Include="Assets\1Scripts\ReceiptToggle.cs" />
-    <Compile Include="Assets\1Scripts\VideoVolumeController.cs" />
     <Compile Include="Assets\1Scripts\Player.cs" />
+    <Compile Include="Assets\1Scripts\TitleSceneInit.cs" />
     <Compile Include="Assets\1Scripts\SkillUIManager.cs" />
     <Compile Include="Assets\1Scripts\CustomTable.cs" />
     <Compile Include="Assets\1Scripts\BadCustomerUIManager.cs" />

@@ -17,7 +17,7 @@ public class HotdogCollectZone : MonoBehaviour
         {
             player = other.GetComponent<Player>();
             isPlayerInZone = true;
-            player.currentZone = this;
+            player.EnterZone(this);
             Debug.Log("핫도그 수집 구역에 들어왔습니다. Q키를 눌러 핫도그를 집으세요.");
         }
     }
@@ -27,17 +27,17 @@ public class HotdogCollectZone : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             isPlayerInZone = false;
-            if (player != null && player.currentZone == this)
+            if (player != null)
             {
-                player.currentZone = null;
-                Debug.Log("핫도그 수집 구역을 나갔습니다.");
+                player.ExitZone(this);
             }
+            Debug.Log("핫도그 수집 구역을 나갔습니다.");
         }
     }
 
     private void Update()
     {
-        if (isPlayerInZone && Input.GetKeyDown(KeyCode.Q))
+        if (isPlayerInZone && player != null && player.currentZone == this && Input.GetKeyDown(KeyCode.E))
         {
             if (hotdogZone != null && hotdogZone.hotdogList.Count > 0)
             {
