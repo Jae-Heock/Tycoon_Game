@@ -8,10 +8,10 @@ public class Custom : MonoBehaviour
     public BadType badType = BadType.None;
 
     // ====== 상태 ======
+    public float waitTimer = 0f;
+    public float maxWaitTime = 40f; // 손님 대기 시간 (초)
     private bool isRequesting = false;
     private bool isBeingDelivered = false;
-    private float waitTimer = 0f;
-    private float maxWaitTime = 40f; // 손님 대기 시간 (초)
     private bool isPlayerInZone = false;    // 플레이어가 구역 안에 있는지 여부
     
     private Player player;
@@ -124,6 +124,8 @@ public class Custom : MonoBehaviour
 
         if (waitSlider != null)
             waitSlider.value = 0f;
+
+        OrderListManager.Instance?.RegisterCustomer(this);
     }
 
     private void Update()
@@ -278,7 +280,7 @@ public class Custom : MonoBehaviour
                     break;
             }
         }
-
+        OrderListManager.Instance?.UpdateOrderList();
         // 생성
         if (prefabToSpawn != null && iconSpawnPoint != null)
         {
@@ -314,6 +316,8 @@ public class Custom : MonoBehaviour
         {
             spawner.OnCustomerDestroyed(gameObject);
         }
+
+        OrderListManager.Instance?.UnregisterCustomer(this);
     }
 
     private IEnumerator DestroyAndRespawn(bool success)
@@ -348,6 +352,10 @@ public class Custom : MonoBehaviour
                 spawner.RespawnCustomer(this.gameObject);
             }
         }
+
+        // 주문 목록 갱신
+        if (OrderListManager.Instance != null)
+            OrderListManager.Instance.UpdateOrderList();
     }
 
     private void OnTriggerEnter(Collider other)
