@@ -152,6 +152,7 @@ public class Player : MonoBehaviour
             if (string.IsNullOrEmpty(currentFood))
             {
                 // 손에 음식이 없으면 테이블에서 집기
+                SoundManager.instance.ButtonClick();
                 customTable.TakeFoodToPlayer();
             }
             else
@@ -160,6 +161,7 @@ public class Player : MonoBehaviour
                 GameObject prefab = GetFoodPrefab(currentFood);
                 if (customTable.PlaceFood(currentFood, prefab))
                 {
+                    SoundManager.instance.ButtonClick();
                     ClearHeldFood();
                     Debug.Log($"{currentFood}을(를) 테이블에 올렸습니다.");
                 }

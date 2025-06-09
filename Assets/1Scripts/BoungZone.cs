@@ -106,7 +106,7 @@ public class BoungZone : MonoBehaviour
     private IEnumerator MakeBoungCoroutine()
     {
         isMaking = true;
-
+        SoundManager.instance.PlayBoungIng();
         // 애니메이션 시작
         if (boungMachineAnimator != null)
         {
@@ -115,7 +115,6 @@ public class BoungZone : MonoBehaviour
 
         Debug.Log("붕어빵 제작 시작...");
         yield return new WaitForSeconds(makeTime);
-
         // 붕어빵 프리팹 생성 위치 계산
         int index = boungList.Count;
         Vector3 spawnPos = boungSpawnPoint.position + Vector3.up * (index * 0.5f);
@@ -123,9 +122,8 @@ public class BoungZone : MonoBehaviour
         GameObject newBoung = Instantiate(boungPrefab, spawnPos, Quaternion.identity);
         boungList.Add(newBoung);
 
-        dishZone.AddDish();
         Debug.Log("붕어빵 제작 완료!");
-
+        SoundManager.instance.PlayBoungEnd();
         // 애니메이션 종료
         if (boungMachineAnimator != null)
         {

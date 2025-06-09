@@ -108,7 +108,7 @@ public class Custom : MonoBehaviour
                         break;
                 }
                 // 5초간 배경음 재생
-                StartCoroutine(PlayBadCustomBackGroundForSeconds(3f));
+                StartCoroutine(PlayBadCustomBackGroundForSeconds());
             }
 
             if (badType == BadType.Stun)
@@ -217,12 +217,20 @@ public class Custom : MonoBehaviour
             {
                 // 성공 처리: 손님, 음식 모두 제거
                 assignedTable.ClearTable();
+                SoundManager.instance.PlaySuccess();
                 
                 // 점수 증가
                 Player player = FindFirstObjectByType<Player>();
                 if (player != null)
                 {
                     player.Point += player.basePoint + player.bonusPoint;
+                }
+
+                // 접시 추가
+                DishZone dishZone = FindFirstObjectByType<DishZone>();
+                if (dishZone != null)
+                {
+                    dishZone.AddDish();
                 }
 
                 // 쓰레기 생성
@@ -311,6 +319,10 @@ public class Custom : MonoBehaviour
     private IEnumerator DestroyAndRespawn(bool success)
     {
         isRequesting = false;
+        if (success)
+        {
+            SoundManager.instance.PlaySuccess();
+        }
         if (orderIconObject != null)
         {
             Destroy(orderIconObject);
@@ -390,9 +402,9 @@ public class Custom : MonoBehaviour
         }
     }
 
-    private IEnumerator PlayBadCustomBackGroundForSeconds(float seconds)
+    private IEnumerator PlayBadCustomBackGroundForSeconds()
     {
         SoundManager.instance.PlayBadCustomBackGround();
-        yield return new WaitForSeconds(seconds);
+        yield return new WaitForSeconds(3f);
     }
 }

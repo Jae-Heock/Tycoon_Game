@@ -111,6 +111,7 @@ public class Hottuk : MonoBehaviour
     {
         isMaking = true;
         Debug.Log("호떡 제작 시작...");
+        SoundManager.instance.PlayHottuk();
         player.anim.SetBool("isDal", true);
         hottukParticle.Play();
         // 호떡 프리팹 붙이기
@@ -125,9 +126,8 @@ public class Hottuk : MonoBehaviour
 
         // 호떡 생성
         player.hottukCount++;
-        player.HoldItem("hottuk");
-        dishZone.AddDish();  // 접시 추가
         player.anim.SetBool("isDal", false);
+        player.HoldItem("hottuk");
         Debug.Log($"호떡 제작 완료! (현재 보유: {player.hottukCount}개)");
         // 상태 초기화
 

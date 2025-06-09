@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using UnityEngine;
+using System.Collections;
 
 /// <summary>
 /// 게임 전반의 사운드를 관리하는 매니저 클래스 (싱글턴 방식)
@@ -10,30 +11,37 @@ public class SoundManager : MonoBehaviour
     public static SoundManager instance; // 싱글턴 인스턴스
 
     public AudioSource bgmSource;    // 배경음(BGM) 재생용
-    public AudioSource effectSource; // 효과음 재생용
-    public AudioSource fryerSource;  // 조리기(Fryer) 전용 사운드 재생용
+    public AudioSource effectSource; // 일반 효과음 재생용
+    public AudioSource dalgonaSource; // 달고나 소리용
+    public AudioSource hottukSource;  // 호떡 소리용
+    public AudioSource fryerSource;   // 프라이어 소리용
+    public AudioSource boungSource;   // 붕어빵 소리용
+    public AudioSource cleanSource;   // 설거지 소리용
 
     [Header("BGM")]
     public AudioClip titleBGM;       // 타이틀 화면 BGM
     public AudioClip gameBGM;        // 게임 화면 BGM
-    public AudioClip fryerClip;      // 조리기에서 나오는 지속음
 
     [Header("Effect")]
-    public AudioClip buttonClick;    // 버튼 클릭 효과음
-    public AudioClip buttonHover;    // 버튼 호버 효과음
+    public AudioClip buttonClick;    // 버튼 클릭 효과음 -
+    public AudioClip buttonHover;    // 버튼 호버 효과음 - 타이틀씬
     public AudioClip getItem;        // 아이템 획득 효과음
-    public AudioClip fryerFinish;    // 조리 완료 효과음
+
+    public AudioClip fryer;         // 프라이어 소리
+    public AudioClip boungIng;      // 붕어빵 만들때 나는소리 - 2초만 
+    public AudioClip boungEnd;     // 붕어빵 다 만들었을때 나는소리 
+    public AudioClip dalgona;      // 달고나 소리
+    public AudioClip hottuk;      // 호떡 소리
+
+    public AudioClip clean;         // 설거지소리
 
     public AudioClip badSound1;      // 나쁜손님 소리1
     public AudioClip badSound2;      // 나쁜손님 소리2
     public AudioClip badSound3;      // 나쁜손님 소리3
-
     public AudioClip startHororagi; // 게임씬 시작 호루라기 
-
     public AudioClip badCustomBackGround; // 나쁜손님 배경음
 
-
-
+    public AudioClip success; // 성공 소리 
 
 
     [Range(0f, 1f)]
@@ -152,24 +160,14 @@ public class SoundManager : MonoBehaviour
     /// </summary>
     public void PlayFryer()
     {
-        fryerSource.clip = fryerClip;
-        fryerSource.Play();
+        fryerSource.PlayOneShot(fryer, 0.7f);
+        StartCoroutine(StopFryer());
     }
 
-    /// <summary>
-    /// 프라이어 소리 정지
-    /// </summary>
-    public void StopFryer()
+    public IEnumerator StopFryer()
     {
-        fryerSource.Stop(); // fryerSource만 정지
-    }
-
-    /// <summary>
-    /// 프라이어 요리 완료 사운드 재생
-    /// </summary>
-    public void FryerFinish()
-    {
-        effectSource.PlayOneShot(fryerFinish);
+        yield return new WaitForSeconds(5f);
+        fryerSource.Stop();
     }
 
     /// <summary>
@@ -193,17 +191,17 @@ public class SoundManager : MonoBehaviour
     /// </summary>
     public void PlayBadSound1()
     {
-        effectSource.PlayOneShot(badSound1);
+        effectSource.PlayOneShot(badSound1, 1.5f);
     }
 
     public void PlayBadSound2()
     {
-        effectSource.PlayOneShot(badSound2);
+        effectSource.PlayOneShot(badSound2, 1.5f);
     }
 
     public void PlayBadSound3()
     {
-        effectSource.PlayOneShot(badSound3);
+        effectSource.PlayOneShot(badSound3, 1.5f);
     }
 
     // 게임씬 시작 호루라기 재생
@@ -216,5 +214,76 @@ public class SoundManager : MonoBehaviour
     public void PlayBadCustomBackGround()
     {
         effectSource.PlayOneShot(badCustomBackGround, 0.7f);
+        StartCoroutine(StopBadCustomBackGroundAfterDelay(3f));
     }
+
+    private IEnumerator StopBadCustomBackGroundAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        effectSource.Stop();
+    }
+
+    // 붕어빵 소리
+    public void PlayBoungIng()
+    {
+        boungSource.PlayOneShot(boungIng, 0.7f);
+        StartCoroutine(StopBoungIng());
+    }
+
+    public IEnumerator StopBoungIng()
+    {
+        yield return new WaitForSeconds(3f);
+        boungSource.Stop();
+    }
+
+    // 붕어빵 다 만들었을때 소리
+    public void PlayBoungEnd()
+    {
+        effectSource.PlayOneShot(boungEnd);
+    }
+
+    // 설거지 소리
+    public void PlayClean()
+    {
+        cleanSource.PlayOneShot(clean, 0.7f);
+        StartCoroutine(StopClean());
+    }
+
+    public IEnumerator StopClean()
+    {
+        yield return new WaitForSeconds(5f);
+        cleanSource.Stop();
+    }
+
+    // 달고나 소리
+    public void PlayDalgona()
+    {
+        dalgonaSource.PlayOneShot(dalgona, 0.7f);
+        StartCoroutine(StopDalgona());
+    }
+
+    public IEnumerator StopDalgona()
+    {
+        yield return new WaitForSeconds(4f);
+        dalgonaSource.Stop();
+    }
+
+    // 호떡 소리
+    public void PlayHottuk()
+    {
+        hottukSource.PlayOneShot(hottuk, 0.7f);
+        StartCoroutine(StopHottuk());
+    }
+
+    public IEnumerator StopHottuk()
+    {
+        yield return new WaitForSeconds(3f);
+        hottukSource.Stop();
+    }
+
+    public void PlaySuccess()
+    {
+        effectSource.PlayOneShot(success);
+    }
+
 }

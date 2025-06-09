@@ -131,10 +131,7 @@ public class HotdogZone : MonoBehaviour
         Vector3 spawnPos = hotdogSpawnPoint.position + Vector3.up * (index * 0.5f);
         GameObject newHotdog = Instantiate(hotdogPrefab, spawnPos, Quaternion.identity);
         hotdogList.Add(newHotdog);
-        dishZone.AddDish();
-        SoundManager.instance.StopFryer();
         Debug.Log("핫도그 제작 완료!");
-        SoundManager.instance.FryerFinish();
         hotdogParticle.Stop();
         isMaking = false;
         player.currentZone = null;

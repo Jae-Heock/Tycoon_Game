@@ -47299,7 +47299,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cookSlider: {fileID: 498539448}
-  makeTime: 5
+  makeTime: 4
   requiredSugar: 3
   dalgonaBlockParticle: {fileID: 1858945302}
   dalgonaParticle: {fileID: 281532140}

@@ -91,6 +91,7 @@ public class DishZone : MonoBehaviour
                 {
                     isCleaning = true;
                     cleanTimer = 0f;
+                    SoundManager.instance.PlayClean();
                     if (cleanSlider != null)
                     {
                         cleanSlider.value = 0f;
