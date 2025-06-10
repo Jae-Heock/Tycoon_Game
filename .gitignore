@@ -1,9 +1,26 @@
-[Ll]ibrary/
-[Tt]emp/
-[Oo]bj/
-[Bb]uild/
-[Bb]uilds/
-[Ll]ogs/
-UserSettings/
-.vscode/
+# Unity generated folders
+Library/
+Temp/
+Obj/
+Build/
+Builds/
+BuildOutput/
+Logs/
+MemoryCaptures/
+
+# User-specific
+*.csproj
+*.unityproj
+*.sln
+*.user
+*.userprefs
+
+# OS
 .DS_Store
+Thumbs.db
+
+# Build files
+*.exe
+*.apk
+*.zip
+*.resS
