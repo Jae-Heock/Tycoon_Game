@@ -109,6 +109,7 @@ public class DalgonaZone : MonoBehaviour
             }
             else
             {
+                SoundManager.instance.PlayFail();
                 Debug.Log("재료가 부족합니다! (필요: 설탕 1개)");
             }
         }

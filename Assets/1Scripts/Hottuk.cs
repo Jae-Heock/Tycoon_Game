@@ -87,6 +87,7 @@ public class Hottuk : MonoBehaviour
             }
             else
             {
+                SoundManager.instance.PlayFail();
                 Debug.Log("재료가 부족합니다! (필요: 밀가루 1개, 설탕 1개)");
             }
         }

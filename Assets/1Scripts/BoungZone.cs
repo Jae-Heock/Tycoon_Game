@@ -76,6 +76,7 @@ public class BoungZone : MonoBehaviour
             }
             else
             {
+                SoundManager.instance.PlayFail();
                 Debug.Log("재료가 부족합니다! (필요: 밀가루 2개, 팥 1개)");
             }
         }

@@ -42,6 +42,7 @@ public class SoundManager : MonoBehaviour
     public AudioClip badCustomBackGround; // 나쁜손님 배경음
 
     public AudioClip success; // 성공 소리 
+    public AudioClip fail; // 재료없을때 나는소리 
 
 
     [Range(0f, 1f)]
@@ -284,6 +285,11 @@ public class SoundManager : MonoBehaviour
     public void PlaySuccess()
     {
         effectSource.PlayOneShot(success);
+    }
+
+    public void PlayFail()
+    {
+        effectSource.PlayOneShot(fail);
     }
 
 }
