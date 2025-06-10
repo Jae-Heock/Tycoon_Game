@@ -13,7 +13,7 @@ public class OrderListToggle : MonoBehaviour
     {
         originalHeight = backGroundPanel.sizeDelta.y;
         backGroundPanel.sizeDelta = new Vector2(backGroundPanel.sizeDelta.x, 0f);
-        backGroundPanel.gameObject.SetActive(false);
+        backGroundPanel.gameObject.SetActive(true);
         openButton.SetActive(true);
     }
 

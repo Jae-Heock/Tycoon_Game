@@ -25,12 +25,6 @@ public class TrashZone : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.E) && isPlayerInZone)
         {
-            if (player.currentZone != this)
-            {
-                Debug.Log("다른 존을 사용 중입니다.");
-                return;
-            }
-
             // 플레이어가 음식을 들고 있고, 쓰레기통이 가득 차지 않았다면
             if (!string.IsNullOrEmpty(player.currentFood) && trashCount < maxTrash)
             {
@@ -57,6 +51,10 @@ public class TrashZone : MonoBehaviour
             else if (trashCount >= maxTrash)
             {
                 CleanTrash();
+            }
+            else if (string.IsNullOrEmpty(player.currentFood))
+            {
+                Debug.Log("버릴 음식이 없습니다.");
             }
         }
     }
@@ -109,7 +107,7 @@ public class TrashZone : MonoBehaviour
         {
             player = other.GetComponent<Player>();
             isPlayerInZone = true;
-            player.currentZone = this;
+            player.EnterZone(this);
             Debug.Log("쓰레기통에 접근했습니다. E키를 눌러 음식을 버리거나 쓰레기를 정리하세요.");
         }
     }
@@ -119,13 +117,8 @@ public class TrashZone : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             isPlayerInZone = false;
-            
-            // 이 존이 현재 존이었다면 null로 설정
-            if (player != null && player.currentZone == this)
-            {
-                player.currentZone = null;
-                Debug.Log("쓰레기통에서 벗어났습니다.");
-            }
+            player.ExitZone(this);
+            Debug.Log("쓰레기통에서 벗어났습니다.");
         }
     }
 }
