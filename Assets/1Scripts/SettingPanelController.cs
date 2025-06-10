@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SettingPanelController : MonoBehaviour
 {
@@ -24,5 +25,12 @@ public class SettingPanelController : MonoBehaviour
         transform.localScale = hiddenScale;
         isOpen = false;
         Time.timeScale = 1;
+    }
+
+    public void ReturnToTitle()
+    {
+        SoundManager.instance.ButtonClick();
+        Time.timeScale = 1; // 시간 정상화
+        SceneManager.LoadScene("TitleScene"); // 타이틀 씬으로 이동
     }
 } 

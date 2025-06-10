@@ -14,7 +14,7 @@ public class DalgonaZone : MonoBehaviour
     public Slider cookSlider;           // 연결된 슬라이더
 
     [Header("제작 설정")]
-    [SerializeField] public float makeTime = 5f;     // 기본 달고나 제작 시간
+    [SerializeField] public float makeTime = 4f;     // 기본 달고나 제작 시간
     [SerializeField] private int requiredSugar = 1;   // 필요 설탕 개수
 
     [Header("파티클/이펙트")]
@@ -40,7 +40,8 @@ public class DalgonaZone : MonoBehaviour
     private float GetCurrentMakeTime()
     {
         // 스킬이 적용된 경우 플레이어의 cookTime 사용, 아니면 기본 makeTime 사용
-        return player.cookTime > 0 ? player.cookTime : makeTime;
+        // return player.cookTime > 0 ? player.cookTime : makeTime;
+        return makeTime;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -49,7 +50,7 @@ public class DalgonaZone : MonoBehaviour
         {
             player = other.GetComponent<Player>();
             isPlayerInZone = true;
-            player.currentZone = this;
+            player.EnterZone(this);
             Debug.Log("달고나 제작 구역에 들어왔습니다. E키를 눌러 달고나를 만드세요.");
         }
     }
@@ -59,13 +60,11 @@ public class DalgonaZone : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             isPlayerInZone = false;
-            
-            // 이 존이 현재 존이었다면 null로 설정
-            if (player != null && player.currentZone == this)
+            if (player != null)
             {
-                player.currentZone = null;
-                Debug.Log("달고나 제작 구역을 나갔습니다.");
+                player.ExitZone(this);
             }
+            Debug.Log("달고나 제작 구역을 나갔습니다.");
         }
     }
 
@@ -129,8 +128,8 @@ public class DalgonaZone : MonoBehaviour
         isMaking = true;
         player.isMove = false;
         dalgonaParticle.Play();
+        SoundManager.instance.PlayDalgona();
         Debug.Log("달고나 제작 시작...");
-        
         player.anim.SetBool("isDal", true);
         // 달고나 프리팹 붙이기
         if (dalgonaInHand == null && dalgonaPrefab != null && dalgonaPoint != null)
@@ -145,7 +144,6 @@ public class DalgonaZone : MonoBehaviour
 
         player.dalgonaCount++;
         player.HoldItem("dalgona");
-        dishZone.AddDish();
         Debug.Log($"달고나 제작 완료! (현재 보유: {player.dalgonaCount}개)");
 
         if (dalgonaInHand != null)

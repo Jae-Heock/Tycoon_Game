@@ -8,10 +8,10 @@ public class Custom : MonoBehaviour
     public BadType badType = BadType.None;
 
     // ====== 상태 ======
+    public float waitTimer = 0f;
+    public float maxWaitTime = 40f; // 손님 대기 시간 (초)
     private bool isRequesting = false;
     private bool isBeingDelivered = false;
-    private float waitTimer = 0f;
-    private float maxWaitTime = 40f; // 손님 대기 시간 (초)
     private bool isPlayerInZone = false;    // 플레이어가 구역 안에 있는지 여부
     
     private Player player;
@@ -81,30 +81,51 @@ public class Custom : MonoBehaviour
             transform.LookAt(lookPos);
         }
 
-if (isBadCustomer)
-{
-    GameManager.instance.hasBadCustomer = true;
-    GameManager.instance.badCustomer = this;
+        if (isBadCustomer)
+        {
+            GameManager.instance.hasBadCustomer = true;
+            GameManager.instance.badCustomer = this;
 
-    // UI 이미지 출력
-    if (GameManager.instance.badCustomerUI != null)
-    {
-        GameManager.instance.badCustomerUI.ShowBadCustomer((BadType)badType);
-    }
+            // UI 이미지 출력
+            if (GameManager.instance.badCustomerUI != null)
+            {
+                GameManager.instance.badCustomerUI.ShowBadCustomer((BadType)badType);
+            }
 
-    if (badType == BadType.Stun)
-    {
-        player = FindFirstObjectByType<Player>();
-        stunCoroutine = StartCoroutine(StunPlayerRoutine());
-    }
-}
+            // 나쁜손님 종류별 효과음 재생
+            if (SoundManager.instance != null)
+            {
+                switch (badType)
+                {
+                    case BadType.Dalgona:
+                        SoundManager.instance.PlayBadSound1();
+                        break;
+                    case BadType.Hotdog:
+                        SoundManager.instance.PlayBadSound2();
+                        break;
+                    case BadType.Stun:
+                        SoundManager.instance.PlayBadSound3();
+                        break;
+                }
+                // 5초간 배경음 재생
+                StartCoroutine(PlayBadCustomBackGroundForSeconds());
+            }
 
-         // 슬라이더 초기화
+            if (badType == BadType.Stun)
+            {
+                player = FindFirstObjectByType<Player>();
+                stunCoroutine = StartCoroutine(StunPlayerRoutine());
+            }
+        }
+
+        // 슬라이더 초기화
         if (waitCanvas != null)
             waitCanvas.enabled = false;
 
         if (waitSlider != null)
             waitSlider.value = 0f;
+
+        OrderListManager.Instance?.RegisterCustomer(this);
     }
 
     private void Update()
@@ -198,12 +219,20 @@ if (isBadCustomer)
             {
                 // 성공 처리: 손님, 음식 모두 제거
                 assignedTable.ClearTable();
+                SoundManager.instance.PlaySuccess();
                 
                 // 점수 증가
                 Player player = FindFirstObjectByType<Player>();
                 if (player != null)
                 {
                     player.Point += player.basePoint + player.bonusPoint;
+                }
+
+                // 접시 추가
+                DishZone dishZone = FindFirstObjectByType<DishZone>();
+                if (dishZone != null)
+                {
+                    dishZone.AddDish();
                 }
 
                 // 쓰레기 생성
@@ -251,7 +280,7 @@ if (isBadCustomer)
                     break;
             }
         }
-
+        OrderListManager.Instance?.UpdateOrderList();
         // 생성
         if (prefabToSpawn != null && iconSpawnPoint != null)
         {
@@ -287,11 +316,17 @@ if (isBadCustomer)
         {
             spawner.OnCustomerDestroyed(gameObject);
         }
+
+        OrderListManager.Instance?.UnregisterCustomer(this);
     }
 
     private IEnumerator DestroyAndRespawn(bool success)
     {
         isRequesting = false;
+        if (success)
+        {
+            SoundManager.instance.PlaySuccess();
+        }
         if (orderIconObject != null)
         {
             Destroy(orderIconObject);
@@ -317,6 +352,10 @@ if (isBadCustomer)
                 spawner.RespawnCustomer(this.gameObject);
             }
         }
+
+        // 주문 목록 갱신
+        if (OrderListManager.Instance != null)
+            OrderListManager.Instance.UpdateOrderList();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -369,5 +408,11 @@ if (isBadCustomer)
             if (player != null)
                 player.Stun(2f);
         }
+    }
+
+    private IEnumerator PlayBadCustomBackGroundForSeconds()
+    {
+        SoundManager.instance.PlayBadCustomBackGround();
+        yield return new WaitForSeconds(3f);
     }
 }

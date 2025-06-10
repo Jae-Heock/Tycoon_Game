@@ -15,7 +15,8 @@ public class PotZone : MonoBehaviour
         {
             player = other.GetComponent<Player>();
             isPlayerInZone = true;
-            player.currentZone = this;
+            if (player != null)
+                player.EnterZone(this);
             Debug.Log("팥 구역에 들어왔습니다. E키를 눌러 팥을 획득하세요.");
         }
     }
@@ -25,23 +26,18 @@ public class PotZone : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             isPlayerInZone = false;
-            
-            // 이 존이 현재 존이었다면 null로 설정
-            if (player != null && player.currentZone == this)
-            {
-                player.currentZone = null;
-                Debug.Log("팥 구역을 나갔습니다.");
-            }
+            if (player != null)
+                player.ExitZone(this);
+            Debug.Log("팥 구역을 나갔습니다.");
         }
     }
 
     private void Update()
     {
-        if (isPlayerInZone && Input.GetKeyDown(KeyCode.E) && player.currentZone == this )
+        if (isPlayerInZone && player != null && player.currentZone == this && Input.GetKeyDown(KeyCode.E))
         {
             SoundManager.instance.PlayGetItem();
             player.potCount++;
-            player.HoldItem("pot");
             Debug.Log($"팥 +1 (현재: {player.potCount})");
         }
     }
