@@ -7,7 +7,6 @@ public class OrderListToggle : MonoBehaviour
     public RectTransform backGroundPanel; // BackGround의 RectTransform
     public GameObject openButton;         // Button (Legacy)
     public float animDuration = 0.5f;
-    private bool isOpen = false;
     private float originalHeight;
 
     void Start()
