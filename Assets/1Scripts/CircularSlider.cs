@@ -10,19 +10,20 @@ public class CircularSlider : MonoBehaviour
     [Header("🔘 설정")]
     public Image fillImage;              // Radial 타입 이미지
     public float fillSpeed = 0.5f;       // 슬라이더 채워지는 속도
-    public GameObject Ui;
     public string nextSceneName = "GameScene"; // 이동할 씬 이름
     public VideoPlayer videoPlayer; // Inspector에서 할당
+    public GameObject sliderRoot; // 인스펙터에서 Skip Slider 오브젝트 할당
 
     [Range(0f, 1f)] private float value = 0f;
     private bool isFilling = false;
     private bool isLoading = false;
-
+    private float lastInputTime = 0f;
+    private float hideDelay = 5f;
 
     void Start()
     {
         value = 0f;
-        Ui.SetActive(true);
+        lastInputTime = Time.time;
 
         if (videoPlayer != null)
             videoPlayer.loopPointReached += OnVideoEnd;
@@ -47,6 +48,17 @@ public class CircularSlider : MonoBehaviour
     {
         if (isLoading) return; // 씬 전환 중엔 무시
 
+        bool hasInput = Input.GetKey(KeyCode.Space) ||
+                        Mathf.Abs(Input.GetAxis("Mouse X")) > 0.01f ||
+                        Mathf.Abs(Input.GetAxis("Mouse Y")) > 0.01f;
+
+        if (hasInput)
+            lastInputTime = Time.time;
+
+        // 슬라이더 보이기/숨기기
+        if (sliderRoot != null)
+            sliderRoot.SetActive(Time.time - lastInputTime < hideDelay);
+
         // 키 입력 체크
         if (Input.GetKey(KeyCode.Space))
         {
@@ -56,11 +68,6 @@ public class CircularSlider : MonoBehaviour
         {
             isFilling = false;
         }
-
-        if(value == 0f)
-            Ui.SetActive(true);
-        else
-            Ui.SetActive(false);
            
 
         // 슬라이더 값 변화
