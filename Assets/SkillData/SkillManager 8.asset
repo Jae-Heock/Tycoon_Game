@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillType: 8
   skillId: 8
-  skillName: "\uC124\uAC70\uC9C0"
+  skillName: "\uD1A0\uC57C\uCCAD\uC18C"
   skillDesc: "{0}\uCD08\uB9C8\uB2E4 \uC811\uC2DC \uAC10\uC18C"
-  skillIcon: {fileID: 21300000, guid: 28f10023c37d27e4e810f1ace3de0cf4, type: 3}
+  skillIcon: {fileID: 21300000, guid: e49cc66b37119804db0e9ca1004cb34c, type: 3}
   values:
   - 15
   - 13

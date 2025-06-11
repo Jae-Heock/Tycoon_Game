@@ -15,7 +15,8 @@ public class DishZone : MonoBehaviour
 
     public Transform dishPoint;         // 접시 생성 위치치
     private List<GameObject> dishList = new List<GameObject>();  // 생성된 접시시 오브젝트 목록
-    public GameObject dishPrefab;       // 접시시 프리팹
+    public GameObject dishPrefab;       // 접시 프리팹
+    private GameObject dishInHandInstance; // 현재 손에 붙은 오브젝트
 
     [Header("접시 설정")]
     public int maxDishes = 5;              // 최대 접시 개수
@@ -25,9 +26,28 @@ public class DishZone : MonoBehaviour
     [Header("현재 접시 개수")]
     [SerializeField] public int currentDishCount;    // 현재 접시 개수
 
+    [Header("설거지 파티클")]
+    public ParticleSystem cleanParticle;
+
+    public Slider cleanSlider; // 인스펙터에서 할당
+    public float cleanDuration = 5f;
+
+    private float cleanTimer = 0f;
+    private bool isCleaning = false;
+    private GameObject heldDishObject; // 손에 든 그릇
+
+    public Transform handPoint; // 인스펙터에서 손 위치(빈 오브젝트) 할당
+
     private void Start()
     {
         player = FindFirstObjectByType<Player>();
+        if (cleanSlider != null)
+            cleanSlider.gameObject.SetActive(false);
+            
+        if (cleanParticle != null)
+        {
+            cleanParticle.Stop(true);
+        }
     }
 
     /// <summary>
@@ -38,6 +58,8 @@ public class DishZone : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             isPlayerInZone = true;
+            player = other.GetComponent<Player>();
+            player.currentZone = this;  // currentZone 설정
             Debug.Log("설거지 구역에 들어왔습니다. E키를 눌러 설거지를 하세요.");
         }
     }
@@ -50,16 +72,121 @@ public class DishZone : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             isPlayerInZone = false;
+             if (player != null && player.currentZone == this)
+            {
+                player.currentZone = null;
+            }
             Debug.Log("설거지 구역을 나갔습니다.");
         }
     }
 
     private void Update()
     {
-        // E키를 눌러 설거지
-        if (isPlayerInZone && Input.GetKeyDown(KeyCode.E))
+        if (isPlayerInZone && player != null && player.currentZone == this && currentDishCount > 0 && string.IsNullOrEmpty(player.currentFood))
         {
-            CleanDishes();
+            if (Input.GetKey(KeyCode.E))
+            {
+                // 설거지 시작
+                if (!isCleaning)
+                {
+                    isCleaning = true;
+                    cleanTimer = 0f;
+                    if (cleanSlider != null)
+                    {
+                        cleanSlider.value = 0f;
+                        cleanSlider.gameObject.SetActive(true);
+                    }
+                    if (cleanParticle != null)
+                        cleanParticle.Play();
+                    player.anim.SetBool("isClean", true);
+                    player.isMove = false;
+
+                    // 손에 접시 붙이기
+                    if (dishInHandInstance == null && dishPrefab != null && player.handPoint != null)
+                    {
+                        dishInHandInstance = Instantiate(dishPrefab, player.handPoint);
+                        dishInHandInstance.transform.localPosition = Vector3.zero;
+                        dishInHandInstance.transform.localRotation = Quaternion.identity;
+                        dishInHandInstance.transform.localScale = Vector3.one * 5f;
+                    }
+                }
+
+                // 진행
+                cleanTimer += Time.deltaTime;
+                if (cleanSlider != null)
+                    cleanSlider.value = cleanTimer / cleanDuration;
+
+                if (cleanTimer >= cleanDuration)
+                {
+                    // 설거지 완료
+                    player.anim.SetBool("isClean", false);
+                    player.isMove = true;
+                    if (cleanParticle != null)
+                        cleanParticle.Stop();
+                    if (cleanSlider != null)
+                        cleanSlider.gameObject.SetActive(false);
+
+                    CleanDishes();
+                    isCleaning = false;
+
+                    // 접시 제거
+                    if (dishInHandInstance != null)
+                    {
+                        Destroy(dishInHandInstance);
+                        dishInHandInstance = null;
+                    }
+                }
+            }
+            else
+            {
+                // E키를 뗐을 때 중단 및 리셋
+                if (isCleaning)
+                {
+                    isCleaning = false;
+                    cleanTimer = 0f;
+                    if (cleanSlider != null)
+                    {
+                        cleanSlider.value = 0f;
+                        cleanSlider.gameObject.SetActive(false);
+                    }
+                    if (cleanParticle != null)
+                        cleanParticle.Stop();
+                    player.anim.SetBool("isClean", false);
+                    player.isMove = true;
+
+                    // 접시 제거
+                    if (dishInHandInstance != null)
+                    {
+                        Destroy(dishInHandInstance);
+                        dishInHandInstance = null;
+                    }
+                }
+            }
+        }
+        else
+        {
+            // 존을 벗어나거나 설거지할 그릇이 없으면 강제 리셋
+            if (isCleaning)
+            {
+                isCleaning = false;
+                cleanTimer = 0f;
+                if (cleanSlider != null)
+                {
+                    cleanSlider.value = 0f;
+                    cleanSlider.gameObject.SetActive(false);
+                }
+                if (cleanParticle != null)
+                    cleanParticle.Stop();
+                player.anim.SetBool("isClean", false);
+                player.isMove = true;
+
+                // 접시 제거
+                if (dishInHandInstance != null)
+                {
+                    Destroy(dishInHandInstance);
+                    dishInHandInstance = null;
+                }
+            }
         }
 
         // 접시 개수에 따른 포인트 감소 처리
@@ -99,7 +226,7 @@ public class DishZone : MonoBehaviour
     {
         // 플레이어가 다른 존을 사용 중인지 확인
         if (player.currentZone != null && player.currentZone != this)
-        {
+        {  
             Debug.Log("다른 존을 사용 중입니다.");
             return;
         }
@@ -111,21 +238,20 @@ public class DishZone : MonoBehaviour
             Destroy(dish);
         }
         dishList.Clear();
+
         // 포인트 감소 중지
         isReducingPoints = false;
 
         Debug.Log("설거지 완료! 모든 접시가 정리되었습니다.");
     }
 
+
     public void CleanOneDish()
     {
-        if (dishList.Count > 0)
+        if (currentDishCount > 0)
         {
-            Destroy(dishList[dishList.Count - 1]);
-            dishList.RemoveAt(dishList.Count - 1);
             currentDishCount--;
-
-            Debug.Log($"자동으로 접시 1개 제거됨 (남은: {currentDishCount})");
+            Debug.Log($"설거지 완료! 남은 그릇: {currentDishCount}");
         }
     }
 

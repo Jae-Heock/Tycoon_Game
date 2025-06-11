@@ -65,6 +65,7 @@
     <Compile Include="Assets\1Scripts\PotZone.cs" />
     <Compile Include="Assets\1Scripts\ButtonScaler.cs" />
     <Compile Include="Assets\1Scripts\FlourZone.cs" />
+    <Compile Include="Assets\1Scripts\Test2.cs" />
     <Compile Include="Assets\1Scripts\Table.cs" />
     <Compile Include="Assets\1Scripts\SoundManager.cs" />
     <Compile Include="Assets\1Scripts\Test.cs" />
@@ -75,6 +76,7 @@
     <Compile Include="Assets\1Scripts\Custom.cs" />
     <Compile Include="Assets\1Scripts\HotdogZone.cs" />
     <Compile Include="Assets\1Scripts\FollowCamera.cs" />
+    <Compile Include="Assets\1Scripts\CircularSlider.cs" />
     <Compile Include="Assets\1Scripts\Hud.cs" />
     <Compile Include="Assets\1Scripts\VolumeSliderController.cs" />
     <Compile Include="Assets\1Scripts\TrashZone.cs" />
@@ -99,12 +101,16 @@
     <Compile Include="Assets\1Scripts\ReceiptToggle.cs" />
     <Compile Include="Assets\1Scripts\Player.cs" />
     <Compile Include="Assets\1Scripts\SkillUIManager.cs" />
+    <Compile Include="Assets\1Scripts\CustomTable.cs" />
+    <Compile Include="Assets\1Scripts\BadCustomerUIManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile-2-Pass.shader" />
+    <None Include="Assets\particle\Jiggly Bubble Free\Shaders\Particle Alpha Blended Cubemap.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader" />
+    <None Include="Assets\particle\Jiggly Bubble Free\Shaders\Particle Alpha Blended Cubemap Skybox.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro_Mobile.cginc" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF SSD.shader" />
     <None Include="Assets\QuickOutline\Resources\Shaders\OutlineMask.shader" />
@@ -120,6 +126,8 @@
     <None Include="Assets\QuickOutline\Readme.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro_Surface.cginc" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
+    <None Include="Assets\particle\Jiggly Bubble Free\readme_Jiggly_Bubble_Free.txt" />
+    <None Include="Assets\Polygonal Particles\Assets\Shaders\GradientBackgroundShader.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Masking.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF Overlay.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap-Mobile.shader" />

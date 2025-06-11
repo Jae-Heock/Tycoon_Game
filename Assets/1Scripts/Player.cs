@@ -64,7 +64,7 @@ public class Player : MonoBehaviour
 
     Vector3 moveVec;                      // 이동 방향 벡터
     Rigidbody rigid;                      // 물리 컴포넌트
-    Animator anim;
+    public Animator anim;
 
     [Header("# 기절")]
     public bool isStunned = false; // 기절 상태
@@ -73,6 +73,7 @@ public class Player : MonoBehaviour
     [Header("존")]
     public MonoBehaviour currentZone;  // 현재 사용 중인 존
     public string currentFood;  // 현재 들고 있는 음식 타입
+    public Transform handPoint;
 
     private void Awake()
     {
@@ -81,14 +82,38 @@ public class Player : MonoBehaviour
         rigid.constraints = RigidbodyConstraints.FreezeRotation;
         isMove = true;
     }
-    
+
     private void Update()
     {
         if (isStunned) return;
+        if (!isMove) return;  // 이동이 불가능하면 입력 처리하지 않음
 
         StopToWall();
         Move();
         UpdateItemVisibility();
+
+        
+        // CustomTable에 음식 올리기
+        if (currentZone is CustomTable customTable && Input.GetKeyDown(KeyCode.E))
+        {
+            if (!string.IsNullOrEmpty(currentFood))
+            {
+                GameObject prefab = GetFoodPrefab(currentFood);
+                if (customTable.PlaceFood(currentFood, prefab))
+                {
+                    ClearHeldFood();
+                    Debug.Log($"{currentFood}을(를) 테이블에 올렸습니다.");
+                }
+                else
+                {
+                    Debug.Log("테이블에 이미 음식이 있습니다.");
+                }
+            }
+            else
+            {
+                Debug.Log("플레이어가 들고 있는 음식이 없습니다.");
+            }
+        }
 
         bool isCookedFood = currentFood == "hotdog" || currentFood == "dalgona" || currentFood == "hottuk" || currentFood == "boung";
         bool isDalgonaCooking = isCooking;
@@ -101,8 +126,11 @@ public class Player : MonoBehaviour
             anim.SetLayerWeight(1, 1f);      // 요리 중엔 1f
         else if (isCookedFood)
             anim.SetLayerWeight(1, 0.65f);   // 음식만 들고 있으면 0.65f
+        else if (anim.GetBool("isClean"))
+            anim.SetLayerWeight(1, 0f);
         else
             anim.SetLayerWeight(1, 0f);      // 아무것도 없으면 0f
+
     }
 
     /// <summary>
@@ -410,4 +438,5 @@ public class Player : MonoBehaviour
         Debug.Log("StopDalgonaAnimation 호출됨");
         anim.SetTrigger("doDal");
     }
+
 }
