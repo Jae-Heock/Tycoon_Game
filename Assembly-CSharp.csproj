@@ -61,9 +61,12 @@
     <Analyzer Include="A:\6000.0.41f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.UIToolkit.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\1Scripts\CustomTrash.cs" />
     <Compile Include="Assets\1Scripts\PotZone.cs" />
+    <Compile Include="Assets\1Scripts\ButtonScaler.cs" />
     <Compile Include="Assets\1Scripts\FlourZone.cs" />
     <Compile Include="Assets\1Scripts\Table.cs" />
+    <Compile Include="Assets\1Scripts\SoundManager.cs" />
     <Compile Include="Assets\1Scripts\Test.cs" />
     <Compile Include="Assets\QuickOutline\Scripts\Outline.cs" />
     <Compile Include="Assets\1Scripts\SkillManager.cs" />
@@ -73,6 +76,7 @@
     <Compile Include="Assets\1Scripts\HotdogZone.cs" />
     <Compile Include="Assets\1Scripts\FollowCamera.cs" />
     <Compile Include="Assets\1Scripts\Hud.cs" />
+    <Compile Include="Assets\1Scripts\VolumeSliderController.cs" />
     <Compile Include="Assets\1Scripts\TrashZone.cs" />
     <Compile Include="Assets\1Scripts\InventoryToggle.cs" />
     <Compile Include="Assets\1Scripts\BoungZone.cs" />
@@ -86,12 +90,15 @@
     <Compile Include="Assets\1Scripts\Hottuk.cs" />
     <Compile Include="Assets\1Scripts\SkillData.cs" />
     <Compile Include="Assets\1Scripts\Skill.cs" />
+    <Compile Include="Assets\1Scripts\SettingPanelController.cs" />
+    <Compile Include="Assets\1Scripts\CameraIntro.cs" />
     <Compile Include="Assets\1Scripts\BoungCollectZone.cs" />
     <Compile Include="Assets\1Scripts\GameManager.cs" />
     <Compile Include="Assets\1Scripts\LevelUp.cs" />
     <Compile Include="Assets\1Scripts\CustomSpawner.cs" />
     <Compile Include="Assets\1Scripts\ReceiptToggle.cs" />
     <Compile Include="Assets\1Scripts\Player.cs" />
+    <Compile Include="Assets\1Scripts\SkillUIManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

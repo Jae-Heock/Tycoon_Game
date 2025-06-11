@@ -20,7 +20,7 @@ public class Hud : MonoBehaviour
     Slider mySlider;  // 슬라이더를 표시할 UI 컴포넌트
     void Awake()
     {
-        // 필요한 UI 컴포넌트들을 가져옴
+        // 필요한 UI 컴포넌트들을 가져오기기
         myText = GetComponent<Text>();
         mySlider = GetComponent<Slider>();
     }

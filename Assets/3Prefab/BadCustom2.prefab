@@ -122,6 +122,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   badType: 2
-  isBadCustomer: 0
-  moveTarget: {fileID: 0}
   spawner: {fileID: 0}
+  isBadCustomer: 0
+  spawnPoint: {fileID: 0}
+  trashPrefab: {fileID: 8416497446307305252, guid: 2c69fce69352f334691ed7cc68dddf69, type: 3}
+  orderIconObject: {fileID: 0}
+  iconSpawnPoint: {fileID: 0}
+  dalgonaIconPrefab: {fileID: 0}
+  hottukIconPrefab: {fileID: 0}
+  hotdogIconPrefab: {fileID: 0}
+  boungIconPrefab: {fileID: 0}

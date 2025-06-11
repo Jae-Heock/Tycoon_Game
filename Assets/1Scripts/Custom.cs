@@ -25,6 +25,10 @@ public class Custom : MonoBehaviour
     public bool isBadCustomer = false;
     public Transform spawnPoint;
 
+    // ====== 쓰레기 관련 ======
+    public GameObject trashPrefab;          // 쓰레기 프리팹
+    private GameObject currentTrash;        // 현재 생성된 쓰레기
+
     private Coroutine stunCoroutine;
     public void MarkBeingDelivered() => isBeingDelivered = true;
 
@@ -35,6 +39,12 @@ public class Custom : MonoBehaviour
     public GameObject hottukIconPrefab;
     public GameObject hotdogIconPrefab;
     public GameObject boungIconPrefab;
+    [Header("Wait UI")]
+    public Slider waitSlider;         // 손님 대기시간 슬라이더
+    public Canvas waitCanvas;         // 슬라이더가 붙은 World Space 캔버스
+
+    [Header("Icon Rotation")]
+    public float iconRotationSpeed = 100f; // 아이콘 회전 속도 (도/초)
 
     private void Start()
     {
@@ -47,8 +57,17 @@ public class Custom : MonoBehaviour
             GameManager.instance.badCustomer = this;
 
             if (badType == BadType.Stun)
+            {
+                player = FindFirstObjectByType<Player>();
                 stunCoroutine = StartCoroutine(StunPlayerRoutine());
+            }
         }
+         // 슬라이더 초기화
+        if (waitCanvas != null)
+            waitCanvas.enabled = false;
+
+        if (waitSlider != null)
+            waitSlider.value = 0f;
     }
 
     private void Update()
@@ -61,8 +80,27 @@ public class Custom : MonoBehaviour
             StartCoroutine(DestroyAndRespawn(false));
         }
 
-        if (isPlayerInZone && Input.GetKeyDown(KeyCode.E)) TryDeliver();
+        if (isPlayerInZone)
+        {
+            if (currentTrash == null && Input.GetKeyDown(KeyCode.E))
+            {
+                TryDeliver();
+            }
+        }
+        if (waitCanvas != null)
+            waitCanvas.enabled = true;
+
+        if (waitSlider != null)
+            waitSlider.value = waitTimer / maxWaitTime;
+
+        // 아이콘 회전
+        if (orderIconObject != null)
+        {
+            orderIconObject.transform.Rotate(Vector3.up * iconRotationSpeed * Time.deltaTime);
+        }
     }
+
+
 
     private void OnTriggerEnter(Collider other)
     {
@@ -153,9 +191,9 @@ public class Custom : MonoBehaviour
                     }
                     return;
                 case BadType.Stun:
-                    if (player.boungCount >= 2)
+                    if (player.boungCount >= 1)
                     {
-                        player.boungCount -= 2;
+                        player.boungCount -= 1;
                         player.Point += 10;
                         if (stunCoroutine != null) StopCoroutine(stunCoroutine);
                         Debug.Log("붕어빵 2개를 줘서 나쁜 손님 제거!");
@@ -188,19 +226,33 @@ public class Custom : MonoBehaviour
         }
 
         if (delivered)
-            StartCoroutine(DestroyAndRespawn(true));
+        {
+            // 쓰레기 생성
+            if (trashPrefab != null && spawnPoint != null)
+            {
+                currentTrash = Instantiate(trashPrefab, spawnPoint.position, Quaternion.identity);
+            }
+            
+            // 손님 제거
+            if (spawner != null)
+            {
+                spawner.OnCustomerCleared();
+                spawner.OnCustomerDestroyed(gameObject);
+            }
+            Destroy(gameObject);
+        }
     }
 
     private bool TryGive(ref int itemCount, string itemName)
     {
         if (itemCount > 0)
         {
-            // itemCount--;
             player.Point += player.basePoint + player.bonusPoint;
             player.customerSuccessCount++;
             GameManager.instance.HappyCat();
+            SoundManager.instance.ButtonClick();
             Debug.Log($"{itemName} 전달 성공!");
-            player.ClearHeldFood(); // ← 이 줄 추가!
+            player.ClearHeldFood();
             return true;
         }
         else
@@ -256,7 +308,11 @@ public class Custom : MonoBehaviour
             if (success)
                 spawner.OnCustomerCleared();
 
-            spawner.RespawnCustomer(this.gameObject);
+            // 쓰레기가 있는 경우에는 새로운 손님을 생성하지 않음
+            if (currentTrash == null)
+            {
+                spawner.RespawnCustomer(this.gameObject);
+            }
         }
     }
 
@@ -274,9 +330,9 @@ public class Custom : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(10f);
+            yield return new WaitForSeconds(12f);
             if (player != null)
-                player.Stun(0.5f);
+                player.Stun(2f);
         }
     }
 }
