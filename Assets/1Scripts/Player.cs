@@ -64,7 +64,7 @@ public class Player : MonoBehaviour
 
     Vector3 moveVec;                      // 이동 방향 벡터
     Rigidbody rigid;                      // 물리 컴포넌트
-    Animator anim;
+    public Animator anim;
 
     [Header("# 기절")]
     public bool isStunned = false; // 기절 상태
@@ -73,6 +73,9 @@ public class Player : MonoBehaviour
     [Header("존")]
     public MonoBehaviour currentZone;  // 현재 사용 중인 존
     public string currentFood;  // 현재 들고 있는 음식 타입
+    public Transform handPoint;
+
+    private List<MonoBehaviour> zonesInRange = new List<MonoBehaviour>(); // 플레이어가 감지한 모든 존
 
     private void Awake()
     {
@@ -81,24 +84,84 @@ public class Player : MonoBehaviour
         rigid.constraints = RigidbodyConstraints.FreezeRotation;
         isMove = true;
     }
-    
+
+    // 존 진입 처리
+    public void EnterZone(MonoBehaviour zone)
+    {
+        if (!zonesInRange.Contains(zone))
+        {
+            zonesInRange.Add(zone);
+            UpdateCurrentZone();
+        }
+    }
+
+    // 존 이탈 처리
+    public void ExitZone(MonoBehaviour zone)
+    {
+        if (zonesInRange.Contains(zone))
+        {
+            zonesInRange.Remove(zone);
+            if (currentZone == zone)
+            {
+                currentZone = null;
+            }
+            UpdateCurrentZone();
+        }
+    }
+
+    // 현재 존 업데이트
+    private void UpdateCurrentZone()
+    {
+        if (zonesInRange.Count > 0)
+        {
+            // 가장 가까운 존을 현재 존으로 설정
+            MonoBehaviour closestZone = zonesInRange[0];
+            float closestDistance = float.MaxValue;
+
+            foreach (MonoBehaviour zone in zonesInRange)
+            {
+                float distance = Vector3.Distance(transform.position, zone.transform.position);
+                if (distance < closestDistance)
+                {
+                    closestDistance = distance;
+                    closestZone = zone;
+                }
+            }
+
+            currentZone = closestZone;
+        }
+        else
+        {
+            currentZone = null;
+        }
+    }
+
     private void Update()
     {
         if (isStunned) return;
+        if (!isMove) return;  // 이동이 불가능하면 입력 처리하지 않음
 
         StopToWall();
         Move();
         UpdateItemVisibility();
+        UpdateCurrentZone(); // 매 프레임마다 현재 존 업데이트
 
-        
-        // CustomTable에 음식 올리기
+        // CustomTable 상호작용: E키 하나로 음식 올리기/집기 모두 처리
         if (currentZone is CustomTable customTable && Input.GetKeyDown(KeyCode.E))
         {
-            if (!string.IsNullOrEmpty(currentFood))
+            if (string.IsNullOrEmpty(currentFood))
             {
+                // 손에 음식이 없으면 테이블에서 집기
+                SoundManager.instance.ButtonClick();
+                customTable.TakeFoodToPlayer();
+            }
+            else
+            {
+                // 손에 음식이 있으면 테이블에 올리기
                 GameObject prefab = GetFoodPrefab(currentFood);
                 if (customTable.PlaceFood(currentFood, prefab))
                 {
+                    SoundManager.instance.ButtonClick();
                     ClearHeldFood();
                     Debug.Log($"{currentFood}을(를) 테이블에 올렸습니다.");
                 }
@@ -106,10 +169,6 @@ public class Player : MonoBehaviour
                 {
                     Debug.Log("테이블에 이미 음식이 있습니다.");
                 }
-            }
-            else
-            {
-                Debug.Log("플레이어가 들고 있는 음식이 없습니다.");
             }
         }
 
@@ -124,8 +183,11 @@ public class Player : MonoBehaviour
             anim.SetLayerWeight(1, 1f);      // 요리 중엔 1f
         else if (isCookedFood)
             anim.SetLayerWeight(1, 0.65f);   // 음식만 들고 있으면 0.65f
+        else if (anim.GetBool("isClean"))
+            anim.SetLayerWeight(1, 0f);
         else
             anim.SetLayerWeight(1, 0f);      // 아무것도 없으면 0f
+
     }
 
     /// <summary>
@@ -433,4 +495,5 @@ public class Player : MonoBehaviour
         Debug.Log("StopDalgonaAnimation 호출됨");
         anim.SetTrigger("doDal");
     }
+
 }

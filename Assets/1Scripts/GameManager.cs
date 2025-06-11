@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
     public SettingPanelController settingPanel;
+    public GameObject pause;
 
     [Header("# Game Control")]
     public float gameTime;
@@ -59,8 +60,7 @@ public class GameManager : MonoBehaviour
         // UI 업데이트
         UpdateUI();
         
-        // 게임 시작
-        StartGame();
+        // StartGame(); // ← 이 줄을 주석 처리 또는 삭제
     }
 
     private void Update()
@@ -76,14 +76,39 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             SoundManager.instance.ButtonClick();
-            if (!settingPanel.isOpen)
+
+            if(settingPanel.isOpen)
+            {
+                settingPanel.HidePanel();
+                return;
+            }
+
+            if(settingPanel.returnToTitleUi.activeSelf)
+            {
+                settingPanel.HideReturnTiTitleUi();
+                return;
+            }
+
+            if(settingPanel.quitGameUi.activeSelf)
+            {
+                settingPanel.HideQuitGameUi();
+                return;
+            }
+
+            bool isPause = pause.activeSelf;
+
+            if (!isPause)
             {
                 SoundManager.instance.PauseBGM();
-                settingPanel.ShowPanel();
+                pause.SetActive(true);
+                Time.timeScale = 0;
+                // settingPanel.ShowPanel();
             }
             else
             {
-                settingPanel.HidePanel();
+                pause.SetActive(false);
+                Time.timeScale = 1;
+                // settingPanel.HidePanel();
                 SoundManager.instance.ResumeBGM();
             }
         }
@@ -116,6 +141,10 @@ public class GameManager : MonoBehaviour
         // 게임 오버 UI 표시
         if (gameOverPanel != null)
             gameOverPanel.SetActive(true);
+
+        // 플레이어 이동 멈춤
+        if (player != null)
+            player.isMove = false; // 또는 player.canMove = false; (사용하는 변수에 따라)
     }
 
     public void TogglePause()

@@ -20,12 +20,19 @@ public class Hottuk : MonoBehaviour
     [SerializeField] private int requiredSugar = 1;   // 필요 설탕 개수
 
     public Slider cookSlider;           // 연결된 슬라이더
+    
+    [Header("달고나 보이기")]
+    public GameObject hottukPrefab;
+    public Transform hottukPoint;
+    public GameObject hottukInHand;
 
+    public ParticleSystem hottukParticle;
     private void Start()
     {
         cookSlider.gameObject.SetActive(false);
         dishZone = FindFirstObjectByType<DishZone>();
         anim = GetComponent<Animator>();
+        hottukParticle.Stop();
     }
 
     /// <summary>
@@ -37,7 +44,7 @@ public class Hottuk : MonoBehaviour
         {
             player = other.GetComponent<Player>();
             isPlayerInZone = true;
-            player.currentZone = this;
+            player.EnterZone(this);
             Debug.Log("호떡 제작 구역에 들어왔습니다. E키를 눌러 호떡을 만드세요.");
         }
     }
@@ -50,13 +57,11 @@ public class Hottuk : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             isPlayerInZone = false;
-            
-            // 이 존이 현재 존이었다면 null로 설정
-            if (player != null && player.currentZone == this)
+            if (player != null)
             {
-                player.currentZone = null;
-                Debug.Log("호떡 제작 구역을 나갔습니다.");
+                player.ExitZone(this);
             }
+            Debug.Log("호떡 제작 구역을 나갔습니다.");
         }
     }
 
@@ -66,7 +71,7 @@ public class Hottuk : MonoBehaviour
     /// </summary>
     private void Update()
     {
-        if (isPlayerInZone && Input.GetKeyDown(KeyCode.E) && !isMaking)
+        if (isPlayerInZone && player != null && player.currentZone == this && Input.GetKeyDown(KeyCode.E) && !isMaking)
         {
             if (!string.IsNullOrEmpty(player.currentFood))
             {
@@ -82,6 +87,7 @@ public class Hottuk : MonoBehaviour
             }
             else
             {
+                SoundManager.instance.PlayFail();
                 Debug.Log("재료가 부족합니다! (필요: 밀가루 1개, 설탕 1개)");
             }
         }
@@ -106,15 +112,32 @@ public class Hottuk : MonoBehaviour
     {
         isMaking = true;
         Debug.Log("호떡 제작 시작...");
-
+        SoundManager.instance.PlayHottuk();
+        player.anim.SetBool("isDal", true);
+        hottukParticle.Play();
+        // 호떡 프리팹 붙이기
+        if (hottukInHand == null && hottukPrefab != null && hottukPoint != null)
+        {
+            hottukInHand = Instantiate(hottukPrefab, hottukPoint);
+            hottukInHand.transform.localPosition = Vector3.zero;
+            hottukInHand.transform.localRotation = Quaternion.identity;
+            hottukInHand.transform.localScale = Vector3.one * 200f;
+        }
         yield return new WaitForSeconds(makeTime);
 
         // 호떡 생성
         player.hottukCount++;
+        player.anim.SetBool("isDal", false);
         player.HoldItem("hottuk");
-        dishZone.AddDish();  // 접시 추가
         Debug.Log($"호떡 제작 완료! (현재 보유: {player.hottukCount}개)");
         // 상태 초기화
+
+        if(hottukInHand != null)
+        {
+            Destroy(hottukInHand);
+            hottukInHand = null;
+        }
+        hottukParticle.Stop();
         isMaking = false;
         player.EndCooking(); 
         player.currentZone = null;

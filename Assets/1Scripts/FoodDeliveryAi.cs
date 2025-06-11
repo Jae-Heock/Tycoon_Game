@@ -27,10 +27,12 @@ public class FoodDeliveryAI : MonoBehaviour
         switch (aiState)
         {
             case State.Idle:
+                if (IsAtHome())
+                    LookAtNearestTable();
                 if (heldFoodObject == null)
-                    FindTableAndCustomer(); // 평소처럼 테이블과 손님을 찾음
+                    FindTableAndCustomer();
                 else
-                    FindCustomerForHeldFood(); // 음식이 있는 상태면 손님만 찾음
+                    FindCustomerForHeldFood();
                 break;
 
             case State.MovingToTable:
@@ -98,7 +100,7 @@ public class FoodDeliveryAI : MonoBehaviour
             heldFoodObject.transform.SetParent(foodHoldPoint);
             heldFoodObject.transform.localPosition = Vector3.zero;
             heldFoodObject.transform.localRotation = Quaternion.identity;
-            heldFoodObject.transform.localScale = Vector3.one * 1f;
+            heldFoodObject.transform.localScale = Vector3.one * 0.1f;
         }
         // 손님에게 이동
         if (targetCustomer != null)
@@ -124,6 +126,20 @@ public class FoodDeliveryAI : MonoBehaviour
         Destroy(heldFoodObject);
         heldFoodObject = null;
         player.Point += player.basePoint + player.bonusPoint;
+
+        // 접시 추가
+        DishZone dishZone = FindFirstObjectByType<DishZone>();
+        if (dishZone != null)
+        {
+            dishZone.AddDish();
+        }
+
+        // 쓰레기 생성
+        if (targetCustomer.trashPrefab != null && targetCustomer.spawnPoint != null)
+        {
+            Instantiate(targetCustomer.trashPrefab, targetCustomer.spawnPoint.position, Quaternion.identity);
+        }
+
         targetCustomer.ReceiveAutoDeliveredFood(deliveredName);
         targetCustomer = null;
         if (targetTable != null) targetTable.UnlockTable();
@@ -156,54 +172,85 @@ public class FoodDeliveryAI : MonoBehaviour
         aiState = State.Idle;
     }
 
-void FindCustomerForHeldFood()
-{
-    if (heldFoodObject == null) return;
-
-    // Dish 프리팹 이름을 정규화된 음식 이름으로 변환
-    string prefabName = heldFoodObject.name.Replace("(Clone)", "").Trim();  // 예: "Dish_핫도그"
-    string foodName = ConvertDishPrefabNameToFoodName(prefabName);          // 결과: "hotdog"
-
-    Debug.Log($"🍱 들고 있는 음식: {prefabName} → 비교용 이름: {foodName}");
-
-    if (string.IsNullOrEmpty(foodName)) return;
-
-    Custom[] customers = Object.FindObjectsByType<Custom>(FindObjectsSortMode.None);
-    foreach (var customer in customers)
+    void FindCustomerForHeldFood()
     {
-        if (customer.RequestedFood.ToLower() == foodName && !customer.IsBeingDelivered)
+        if (heldFoodObject == null) return;
+
+        // Dish 프리팹 이름을 정규화된 음식 이름으로 변환
+        string prefabName = heldFoodObject.name.Replace("(Clone)", "").Trim();  // 예: "Dish_핫도그"
+        string foodName = ConvertDishPrefabNameToFoodName(prefabName);          // 결과: "hotdog"
+
+        Debug.Log($"🍱 들고 있는 음식: {prefabName} → 비교용 이름: {foodName}");
+
+        if (string.IsNullOrEmpty(foodName)) return;
+
+        Custom[] customers = Object.FindObjectsByType<Custom>(FindObjectsSortMode.None);
+        foreach (var customer in customers)
         {
-            targetCustomer = customer;
-            customer.MarkBeingDelivered();
-            agent.SetDestination(customer.transform.position);
-            aiState = State.MovingToCustomer;
-            Debug.Log($"💡 기존에 들고 있던 {foodName}을 새로운 손님에게 배달 시작!");
-            return;
+            if (customer.RequestedFood.ToLower() == foodName && !customer.IsBeingDelivered)
+            {
+                targetCustomer = customer;
+                customer.MarkBeingDelivered();
+                agent.SetDestination(customer.transform.position);
+                aiState = State.MovingToCustomer;
+                Debug.Log($"💡 기존에 들고 있던 {foodName}을 새로운 손님에게 배달 시작!");
+                return;
+            }
+        }
+
+        // 아직 배달할 손님이 없다면 홈 포지션으로 이동
+        if (homePosition != null)
+        {
+            agent.SetDestination(homePosition.position);
         }
     }
 
-    // 아직 배달할 손님이 없다면 홈 포지션으로 이동
-    if (homePosition != null)
+    string ConvertDishPrefabNameToFoodName(string prefabName)
     {
-        agent.SetDestination(homePosition.position);
-    }
-}
-
-string ConvertDishPrefabNameToFoodName(string prefabName)
-{
-    if (prefabName.StartsWith("Dish_"))
-    {
-        string localName = prefabName.Substring(5); // "핫도그", "붕어빵" 등
-        switch (localName)
+        if (prefabName.StartsWith("Dish_"))
         {
-            case "핫도그": return "hotdog";
-            case "달고나": return "dalgona";
-            case "호떡": return "hottuk";
-            case "붕어빵": return "boung";
+            string localName = prefabName.Substring(5); // "핫도그", "붕어빵" 등
+            switch (localName)
+            {
+                case "핫도그": return "hotdog";
+                case "달고나": return "dalgona";
+                case "호떡": return "hottuk";
+                case "붕어빵": return "boung";
+            }
+        }
+        return null;
+    }
+
+    private void LookAtNearestTable()
+    {
+        Table[] tables = Object.FindObjectsByType<Table>(FindObjectsSortMode.None);
+        if (tables.Length == 0) return;
+
+        Table nearest = null;
+        float minDist = float.MaxValue;
+        Vector3 myPos = transform.position;
+
+        foreach (var table in tables)
+        {
+            float dist = Vector3.Distance(myPos, table.transform.position);
+            if (dist < minDist)
+            {
+                minDist = dist;
+                nearest = table;
+            }
+        }
+
+        if (nearest != null)
+        {
+            Vector3 lookPos = nearest.transform.position;
+            lookPos.y = transform.position.y; // y축 고정(수평만 회전)
+            transform.LookAt(lookPos);
         }
     }
-    return null;
-}
 
-
+    private bool IsAtHome()
+    {
+        if (homePosition == null) return false;
+        return Vector3.Distance(transform.position, homePosition.position) < 0.2f;
+    }
 }

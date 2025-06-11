@@ -24,6 +24,7 @@ public class HotdogZone : MonoBehaviour
     [Header("파티클/이펙트")]
     public GameObject hotdogBlockParticle;
     private bool isHotdogBlocked = false;
+    public ParticleSystem hotdogParticle;
 
     public List<GameObject> hotdogList = new List<GameObject>(); // 생성된 핫도그들
 
@@ -31,6 +32,7 @@ public class HotdogZone : MonoBehaviour
     {
         cookSlider.gameObject.SetActive(false);
         dishZone = FindFirstObjectByType<DishZone>();
+        hotdogParticle.Stop();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -38,8 +40,8 @@ public class HotdogZone : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             player = other.GetComponent<Player>();
+            player.EnterZone(this);
             isPlayerInZone = true;
-            player.currentZone = this;
             Debug.Log("핫도그 제작 구역에 들어왔습니다. E키를 눌러 핫도그를 만드세요.");
         }
     }
@@ -49,11 +51,11 @@ public class HotdogZone : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             isPlayerInZone = false;
-            if (player != null && player.currentZone == this)
+            if (player != null)
             {
-                player.currentZone = null;
-                Debug.Log("핫도그 제작 구역을 나갔습니다.");
+                player.ExitZone(this);
             }
+            Debug.Log("핫도그 제작 구역을 나갔습니다.");
         }
     }
 
@@ -82,7 +84,7 @@ public class HotdogZone : MonoBehaviour
             return;
         }
         
-        if (isPlayerInZone && Input.GetKeyDown(KeyCode.E) && !isMaking)
+        if (isPlayerInZone && player != null && player.currentZone == this && Input.GetKeyDown(KeyCode.E) && !isMaking)
         {
             if (player.flourCount >= requiredFlour && player.sosageCount >= requiredSosage)
             {
@@ -91,12 +93,13 @@ public class HotdogZone : MonoBehaviour
             }
             else
             {
+                SoundManager.instance.PlayFail();
                 Debug.Log("재료가 부족합니다! (필요: 밀가루 1개, 소시지 1개)");
             }
         }
 
         // Q키로 핫도그 수집
-        if (isPlayerInZone && hotdogList.Count > 0 && Input.GetKeyDown(KeyCode.Q))
+        if (isPlayerInZone && hotdogList.Count > 0 && Input.GetKeyDown(KeyCode.E))
         {
             if (!string.IsNullOrEmpty(player.currentFood))
             {
@@ -121,6 +124,7 @@ public class HotdogZone : MonoBehaviour
         isMaking = true;
         SoundManager.instance.PlayFryer();
         Debug.Log("핫도그 제작 시작...");
+        hotdogParticle.Play();
         yield return new WaitForSeconds(makeTime);
 
         // 핫도그 프리팹 생성 위치 계산
@@ -128,10 +132,8 @@ public class HotdogZone : MonoBehaviour
         Vector3 spawnPos = hotdogSpawnPoint.position + Vector3.up * (index * 0.5f);
         GameObject newHotdog = Instantiate(hotdogPrefab, spawnPos, Quaternion.identity);
         hotdogList.Add(newHotdog);
-        dishZone.AddDish();
-        SoundManager.instance.StopFryer();
         Debug.Log("핫도그 제작 완료!");
-        SoundManager.instance.FryerFinish();
+        hotdogParticle.Stop();
         isMaking = false;
         player.currentZone = null;
     }

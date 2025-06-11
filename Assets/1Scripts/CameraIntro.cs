@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class CameraIntro : MonoBehaviour
 {
@@ -14,41 +15,91 @@ public class CameraIntro : MonoBehaviour
     private float timer = 0f;          // ⏲ 경과 시간
     private bool isTouring = true;     // 🎬 인트로 회전 중 여부 (false가 되면 멈춤)
 
-    void Start()
+    Player player;
+    public Text countdownText;
+
+    void OnEnable()
     {
-        // 🎯 시작 시 중심점을 바라보도록 방향 고정
+        
+        StartCoroutine(WaitAndStartIntro());
+    }
+
+    private IEnumerator WaitAndStartIntro()
+    {
+        yield return null;
+        Debug.Log("✅ CameraIntro Init 시작됨");
+
+        // Player와 GameManager가 생성될 때까지 대기
+        while (FindFirstObjectByType<Player>() == null || FindFirstObjectByType<GameManager>() == null)
+            yield return null;
+
+        player = FindFirstObjectByType<Player>();
+        if (player != null)
+            player.isMove = false;
         transform.LookAt(centerPoint);
+
+        // 기존 인트로 로직 실행
+        timer = 0f;
+        isTouring = true;
     }
 
     void Update()
     {
         if (!isTouring) return;
 
-        // ⏱ 시간 누적
         timer += Time.deltaTime;
 
-        // ⏹ 설정된 시간이 지나면 회전 종료
         if (timer >= duration)
         {
             isTouring = false;
-
-            // 🔔 회전 종료 시 GameManager에 알림 → 게임 시작
-            FindFirstObjectByType<GameManager>().StartGame();
+            StartCoroutine(ShowCountdownAndStartGame());
             return;
         }
 
-        // 🌀 카메라를 중심을 기준으로 회전시키는 로직
-        float angle = rotationSpeed * timer; // ⬅ 시간에 따라 회전 각도 증가
+        float angle = rotationSpeed * timer;
         Vector3 offset = new Vector3(
-            Mathf.Sin(angle * Mathf.Deg2Rad), // X축 방향 (좌우 원형 회전)
-            0.5f,                             // Y축 높이 (고정값, 적당히 떠 있게)
-            Mathf.Cos(angle * Mathf.Deg2Rad)  // Z축 방향 (앞뒤 원형 회전)
+            Mathf.Sin(angle * Mathf.Deg2Rad),
+            0.5f,
+            Mathf.Cos(angle * Mathf.Deg2Rad)
         ) * rotationRadius;
 
-        // 📍 카메라 위치 = 중심 위치 + 회전 오프셋
         transform.position = centerPoint.position + offset;
-
-        // 👁 중심 바라보기 유지
         transform.LookAt(centerPoint);
+
+        if (player != null)
+            player.isMove = false;
+    }
+
+    private IEnumerator ShowCountdownAndStartGame()
+    {
+        if (countdownText != null)
+            countdownText.gameObject.SetActive(true);
+
+        if (player != null)
+            player.isMove = false;
+
+        string[] texts = { "3", "2", "1", "시작!" };
+        for (int i = 0; i < texts.Length; i++)
+        {
+            if (countdownText != null)
+                countdownText.text = texts[i];
+
+            // "시작!"일 때 효과음 재생
+            if (texts[i] == "시작!" && SoundManager.instance != null)
+            {
+                SoundManager.instance.PlayStartHororagi();
+            }
+
+            yield return new WaitForSeconds(1f);
+        }
+
+        if (countdownText != null)
+            countdownText.gameObject.SetActive(false);
+
+        if (player != null)
+            player.isMove = true;
+
+        FindFirstObjectByType<GameManager>().StartGame();
+        FindFirstObjectByType<FollowCamera>().allowSpaceLock = true;
     }
 }

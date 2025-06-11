@@ -14,10 +14,14 @@ public class CustomSpawner : MonoBehaviour
     private HashSet<Transform> occupiedSpawnPoints = new HashSet<Transform>(); // 점유된 스폰 포인트
     private Dictionary<GameObject, Transform> customerSpawnPoints = new Dictionary<GameObject, Transform>(); // 손님과 스폰 포인트 매핑
     private Dictionary<Transform, float> spawnPointCooldowns = new Dictionary<Transform, float>(); // 스폰 포인트 쿨다운 관리
+    private float badCustomerEnableTime = 20f; // 20초 후부터 나쁜손님 등장
+    private float normalCustomerEnableTime = 10f; // 10초 후부터 일반손님 등장
+    private float gameStartTime;
 
     private void Start()
     {
         availableSpawnPoints.AddRange(spawnPoints);
+        gameStartTime = Time.time;
         StartCoroutine(SpawnLoop());
         StartCoroutine(UpdateCooldowns()); // 쿨다운 업데이트 시작
     }
@@ -56,9 +60,9 @@ public class CustomSpawner : MonoBehaviour
             int activeCustomers = GameObject.FindGameObjectsWithTag("Custom").Length;
 
             // 최대 손님 수를 계산
-            // clearedCustomerCount가 3 미만이면 최대 6명, 그 이상이면 최대 12명
+            // clearedCustomerCount가 3 미만이면 최대 6명, 그 이상이면 최대 9명
             // 하지만 최대값은 무조건 12, 최소는 1로 Clamp 처리
-            int maxCustomers = Mathf.Clamp(clearedCustomerCount < 3 ? 9 : 4, 1, 9);
+            int maxCustomers = Mathf.Clamp(clearedCustomerCount < 3 ? 6 : 4, 1, 9);
 
             // 현재 손님 수가 최대값보다 작다면 손님 스폰
             if (activeCustomers < maxCustomers)
@@ -111,7 +115,19 @@ public class CustomSpawner : MonoBehaviour
         // 랜덤 선택
         Transform selectedSpawnPoint = validSpawnPoints[Random.Range(0, validSpawnPoints.Count)];
 
-        bool spawnBad = !GameManager.instance.hasBadCustomer && Random.value < badCustomerChance;
+        bool canSpawnBad = (Time.time - gameStartTime) >= badCustomerEnableTime;
+        bool canSpawnNormal = (Time.time - gameStartTime) >= normalCustomerEnableTime;
+
+        bool spawnBad = false;
+        if (canSpawnBad && !GameManager.instance.hasBadCustomer && Random.value < badCustomerChance)
+        {
+            spawnBad = true;
+        }
+        else if (!canSpawnNormal)
+        {
+            // 아직 일반손님 등장 시간 전이면, 손님을 스폰하지 않음
+            return;
+        }
 
         GameObject prefabToSpawn = spawnBad ?
             badCustomerPrefabs[Random.Range(0, badCustomerPrefabs.Length)] :

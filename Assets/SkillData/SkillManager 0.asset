@@ -16,7 +16,7 @@ MonoBehaviour:
   skillId: 0
   skillName: "\uC6A9\uB2F9\uCC9C\uCCAD"
   skillDesc: "{0} \uCD08\uB9C8\uB2E4 \uC124\uD0D5 \uD68D\uB4DD"
-  skillIcon: {fileID: 21300000, guid: 2f5c685449e542c4c8a105e2b60a954f, type: 3}
+  skillIcon: {fileID: 21300000, guid: 2755347dbb5fdbe478ffd8cd2fd9fec0, type: 3}
   values:
   - 3
   - 2
