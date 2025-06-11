@@ -60,9 +60,9 @@ public class CustomSpawner : MonoBehaviour
             int activeCustomers = GameObject.FindGameObjectsWithTag("Custom").Length;
 
             // 최대 손님 수를 계산
-            // clearedCustomerCount가 3 미만이면 최대 6명, 그 이상이면 최대 12명
+            // clearedCustomerCount가 3 미만이면 최대 6명, 그 이상이면 최대 9명
             // 하지만 최대값은 무조건 12, 최소는 1로 Clamp 처리
-            int maxCustomers = Mathf.Clamp(clearedCustomerCount < 3 ? 9 : 4, 1, 9);
+            int maxCustomers = Mathf.Clamp(clearedCustomerCount < 3 ? 6 : 4, 1, 9);
 
             // 현재 손님 수가 최대값보다 작다면 손님 스폰
             if (activeCustomers < maxCustomers)

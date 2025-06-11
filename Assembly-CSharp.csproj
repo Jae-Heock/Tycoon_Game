@@ -69,6 +69,7 @@
     <Compile Include="Assets\1Scripts\Table.cs" />
     <Compile Include="Assets\1Scripts\SoundManager.cs" />
     <Compile Include="Assets\1Scripts\Test.cs" />
+    <Compile Include="Assets\1Scripts\OrderListToggle.cs" />
     <Compile Include="Assets\QuickOutline\Scripts\Outline.cs" />
     <Compile Include="Assets\1Scripts\SkillManager.cs" />
     <Compile Include="Assets\1Scripts\SosageZone.cs" />
@@ -98,8 +99,10 @@
     <Compile Include="Assets\1Scripts\GameManager.cs" />
     <Compile Include="Assets\1Scripts\LevelUp.cs" />
     <Compile Include="Assets\1Scripts\CustomSpawner.cs" />
+    <Compile Include="Assets\1Scripts\OrderListManager.cs" />
     <Compile Include="Assets\1Scripts\ReceiptToggle.cs" />
     <Compile Include="Assets\1Scripts\Player.cs" />
+    <Compile Include="Assets\1Scripts\TitleSceneInit.cs" />
     <Compile Include="Assets\1Scripts\SkillUIManager.cs" />
     <Compile Include="Assets\1Scripts\CustomTable.cs" />
     <Compile Include="Assets\1Scripts\BadCustomerUIManager.cs" />

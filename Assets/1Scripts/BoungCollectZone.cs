@@ -17,7 +17,7 @@ public class BoungCollectZone : MonoBehaviour
         {
             player = other.GetComponent<Player>();
             isPlayerInZone = true;
-            player.currentZone = this;
+            player.EnterZone(this);
             Debug.Log("붕어빵 수집 구역에 들어왔습니다. Q키를 눌러 붕어빵을 집으세요.");
         }
     }
@@ -27,17 +27,17 @@ public class BoungCollectZone : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             isPlayerInZone = false;
-            if (player != null && player.currentZone == this)
+            if (player != null)
             {
-                player.currentZone = null;
-                Debug.Log("붕어빵 수집 구역을 나갔습니다.");
+                player.ExitZone(this);
             }
+            Debug.Log("붕어빵 수집 구역을 나갔습니다.");
         }
     }
 
     private void Update()
     {
-        if (isPlayerInZone && Input.GetKeyDown(KeyCode.Q))
+        if (isPlayerInZone && player != null && player.currentZone == this && Input.GetKeyDown(KeyCode.E))
         {
             if (boungZone != null && boungZone.boungList.Count > 0)
             {

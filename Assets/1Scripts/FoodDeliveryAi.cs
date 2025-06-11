@@ -126,6 +126,20 @@ public class FoodDeliveryAI : MonoBehaviour
         Destroy(heldFoodObject);
         heldFoodObject = null;
         player.Point += player.basePoint + player.bonusPoint;
+
+        // 접시 추가
+        DishZone dishZone = FindFirstObjectByType<DishZone>();
+        if (dishZone != null)
+        {
+            dishZone.AddDish();
+        }
+
+        // 쓰레기 생성
+        if (targetCustomer.trashPrefab != null && targetCustomer.spawnPoint != null)
+        {
+            Instantiate(targetCustomer.trashPrefab, targetCustomer.spawnPoint.position, Quaternion.identity);
+        }
+
         targetCustomer.ReceiveAutoDeliveredFood(deliveredName);
         targetCustomer = null;
         if (targetTable != null) targetTable.UnlockTable();

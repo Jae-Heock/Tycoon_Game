@@ -46,7 +46,6 @@ public class CameraIntro : MonoBehaviour
     void Update()
     {
         if (!isTouring) return;
-        Debug.Log($"[CameraIntro] 회전 중, 시간: {timer}");
 
         timer += Time.deltaTime;
 
@@ -79,11 +78,18 @@ public class CameraIntro : MonoBehaviour
         if (player != null)
             player.isMove = false;
 
-        string[] texts = { "3", "2", "1", "Start!" };
+        string[] texts = { "3", "2", "1", "시작!" };
         for (int i = 0; i < texts.Length; i++)
         {
             if (countdownText != null)
                 countdownText.text = texts[i];
+
+            // "시작!"일 때 효과음 재생
+            if (texts[i] == "시작!" && SoundManager.instance != null)
+            {
+                SoundManager.instance.PlayStartHororagi();
+            }
+
             yield return new WaitForSeconds(1f);
         }
 
@@ -95,6 +101,5 @@ public class CameraIntro : MonoBehaviour
 
         FindFirstObjectByType<GameManager>().StartGame();
         FindFirstObjectByType<FollowCamera>().allowSpaceLock = true;
-
     }
 }

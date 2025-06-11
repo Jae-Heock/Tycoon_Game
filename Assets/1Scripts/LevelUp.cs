@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.Progress;
+// using static UnityEditor.Progress;
 
 /// <summary>
 /// 레벨업 시 스킬 선택 UI를 관리하는 클래스

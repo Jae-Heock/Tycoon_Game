@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
     public SettingPanelController settingPanel;
+    public GameObject pause;
 
     [Header("# Game Control")]
     public float gameTime;
@@ -75,14 +76,39 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             SoundManager.instance.ButtonClick();
-            if (!settingPanel.isOpen)
+
+            if(settingPanel.isOpen)
+            {
+                settingPanel.HidePanel();
+                return;
+            }
+
+            if(settingPanel.returnToTitleUi.activeSelf)
+            {
+                settingPanel.HideReturnTiTitleUi();
+                return;
+            }
+
+            if(settingPanel.quitGameUi.activeSelf)
+            {
+                settingPanel.HideQuitGameUi();
+                return;
+            }
+
+            bool isPause = pause.activeSelf;
+
+            if (!isPause)
             {
                 SoundManager.instance.PauseBGM();
-                settingPanel.ShowPanel();
+                pause.SetActive(true);
+                Time.timeScale = 0;
+                // settingPanel.ShowPanel();
             }
             else
             {
-                settingPanel.HidePanel();
+                pause.SetActive(false);
+                Time.timeScale = 1;
+                // settingPanel.HidePanel();
                 SoundManager.instance.ResumeBGM();
             }
         }
