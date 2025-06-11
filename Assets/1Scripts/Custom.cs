@@ -47,7 +47,10 @@ public class Custom : MonoBehaviour
             GameManager.instance.badCustomer = this;
 
             if (badType == BadType.Stun)
+            {
+                player = FindFirstObjectByType<Player>();
                 stunCoroutine = StartCoroutine(StunPlayerRoutine());
+            }
         }
     }
 
@@ -81,7 +84,6 @@ public class Custom : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             isPlayerInZone = false;
-            isRequesting = false;
         }
     }
 
@@ -94,6 +96,7 @@ public class Custom : MonoBehaviour
 
         GameObject prefabToSpawn = null;
 
+        // 기존 아이콘이 있으면 삭제
         if (orderIconObject != null)
         {
             switch (requestedFood)
@@ -153,9 +156,9 @@ public class Custom : MonoBehaviour
                     }
                     return;
                 case BadType.Stun:
-                    if (player.boungCount >= 2)
+                    if (player.boungCount >= 1)
                     {
-                        player.boungCount -= 2;
+                        player.boungCount -= 1;
                         player.Point += 10;
                         if (stunCoroutine != null) StopCoroutine(stunCoroutine);
                         Debug.Log("붕어빵 2개를 줘서 나쁜 손님 제거!");
@@ -195,11 +198,12 @@ public class Custom : MonoBehaviour
     {
         if (itemCount > 0)
         {
-            itemCount--;
+            // itemCount--;
             player.Point += player.basePoint + player.bonusPoint;
             player.customerSuccessCount++;
             GameManager.instance.HappyCat();
             Debug.Log($"{itemName} 전달 성공!");
+            player.ClearHeldFood(); // ← 이 줄 추가!
             return true;
         }
         else
@@ -273,9 +277,9 @@ public class Custom : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(10f);
+            yield return new WaitForSeconds(12f);
             if (player != null)
-                player.Stun(0.5f);
+                player.Stun(2f);
         }
     }
 }

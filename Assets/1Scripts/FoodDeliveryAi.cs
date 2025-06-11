@@ -5,98 +5,205 @@ using System.Collections;
 public class FoodDeliveryAI : MonoBehaviour
 {
     public Transform homePosition; // AI가 생성된 위치와 대기할 위치 (홈 위치)
+    public Transform foodHoldPoint; // Inspector에서 지정 (AI가 음식을 들 위치)
+    private GameObject heldFoodObject;
+    private Table targetTable;
+    private Custom targetCustomer;
+    private NavMeshAgent agent;
+    private Player player;
 
-    private string foodName;                       // AI가 배달할 음식 이름
-    private Custom targetCustomer;             // 현재 배달할 손님
-    private NavMeshAgent agent;                    // Unity의 네비게이션 이동 컴포넌트
-    private bool isBusy = false;                   // 현재 배달 중인 상태
-    private bool isReturningHome = false;          // 홈으로 복귀 중인 상태
-
-    Player player;                                 // 플레이어 참조
+    private enum State { Idle, MovingToTable, PickingUp, MovingToCustomer, Delivering }
+    private State aiState = State.Idle;
 
     private void Start()
     {
-        player = GameManager.instance.player;      // GameManager에서 플레이어 참조 가져오기
-        agent = GetComponent<NavMeshAgent>();      // NavMeshAgent 컴포넌트 할당
-        ReturnHome();                              // 초기 상태로 AI를 홈으로 이동
-
-        StartCoroutine(DeliveryCheckLoop());       // 배달 상태 확인용 코루틴 시작
+        player = GameManager.instance.player;
+        agent = GetComponent<NavMeshAgent>();
+        aiState = State.Idle;
     }
 
-    // AI의 상태를 지속적으로 체크하는 루프
-    IEnumerator DeliveryCheckLoop()
+    private void Update()
     {
-        while (true)
+        switch (aiState)
         {
-            // 배달 중이고 손님에게 도착했는지 체크
-            if (isBusy && targetCustomer != null)
-            {
-                float dist = Vector3.Distance(transform.position, targetCustomer.transform.position);
-                if (dist < 1.5f)
+            case State.Idle:
+                if (heldFoodObject == null)
+                    FindTableAndCustomer(); // 평소처럼 테이블과 손님을 찾음
+                else
+                    FindCustomerForHeldFood(); // 음식이 있는 상태면 손님만 찾음
+                break;
+
+            case State.MovingToTable:
+                if (targetTable != null && agent.remainingDistance < 0.2f && !agent.pathPending)
                 {
-                    DeliverFood(); // 충분한 거리 도달하면 배달 시작
+                    aiState = State.PickingUp;
+                }
+                break;
+
+            case State.PickingUp:
+                PickUpFood();
+                break;
+                
+            case State.MovingToCustomer:
+                if (targetCustomer == null || !targetCustomer.gameObject.activeSelf)
+                {
+                    HandleMissingCustomer(); // 👈 추가된 함수 호출
+                    break;
+                }
+                if (agent.remainingDistance < 0.2f && !agent.pathPending)
+                {
+                    aiState = State.Delivering;
+                }
+                break;
+
+            case State.Delivering:
+                DeliverFood();
+                break;
+        }
+    }
+
+    void FindTableAndCustomer()
+    {
+        Table[] tables = Object.FindObjectsByType<Table>(FindObjectsSortMode.None);
+        foreach (var table in tables)
+        {
+            if (table.isLockedByAI) continue;
+            string foodName = table.GetCurrentFoodName();
+            if (!string.IsNullOrEmpty(foodName))
+            {
+                Custom[] customers = Object.FindObjectsByType<Custom>(FindObjectsSortMode.None);
+                foreach (var customer in customers)
+                {
+                    if (customer.RequestedFood == foodName && !customer.IsBeingDelivered)
+                    {
+                        targetTable = table;
+                        targetCustomer = customer;
+                        customer.MarkBeingDelivered();
+                        table.LockTable();
+                        agent.SetDestination(table.pickupPoint != null ? table.pickupPoint.position : table.transform.position);
+                        aiState = State.MovingToTable;
+                        return;
+                    }
                 }
             }
-
-            // 홈으로 복귀 중이고 도착했는지 확인
-            if (isReturningHome && !agent.pathPending && agent.remainingDistance < 0.1f)
-            {
-                Debug.Log("AI가 홈에 도착했습니다.");
-                isBusy = false;           // 배달 가능 상태로 복귀
-                isReturningHome = false; // 복귀 완료
-            }
-
-            yield return new WaitForSeconds(0.5f); // 0.5초마다 체크
         }
     }
 
-    // 배달 요청을 외부(음식 카운터 등)에서 받아 처리하는 함수
-    public void AssignDelivery(string foodName, Custom customer)
+    void PickUpFood()
     {
-        if (isBusy)
+        if (targetTable == null) { aiState = State.Idle; return; }
+        heldFoodObject = targetTable.PickupFood();
+        if (heldFoodObject != null && foodHoldPoint != null)
         {
-            Debug.LogWarning("AI가 이미 배달 중인 상태입니다");
-            return; // 중복 배달 방지
+            heldFoodObject.transform.SetParent(foodHoldPoint);
+            heldFoodObject.transform.localPosition = Vector3.zero;
+            heldFoodObject.transform.localRotation = Quaternion.identity;
+            heldFoodObject.transform.localScale = Vector3.one * 1f;
         }
-
-        // 배달 정보 설정
-        this.foodName = foodName;
-        targetCustomer = customer;
-        isBusy = true;
-
-        Debug.Log($"AI가 {foodName} 를 손님에게 배달 중...");
-        agent.SetDestination(customer.transform.position); // 손님 위치로 이동 시작
+        // 손님에게 이동
+        if (targetCustomer != null)
+        {
+            agent.SetDestination(targetCustomer.transform.position);
+            aiState = State.MovingToCustomer;
+        }
+        else
+        {
+            aiState = State.Idle;
+        }
     }
 
-    // 손님에게 음식을 전달하는 함수 (거리 체크에서 호출됨)
     void DeliverFood()
     {
-        Debug.Log("배달 완료");
-
-        player.Point += player.basePoint + player.bonusPoint;// 배달 완료 시 플레이어 점수 증가
-        targetCustomer.ReceiveAutoDeliveredFood(foodName); // 손님에게 배달 완료 처리
-
-        // 상태 초기화
-        foodName = null;
+        if (targetCustomer == null || heldFoodObject == null)
+        {
+            if (targetTable != null) targetTable.UnlockTable();
+            aiState = State.Idle;
+            return;
+        }
+        string deliveredName = targetCustomer.RequestedFood;
+        Destroy(heldFoodObject);
+        heldFoodObject = null;
+        player.Point += player.basePoint + player.bonusPoint;
+        targetCustomer.ReceiveAutoDeliveredFood(deliveredName);
         targetCustomer = null;
-
-        ReturnHome(); // 배달 완료 후 홈으로 이동 시작
-    }
-
-    // AI가 홈(homePosition)으로 복귀하는 함수
-    void ReturnHome()
-    {
+        if (targetTable != null) targetTable.UnlockTable();
+        targetTable = null;
         if (homePosition != null)
         {
-            Debug.Log("홈으로 복귀 중...");
-            isReturningHome = true;
-            agent.SetDestination(homePosition.position); // 복귀 시작
+            agent.SetDestination(homePosition.position);
+        }
+        aiState = State.Idle;
+    }
+
+    private void HandleMissingCustomer()
+    {
+        Debug.Log("❗ 배달 도중 손님이 사라졌습니다. 대기 위치로 복귀합니다.");
+
+        if (targetTable != null)
+        {
+            targetTable.UnlockTable(); // 테이블 잠금 해제
+            targetTable = null;
+        }
+
+        targetCustomer = null;
+
+        // 음식을 들고 있는 상태를 유지한 채로 홈 포지션으로 이동
+        if (homePosition != null)
+        {
+            agent.SetDestination(homePosition.position);
+        }
+
+        aiState = State.Idle;
+    }
+
+void FindCustomerForHeldFood()
+{
+    if (heldFoodObject == null) return;
+
+    // Dish 프리팹 이름을 정규화된 음식 이름으로 변환
+    string prefabName = heldFoodObject.name.Replace("(Clone)", "").Trim();  // 예: "Dish_핫도그"
+    string foodName = ConvertDishPrefabNameToFoodName(prefabName);          // 결과: "hotdog"
+
+    Debug.Log($"🍱 들고 있는 음식: {prefabName} → 비교용 이름: {foodName}");
+
+    if (string.IsNullOrEmpty(foodName)) return;
+
+    Custom[] customers = Object.FindObjectsByType<Custom>(FindObjectsSortMode.None);
+    foreach (var customer in customers)
+    {
+        if (customer.RequestedFood.ToLower() == foodName && !customer.IsBeingDelivered)
+        {
+            targetCustomer = customer;
+            customer.MarkBeingDelivered();
+            agent.SetDestination(customer.transform.position);
+            aiState = State.MovingToCustomer;
+            Debug.Log($"💡 기존에 들고 있던 {foodName}을 새로운 손님에게 배달 시작!");
+            return;
         }
     }
 
-    // 외부에서 AI가 현재 배달 중인지 확인할 수 있는 함수
-    public bool IsBusy()
+    // 아직 배달할 손님이 없다면 홈 포지션으로 이동
+    if (homePosition != null)
     {
-        return isBusy;
+        agent.SetDestination(homePosition.position);
     }
+}
+
+string ConvertDishPrefabNameToFoodName(string prefabName)
+{
+    if (prefabName.StartsWith("Dish_"))
+    {
+        string localName = prefabName.Substring(5); // "핫도그", "붕어빵" 등
+        switch (localName)
+        {
+            case "핫도그": return "hotdog";
+            case "달고나": return "dalgona";
+            case "호떡": return "hottuk";
+            case "붕어빵": return "boung";
+        }
+    }
+    return null;
+}
+
+
 }

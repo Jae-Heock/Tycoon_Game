@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using static SkillData;
 using System.Collections.Generic;
+using UnityEngine.AI;
 
 /// <summary>
 /// 스킬 시스템의 핵심 관리자 클래스
@@ -14,10 +15,15 @@ public class SkillManager : MonoBehaviour
 
     public SkillData selectedSkill;        // 현재 선택된 스킬
     private Player player;                 // 플레이어 참조
-    private FoodCounter foodCounter;       // 음식 카운터 참조
     private DalgonaZone dalgonaZone;       // 달고나 제작 구역 참조
     private CustomSpawner customSpawner;    // 나쁜손님 스폰 확률 조절용
     private Dictionary<SkillType, Coroutine> activeCoroutines = new();  // 활성화된 코루틴 관리
+
+    [Header("Auto Delivery AI")]
+    [SerializeField] private GameObject deliveryAIPrefab;  // AI 프리팹
+    [SerializeField] private Transform[] spawnPoints;      // AI 스폰 위치들
+
+    private NavMeshAgent agent;
 
     /// <summary>
     /// 초기화: 필요한 컴포넌트 참조 설정
@@ -25,7 +31,6 @@ public class SkillManager : MonoBehaviour
     private void Awake()
     {
         player = Object.FindFirstObjectByType<Player>();
-        foodCounter = Object.FindFirstObjectByType<FoodCounter>();
         dalgonaZone = Object.FindFirstObjectByType<DalgonaZone>();
         customSpawner = Object.FindFirstObjectByType<CustomSpawner>();
     }
@@ -84,7 +89,7 @@ public class SkillManager : MonoBehaviour
                 SpawnAutoDeliveryAI(value);
                 break;
             case SkillType.PlusPoint:
-                player.bonusPoint = Mathf.RoundToInt(value);  // 예: 1, 2, 3
+                player.bonusPoint = Mathf.RoundToInt(value); 
                 break;
             case SkillType.ReduceBadCustomerChance:
                 if (customSpawner != null)
@@ -96,8 +101,6 @@ public class SkillManager : MonoBehaviour
             case SkillType.AutoFlour:
                 newRoutine = StartCoroutine(AutoGenerateFlour(value, count));
                 break;
-
-
         }
 
         // 새로운 코루틴 저장
@@ -168,17 +171,57 @@ public class SkillManager : MonoBehaviour
         }
     }
 
-    void SpawnAutoDeliveryAI(float value)
+    private void SpawnAutoDeliveryAI(float value)
     {
-        for (int i = 0; i < value; i++)
+        if (deliveryAIPrefab == null)
         {
-            foodCounter.SpawnNewAI();
+            Debug.LogError("Auto Delivery AI Prefab이 설정되지 않았습니다!");
+            return;
         }
 
-        Debug.Log($"AutoDelivery 스킬 활성화: AI {value}개 추가");
+        if (spawnPoints == null || spawnPoints.Length == 0)
+        {
+            Debug.LogError("AI 스폰 포인트가 설정되지 않았습니다!");
+            return;
+        }
+
+        // value를 정수로 변환하여 AI 개수로 사용
+        int aiCount = Mathf.RoundToInt(value);
+        
+        for (int i = 0; i < aiCount; i++)
+        {
+            // 랜덤한 스폰 포인트 선택
+            Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
+            if (spawnPoint == null)
+            {
+                Debug.LogError("선택된 스폰 포인트가 null입니다!");
+                continue;
+            }
+
+            // AI 생성
+            GameObject aiObject = Instantiate(deliveryAIPrefab, spawnPoint.position, spawnPoint.rotation);
+            if (aiObject == null)
+            {
+                Debug.LogError("AI 생성에 실패했습니다!");
+                continue;
+            }
+
+            FoodDeliveryAI ai = aiObject.GetComponent<FoodDeliveryAI>();
+            if (ai == null)
+            {
+                Debug.LogError("생성된 AI에 FoodDeliveryAI 컴포넌트가 없습니다!");
+                Destroy(aiObject);
+                continue;
+            }
+
+            // 홈 포지션 설정
+            ai.homePosition = spawnPoint;
+        }
+
+        Debug.Log($"AutoDelivery 스킬 활성화: AI {aiCount}개 생성");
     }
 
-// 자동 밀가루 
+    // 자동 밀가루 
     IEnumerator AutoGenerateFlour(float interval, int count)
     {
         while (true)
@@ -188,6 +231,21 @@ public class SkillManager : MonoBehaviour
             {
                 player.flourCount++;
             }
+        }
+    }
+
+    private void Start()
+    {
+        player = GameManager.instance.player;
+        agent = GetComponent<NavMeshAgent>();
+    }
+
+    private void Update()
+    {
+        // 테스트용: G키를 누르면 AI 생성
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            SpawnAutoDeliveryAI(1); // 1개의 AI 생성
         }
     }
 }

@@ -15,7 +15,7 @@ public class TrashZone : MonoBehaviour
 
     public Transform trashPoint;         // 쓰레기 생성 위치
     private List<GameObject> trashList = new List<GameObject>();  // 생성된 쓰레기 오브젝트 목록
-    public GameObject[] trashPrefabs;       // 쓰레기 프리팹
+    public GameObject trashPrefab;       // 쓰레기 프리팹(단일)
 
     private void Awake()
     {
@@ -31,7 +31,7 @@ public class TrashZone : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(Random.Range(5, 10));
+            yield return new WaitForSeconds(Random.Range(100, 200));
 
             if (trashCount < maxTrash)
             {
@@ -89,28 +89,24 @@ public class TrashZone : MonoBehaviour
         }
     }
 
-public void HoldItem(string itemName)
-{
-    if (itemName == "trash")
+    public void HoldItem(string itemName)
     {
-        // ✅ 프리팹이 비어있지 않다면 랜덤으로 선택
-        if (trashPrefabs.Length == 0) return;
+        if (itemName == "trash")
+        {
+            if (trashPrefab == null) return;
+            GameObject trash = Instantiate(trashPrefab, trashPoint);
 
-        GameObject prefabToUse = trashPrefabs[Random.Range(0, trashPrefabs.Length)];
-        GameObject trash = Instantiate(prefabToUse, trashPoint);
+            // 원형 반경 내 무작위 위치에 생성 (X,Z) + Y축으로 쌓기
+            Vector2 circle = Random.insideUnitCircle * 0.7f;
+            Vector3 offset = new Vector3(circle.x, trashList.Count * 0.3f, circle.y); // Y축으로 쌓기
 
-        // 원형 반경 내 무작위 위치에 생성
-        Vector2 circle = Random.insideUnitCircle * 0.7f;
-        Vector3 offset = new Vector3(circle.x, 0.1f, circle.y);
+            trash.transform.localPosition = offset;
+            trash.transform.localRotation = Quaternion.Euler(0f, Random.Range(0f, 360f), 0f);
+            trash.transform.localScale = Vector3.one * 60f;
 
-        trash.transform.localPosition = offset;
-        trash.transform.localRotation = Quaternion.Euler(0f, Random.Range(0f, 360f), 0f);
-        trash.transform.localScale = Vector3.one * 0.1f;
-
-        trashList.Add(trash);
+            trashList.Add(trash);
+        }
     }
-}
-
 
     private void OnTriggerEnter(Collider other)
     {
