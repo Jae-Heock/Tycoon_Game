@@ -49,19 +49,28 @@ public class CustomSpawner : MonoBehaviour
 
     IEnumerator SpawnLoop()
     {
+        // 무한 루프를 돌며 주기적으로 손님을 스폰하는 코루틴
         while (true)
         {
+            // 현재 활성화된 손님 수 계산 (태그가 "Custom"인 객체들)
             int activeCustomers = GameObject.FindGameObjectsWithTag("Custom").Length;
-            int maxCustomers = Mathf.Clamp(clearedCustomerCount < 3 ? 6 : 12, 1, 12);
 
+            // 최대 손님 수를 계산
+            // clearedCustomerCount가 3 미만이면 최대 6명, 그 이상이면 최대 12명
+            // 하지만 최대값은 무조건 12, 최소는 1로 Clamp 처리
+            int maxCustomers = Mathf.Clamp(clearedCustomerCount < 3 ? 9 : 4, 1, 9);
+
+            // 현재 손님 수가 최대값보다 작다면 손님 스폰
             if (activeCustomers < maxCustomers)
             {
-                SpawnRandomCustomer();
+                SpawnRandomCustomer(); // 랜덤 위치에 손님 스폰
             }
 
+            // 다음 스폰을 위해 10초 대기
             yield return new WaitForSeconds(10f);
         }
-    }
+    }   
+
 
     public void SpawnRandomCustomer()
     {
@@ -72,12 +81,30 @@ public class CustomSpawner : MonoBehaviour
         {
             // 쿨다운 중이 아니고 점유되지 않은 포인트만 선택
             if (!occupiedSpawnPoints.Contains(point) && !spawnPointCooldowns.ContainsKey(point))
-                validSpawnPoints.Add(point);
+            {
+                // 해당 위치에 쓰레기가 있는지 확인
+                Collider[] colliders = Physics.OverlapSphere(point.position, 0.1f);
+                bool hasTrash = false;
+                foreach (Collider collider in colliders)
+                {
+                    if (collider.CompareTag("Trash"))
+                    {
+                        hasTrash = true;
+                        break;
+                    }
+                }
+
+                // 쓰레기가 없는 위치만 추가
+                if (!hasTrash)
+                {
+                    validSpawnPoints.Add(point);
+                }
+            }
         }
 
         if (validSpawnPoints.Count == 0)
         {
-            Debug.LogWarning("모든 스폰 포인트가 사용 중이거나 쿨다운 중입니다.");
+            Debug.LogWarning("모든 스폰 포인트가 사용 중이거나 쿨다운 중이거나 쓰레기가 있습니다.");
             return;
         }
 
@@ -150,6 +177,30 @@ public class CustomSpawner : MonoBehaviour
             
             // 쿨다운 설정 (3초)
             spawnPointCooldowns[spawnPoint] = Time.time + 3f;
+        }
+    }
+
+    public void OnTrashCleaned(Vector3 position)
+    {
+        // 해당 위치의 스폰 포인트 찾기
+        Transform spawnPoint = null;
+        foreach (Transform point in spawnPoints)
+        {
+            if (Vector3.Distance(point.position, position) < 0.1f)
+            {
+                spawnPoint = point;
+                break;
+            }
+        }
+
+        if (spawnPoint != null)
+        {
+            // 스폰 포인트를 다시 사용 가능하게 설정
+            occupiedSpawnPoints.Remove(spawnPoint);
+            spawnPointCooldowns.Remove(spawnPoint);
+            
+            // 새로운 손님 생성
+            SpawnRandomCustomer();
         }
     }
 }

@@ -39,6 +39,7 @@ public class SugarZone : MonoBehaviour
     {
         if (isPlayerInZone && Input.GetKeyDown(KeyCode.E))
         {
+            SoundManager.instance.PlayGetItem();
             player.sugarCount++;
             player.HoldItem("sugar");
             Debug.Log($"설탕 +1 (현재: {player.sugarCount})");

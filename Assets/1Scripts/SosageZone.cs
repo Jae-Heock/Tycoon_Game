@@ -49,6 +49,7 @@ public class SosageZone : MonoBehaviour
     {
         if (isPlayerInZone && Input.GetKeyDown(KeyCode.E))
         {
+            SoundManager.instance.PlayGetItem();
             player.sosageCount++;
             player.HoldItem("sosage");
             Debug.Log($"소시지 +1 (현재: {player.sosageCount})");

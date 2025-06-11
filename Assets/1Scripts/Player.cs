@@ -9,12 +9,13 @@ using System.Collections.Generic;
 public class Player : MonoBehaviour
 {
     // 이동 관련 변수
-    public float baseMoveSpeed = 3f;     // 기본 이동 속도
+    public float baseMoveSpeed = 5f;     // 기본 이동 속도
     public float moveSpeed = 3f;         // 현재 이동 속도
     public float skillSpeed = -1f;       // 스킬로 인한 속도 변화 (기본값 -1)
 
     float hAxis;                         // 수평 입력값
     float vAxis;                         // 수직 입력값
+    bool isBorder;
 
     public bool isMove;                  // 이동 가능 여부 (true: 이동 가능 / false: 이동 불가)
     public float cookTime = 5f;          // 기본 조리 시간 5초, 스킬로 감소 가능
@@ -80,13 +81,37 @@ public class Player : MonoBehaviour
         rigid.constraints = RigidbodyConstraints.FreezeRotation;
         isMove = true;
     }
-
+    
     private void Update()
     {
         if (isStunned) return;
 
+        StopToWall();
         Move();
         UpdateItemVisibility();
+
+        
+        // CustomTable에 음식 올리기
+        if (currentZone is CustomTable customTable && Input.GetKeyDown(KeyCode.E))
+        {
+            if (!string.IsNullOrEmpty(currentFood))
+            {
+                GameObject prefab = GetFoodPrefab(currentFood);
+                if (customTable.PlaceFood(currentFood, prefab))
+                {
+                    ClearHeldFood();
+                    Debug.Log($"{currentFood}을(를) 테이블에 올렸습니다.");
+                }
+                else
+                {
+                    Debug.Log("테이블에 이미 음식이 있습니다.");
+                }
+            }
+            else
+            {
+                Debug.Log("플레이어가 들고 있는 음식이 없습니다.");
+            }
+        }
 
         bool isCookedFood = currentFood == "hotdog" || currentFood == "dalgona" || currentFood == "hottuk" || currentFood == "boung";
         bool isDalgonaCooking = isCooking;
@@ -126,14 +151,37 @@ public class Player : MonoBehaviour
         moveVec = (camForward * vAxis + camRight * hAxis).normalized;
 
         // 이동 적용
-        transform.position += moveVec * moveSpeed * Time.deltaTime;
+        if (!isBorder)
+        {
+            transform.position += moveVec * moveSpeed * Time.deltaTime;
+        }
+
         if (moveVec != Vector3.zero)
         {
             transform.LookAt(transform.position + moveVec); // 캐릭터가 이동 방향으로 회전
         }
 
         anim.SetBool("isWalk", moveVec != Vector3.zero); // 걷기 애니메이션
-}
+    }
+
+    void StopToWall()
+    {
+        if (moveVec == Vector3.zero)
+        {
+            isBorder = false;
+            return;
+        }
+
+        Vector3 rayStart = transform.position + Vector3.up * 0.3f + moveVec * 0.1f;
+        float radius = 0.2f;
+        float castDistance = 0.5f;
+
+        RaycastHit hit;
+        isBorder = Physics.SphereCast
+        (rayStart, radius, moveVec, out hit, castDistance, LayerMask.GetMask("Wall"), QueryTriggerInteraction.Ignore);
+        
+        Debug.DrawRay(rayStart, moveVec * castDistance, isBorder ? Color.red : Color.green);
+    }
 
     public void HoldItem(string itemName)
     {
@@ -285,18 +333,18 @@ public class Player : MonoBehaviour
             stunEffectObject.SetActive(false);
 
         Debug.Log("플레이어 기절 해제");
-}
+    }
 
 
     public GameObject GetFoodPrefab(string itemName)
     {
-    switch (itemName)
-    {
-        case "hotdog": return hotdogPrefab;
-        case "dalgona": return dalgonaPrefab;
-        case "hottuk": return hottukPrefab;
-        case "boung": return boungPrefab;
-        default: return null;
+        switch (itemName)
+        {
+            case "hotdog": return hotdogPrefab;
+            case "dalgona": return dalgonaPrefab;
+            case "hottuk": return hottukPrefab;
+            case "boung": return boungPrefab;
+            default: return null;
         }
     }
 

@@ -39,6 +39,7 @@ public class FlourZone : MonoBehaviour
     {
         if (isPlayerInZone && Input.GetKeyDown(KeyCode.E))
         {
+            SoundManager.instance.PlayGetItem();
             player.flourCount++;
             player.HoldItem("flour");
             Debug.Log($"밀가루 +1 (현재: {player.flourCount})");
