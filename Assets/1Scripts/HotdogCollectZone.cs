@@ -15,10 +15,14 @@ public class HotdogCollectZone : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            player = other.GetComponent<Player>();
-            isPlayerInZone = true;
-            player.EnterZone(this);
-            Debug.Log("핫도그 수집 구역에 들어왔습니다. Q키를 눌러 핫도그를 집으세요.");
+            if (!isPlayerInZone)
+            {
+                player = other.GetComponent<Player>();
+                player.EnterZone(this);
+                isPlayerInZone = true;
+            }
+
+            Debug.Log("핫도그 수집 구역에 들어왔습니다. E키를 눌러 핫도그를 집으세요.");
         }
     }
 
