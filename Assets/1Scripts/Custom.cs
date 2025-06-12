@@ -143,6 +143,7 @@ public class Custom : MonoBehaviour
         OrderListManager.Instance?.RegisterCustomer(this);
     }
 
+
     private void Update()
     {
         waitTimer += Time.deltaTime;

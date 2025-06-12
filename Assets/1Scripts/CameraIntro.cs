@@ -17,10 +17,12 @@ public class CameraIntro : MonoBehaviour
 
     Player player;
     public Text countdownText;
+    Hud hud;
+    Hud timeHud;  // 시간을 표시하는 HUD
 
     void OnEnable()
     {
-        
+        hud = FindFirstObjectByType<Hud>();
         StartCoroutine(WaitAndStartIntro());
     }
 
@@ -28,10 +30,22 @@ public class CameraIntro : MonoBehaviour
     {
         yield return null;
         Debug.Log("✅ CameraIntro Init 시작됨");
-
+        hud.gameObject.SetActive(false);
         // Player와 GameManager가 생성될 때까지 대기
         while (FindFirstObjectByType<Player>() == null || FindFirstObjectByType<GameManager>() == null)
             yield return null;
+
+        // 시간 HUD 찾기
+        Hud[] huds = FindObjectsByType<Hud>(FindObjectsSortMode.None);
+        foreach (Hud h in huds)
+        {
+            if (h.type == Hud.InfoType.Time)
+            {
+                timeHud = h;
+                timeHud.gameObject.SetActive(false);
+                break;
+            }
+        }
 
         player = FindFirstObjectByType<Player>();
         if (player != null)
@@ -92,7 +106,9 @@ public class CameraIntro : MonoBehaviour
 
             yield return new WaitForSeconds(1f);
         }
-
+        hud.gameObject.SetActive(true);
+        if (timeHud != null)
+            timeHud.gameObject.SetActive(true);
         if (countdownText != null)
             countdownText.gameObject.SetActive(false);
 
