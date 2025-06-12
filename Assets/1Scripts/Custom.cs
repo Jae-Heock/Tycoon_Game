@@ -138,6 +138,14 @@ public class Custom : MonoBehaviour
             GameManager.instance.SadCat();
             StartCoroutine(DestroyAndRespawn(false));
         }
+        
+        if (orderIconObject != null && Camera.main != null)
+{
+    orderIconObject.transform.rotation = Quaternion.LookRotation(
+        orderIconObject.transform.position - Camera.main.transform.position
+    );
+}
+
 
         // 테이블 위 음식 체크 (매 프레임 → 음식이 새로 올라간 경우에만 1초 후 체크)
         if (assignedTable != null && assignedTable.HasFood())
@@ -162,11 +170,11 @@ public class Custom : MonoBehaviour
         if (waitSlider != null)
             waitSlider.value = waitTimer / maxWaitTime;
 
-        // 아이콘 회전
-        if (orderIconObject != null)
-        {
-            orderIconObject.transform.Rotate(Vector3.up * iconRotationSpeed * Time.deltaTime);
-        }
+        // // 아이콘 회전
+        // if (orderIconObject != null)
+        // {
+        //     orderIconObject.transform.Rotate(Vector3.up * iconRotationSpeed * Time.deltaTime);
+        // }
 
         // E키를 눌렀을 때 나쁜 손님에게 자원 전달
         if (isPlayerInZone && Input.GetKeyDown(KeyCode.E) && isBadCustomer && player != null)
