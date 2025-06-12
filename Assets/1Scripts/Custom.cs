@@ -41,10 +41,11 @@ public class Custom : MonoBehaviour
     // ======= UI 요소=======
     public GameObject orderIconObject; // 현재 떠 있는 아이콘 오브젝트
     public Transform iconSpawnPoint;   // 아이콘을 띄울 위치 (손님 머리 위 Transform)
-    public GameObject dalgonaIconPrefab;
+    public GameObject dalgonaIconPrefab;  
     public GameObject hottukIconPrefab;
     public GameObject hotdogIconPrefab;
     public GameObject boungIconPrefab;
+    
     [Header("Wait UI")]
     public Slider waitSlider;         // 손님 대기시간 슬라이더
     public Canvas waitCanvas;         // 슬라이더가 붙은 World Space 캔버스
