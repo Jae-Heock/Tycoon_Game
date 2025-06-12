@@ -17,6 +17,11 @@ public class OrderListManager : MonoBehaviour
     // 나쁜 손님 프리팹
     public GameObject badDalgonaPrefab, badHotdogPrefab, badStunPrefab;
 
+    // 슬라이더 색상
+    public Color greenColor = Color.green;
+    public Color yellowColor = Color.yellow;
+    public Color redColor = Color.red;
+
     public List<Custom> customerList = new List<Custom>(); // 생성 순서 보장
 
     void Awake()
@@ -88,7 +93,7 @@ public class OrderListManager : MonoBehaviour
                         RectTransform rectTransform = badIcon.GetComponent<RectTransform>();
                         if (rectTransform != null)
                         {
-                              Vector2 targetPos = foodIconTransform.GetComponent<RectTransform>().anchoredPosition;
+                            Vector2 targetPos = foodIconTransform.GetComponent<RectTransform>().anchoredPosition;
                             targetPos.x = 230f; // X좌표만 고정
                             targetPos.y = 50f;
                             rectTransform.anchoredPosition = targetPos;
@@ -128,6 +133,26 @@ public class OrderListManager : MonoBehaviour
                 if (isBadCustomer)
                 {
                     waitText.color = Color.red;
+                }
+            }
+
+            // 슬라이더 값 설정 및 색상 변경
+            Slider waitSlider = slot.transform.Find("WaitSlider")?.GetComponent<Slider>();
+            if (waitSlider != null)
+            {
+                float normalizedTime = custom.waitTimer / custom.maxWaitTime;
+                waitSlider.value = normalizedTime;
+                
+                // 슬라이더 색상 변경
+                Image fillImage = waitSlider.transform.Find("Fill Area/Fill")?.GetComponent<Image>();
+                if (fillImage != null)
+                {
+                    if (normalizedTime < 0.33f)
+                        fillImage.color = greenColor;
+                    else if (normalizedTime < 0.66f)
+                        fillImage.color = yellowColor;
+                    else
+                        fillImage.color = redColor;
                 }
             }
         }
