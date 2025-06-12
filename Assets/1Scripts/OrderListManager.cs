@@ -13,6 +13,9 @@ public class OrderListManager : MonoBehaviour
     public string[] customerNames = { "Bad_개", "Bad_닭", "Bad_쥐", "돼지", "말", "뱀", "소", "양", "용", "원숭이", "토끼", "호랑이" };
 
     public Sprite dalgonaIcon, hottukIcon, hotdogIcon, boungIcon;
+    
+    // 나쁜 손님 프리팹
+    public GameObject badDalgonaPrefab, badHotdogPrefab, badStunPrefab;
 
     public List<Custom> customerList = new List<Custom>(); // 생성 순서 보장
 
@@ -47,16 +50,72 @@ public class OrderListManager : MonoBehaviour
             if (idx >= 0 && idx < customerIcons.Length)
                 slot.transform.Find("CustomerIcon").GetComponent<Image>().sprite = customerIcons[idx];
 
-            // 음식 아이콘
-            Sprite foodIcon = null;
-            switch (custom.RequestedFood)
+            // 나쁜 손님 표시 (이름이 Bad_로 시작하거나 isBadCustomer가 true인 경우)
+            bool isBadCustomer = pureName.StartsWith("Bad_") || custom.isBadCustomer;
+            
+            if (isBadCustomer)
             {
-                case "dalgona": foodIcon = dalgonaIcon; break;
-                case "hottuk": foodIcon = hottukIcon; break;
-                case "hotdog": foodIcon = hotdogIcon; break;
-                case "boung": foodIcon = boungIcon; break;
+                // 나쁜 손님 UI 표시
+                Transform foodIconTransform = slot.transform.Find("FoodIcon");
+                if (foodIconTransform != null)
+                {
+                    // 기존 음식 아이콘 비활성화
+                    foodIconTransform.gameObject.SetActive(false);
+                    
+                    // 나쁜 손님 타입에 따라 프리팹 인스턴스화
+                    GameObject badIconPrefab = null;
+                    switch (custom.badType)
+                    {
+                        case Custom.BadType.Dalgona:
+                            badIconPrefab = badDalgonaPrefab;
+                            break;
+                        case Custom.BadType.Hotdog:
+                            badIconPrefab = badHotdogPrefab;
+                            break;
+                        case Custom.BadType.Stun:
+                            badIconPrefab = badStunPrefab;
+                            break;
+                    }
+                    
+                    if (badIconPrefab != null)
+                    {
+                        // 나쁜 손님 아이콘 프리팹 생성
+                        GameObject badIcon = Instantiate(badIconPrefab, foodIconTransform.position, Quaternion.identity);
+                        badIcon.transform.SetParent(slot.transform);
+                        badIcon.transform.localScale = Vector3.one * 1.5f;
+                        
+                        // 위치 조정 (필요시)
+                        RectTransform rectTransform = badIcon.GetComponent<RectTransform>();
+                        if (rectTransform != null)
+                        {
+                              Vector2 targetPos = foodIconTransform.GetComponent<RectTransform>().anchoredPosition;
+                            targetPos.x = 230f; // X좌표만 고정
+                            targetPos.y = 50f;
+                            rectTransform.anchoredPosition = targetPos;
+                        }
+                    }
+                }
+                
+                // 나쁜 손님 슬롯 강조 (예: 색상 변경)
+                Image slotBackground = slot.GetComponent<Image>();
+                if (slotBackground != null)
+                {
+                    slotBackground.color = new Color(1f, 0.7f, 0.7f); // 빨간색 계열로 강조
+                }
             }
-            slot.transform.Find("FoodIcon").GetComponent<Image>().sprite = foodIcon;
+            else
+            {
+                // 일반 손님 음식 아이콘
+                Sprite foodIcon = null;
+                switch (custom.RequestedFood)
+                {
+                    case "dalgona": foodIcon = dalgonaIcon; break;
+                    case "hottuk": foodIcon = hottukIcon; break;
+                    case "hotdog": foodIcon = hotdogIcon; break;
+                    case "boung": foodIcon = boungIcon; break;
+                }
+                slot.transform.Find("FoodIcon").GetComponent<Image>().sprite = foodIcon;
+            }
 
             // 남은 시간 텍스트 표시
             Text waitText = slot.transform.Find("WaitText")?.GetComponent<Text>();
@@ -64,6 +123,12 @@ public class OrderListManager : MonoBehaviour
             {
                 float remain = Mathf.Max(0, custom.maxWaitTime - custom.waitTimer);
                 waitText.text = $"{remain:F0}s";
+                
+                // 나쁜 손님인 경우 텍스트 색상 변경
+                if (isBadCustomer)
+                {
+                    waitText.color = Color.red;
+                }
             }
         }
     }

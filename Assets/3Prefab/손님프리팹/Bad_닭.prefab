@@ -430,15 +430,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: aaddbbd8a9840c84e854f905bbc5d099, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -7.585634
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: aaddbbd8a9840c84e854f905bbc5d099, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.15568352
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: aaddbbd8a9840c84e854f905bbc5d099, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -12.060908
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: aaddbbd8a9840c84e854f905bbc5d099, type: 3}
       propertyPath: m_LocalRotation.w
@@ -471,6 +471,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: aaddbbd8a9840c84e854f905bbc5d099, type: 3}
       propertyPath: m_Name
       value: "Bad_\uB2ED"
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: aaddbbd8a9840c84e854f905bbc5d099, type: 3}
+      propertyPath: m_TagString
+      value: Custom
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -564,7 +568,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e5d268d43733f1428a5cf475004183b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  badType: 3
+  badType: 1
+  waitTimer: 0
+  maxWaitTime: 40
   spawner: {fileID: 0}
   isBadCustomer: 0
   spawnPoint: {fileID: 0}
@@ -575,6 +581,9 @@ MonoBehaviour:
   hottukIconPrefab: {fileID: 3090714449135239856, guid: d5468c0cc10349d4da6e554f06daeb4c, type: 3}
   hotdogIconPrefab: {fileID: 7706896454729256389, guid: 19496c5a95233574eb053221f038805a, type: 3}
   boungIconPrefab: {fileID: 7900055197305382990, guid: 493d872487d3e48428d3daa8fb6c6535, type: 3}
+  badIconDalgonaPrefab: {fileID: 7746560539557884911, guid: c5fd013497a3ef7408282775143c8f2c, type: 3}
+  badIconHotdogPrefab: {fileID: 3299169697644265241, guid: 5a4741ddbadb0c541bc6db2b42ed4bb0, type: 3}
+  badIconStunPrefab: {fileID: 2666640235459410220, guid: 857a834f05e55954bbc56d234273b34c, type: 3}
   waitSlider: {fileID: 487212639497237025}
   waitCanvas: {fileID: 1978136247389916057}
   iconRotationSpeed: 0

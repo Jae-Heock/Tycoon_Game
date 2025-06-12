@@ -45,6 +45,11 @@ public class Custom : MonoBehaviour
     public GameObject hottukIconPrefab;
     public GameObject hotdogIconPrefab;
     public GameObject boungIconPrefab;
+
+    [Header("Bad Customer Icons")]
+    public GameObject badIconDalgonaPrefab;
+    public GameObject badIconHotdogPrefab;
+    public GameObject badIconStunPrefab;
     
     [Header("Wait UI")]
     public Slider waitSlider;         // 손님 대기시간 슬라이더
@@ -92,6 +97,7 @@ public class Custom : MonoBehaviour
             {
                 GameManager.instance.badCustomerUI.ShowBadCustomer((BadType)badType);
             }
+            GameObject badIconPrefab = null;
 
             // 나쁜손님 종류별 효과음 재생
             if (SoundManager.instance != null)
@@ -99,17 +105,25 @@ public class Custom : MonoBehaviour
                 switch (badType)
                 {
                     case BadType.Dalgona:
+                        badIconPrefab = badIconDalgonaPrefab;
                         SoundManager.instance.PlayBadSound1();
                         break;
                     case BadType.Hotdog:
+                        badIconPrefab = badIconHotdogPrefab;
                         SoundManager.instance.PlayBadSound2();
                         break;
                     case BadType.Stun:
+                        badIconPrefab = badIconStunPrefab;
                         SoundManager.instance.PlayBadSound3();
                         break;
                 }
                 // 5초간 배경음 재생
                 StartCoroutine(PlayBadCustomBackGroundForSeconds());
+            }
+
+            if (badIconPrefab != null)
+            {
+                orderIconObject = Instantiate(badIconPrefab, iconSpawnPoint.position, Quaternion.identity, iconSpawnPoint);
             }
 
             if (badType == BadType.Stun)
@@ -140,11 +154,19 @@ public class Custom : MonoBehaviour
         }
         
         if (orderIconObject != null && Camera.main != null)
-{
-    orderIconObject.transform.rotation = Quaternion.LookRotation(
-        orderIconObject.transform.position - Camera.main.transform.position
-    );
-}
+        {
+        orderIconObject.transform.rotation = Quaternion.LookRotation(
+            orderIconObject.transform.position - Camera.main.transform.position
+        );
+
+        if (waitCanvas != null && Camera.main != null)
+        {
+        waitCanvas.transform.rotation = Quaternion.LookRotation(
+            waitCanvas.transform.position - Camera.main.transform.position
+        );
+    }
+        
+    }
 
 
         // 테이블 위 음식 체크 (매 프레임 → 음식이 새로 올라간 경우에만 1초 후 체크)
