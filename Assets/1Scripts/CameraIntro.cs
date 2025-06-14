@@ -13,7 +13,7 @@ public class CameraIntro : MonoBehaviour
     public float duration = 4f;        // ⏱ 회전 지속 시간 (초 단위, 이 시간이 지나면 멈춤)
 
     private float timer = 0f;          // ⏲ 경과 시간
-    private bool isTouring = true;     // 🎬 인트로 회전 중 여부 (false가 되면 멈춤)
+    public bool isTouring = true;     // 🎬 인트로 회전 중 여부 (false가 되면 멈춤)
 
     Player player;
     public Text countdownText;
@@ -23,6 +23,11 @@ public class CameraIntro : MonoBehaviour
     void OnEnable()
     {
         hud = FindFirstObjectByType<Hud>();
+        // StartCoroutine(WaitAndStartIntro()); // 이 줄 주석처리 또는 삭제
+    }
+
+    public void StartIntro()
+    {
         StartCoroutine(WaitAndStartIntro());
     }
 

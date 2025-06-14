@@ -88,8 +88,8 @@
     <Compile Include="Assets\1Scripts\InventoryToggle.cs" />
     <Compile Include="Assets\1Scripts\BoungZone.cs" />
     <Compile Include="Assets\1Scripts\SugarZone.cs" />
-    <Compile Include="Assets\1Scripts\Clock.cs" />
     <Compile Include="Assets\1Scripts\Tutorial.cs" />
+    <Compile Include="Assets\1Scripts\Clock.cs" />
     <Compile Include="Assets\1Scripts\SceneChanger.cs" />
     <Compile Include="Assets\1Scripts\DishZone.cs" />
     <Compile Include="Assets\1Scripts\OutlineSelection.cs" />
@@ -106,6 +106,7 @@
     <Compile Include="Assets\1Scripts\CustomSpawner.cs" />
     <Compile Include="Assets\1Scripts\OrderListManager.cs" />
     <Compile Include="Assets\1Scripts\ReceiptToggle.cs" />
+    <Compile Include="Assets\1Scripts\Talk.cs" />
     <Compile Include="Assets\1Scripts\Player.cs" />
     <Compile Include="Assets\1Scripts\TitleSceneInit.cs" />
     <Compile Include="Assets\1Scripts\SkillUIManager.cs" />

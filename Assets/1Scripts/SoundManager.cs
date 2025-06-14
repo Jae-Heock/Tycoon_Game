@@ -21,6 +21,7 @@ public class SoundManager : MonoBehaviour
     [Header("BGM")]
     public AudioClip titleBGM;       // 타이틀 화면 BGM
     public AudioClip gameBGM;        // 게임 화면 BGM
+    public AudioClip tutorialBGM;    // 튜토리얼 화면 BGM
 
     [Header("Effect")]
     public AudioClip buttonClick;    // 버튼 클릭 효과음 -
@@ -102,6 +103,13 @@ public class SoundManager : MonoBehaviour
     public void PlayTitleBGM()
     {
         bgmSource.clip = titleBGM;
+        bgmSource.loop = true;
+        bgmSource.Play();
+    }
+
+    public void PlayTutorialBGM()
+    {
+        bgmSource.clip = tutorialBGM;
         bgmSource.loop = true;
         bgmSource.Play();
     }

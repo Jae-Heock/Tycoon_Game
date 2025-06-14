@@ -9,9 +9,9 @@ public class Tutorial : MonoBehaviour
 
     public void Start()
     {
-        Time.timeScale = 0;
-        SoundManager.instance.StopBGM();
+        SoundManager.instance.PlayTutorialBGM();
         tutoiralImages[currentIndex].gameObject.SetActive(true);
+        Time.timeScale = 0;
     }
 
     public void Next()
@@ -27,6 +27,11 @@ public class Tutorial : MonoBehaviour
         if (currentIndex == tutoiralImages.Length - 1)
         {
             SoundManager.instance.PlayGameBGM();
+
+            // 카메라인트로 오브젝트 활성화
+            var cameraIntro = FindFirstObjectByType<CameraIntro>();
+            cameraIntro.StartIntro();
+
             Time.timeScale = 1;
             gameObject.SetActive(false);
         }

@@ -17,6 +17,7 @@ public class FollowCamera : MonoBehaviour
     private float initialXRotation;
     private float initialYRotation;
     private bool isLocked = false;
+    private CameraIntro cameraIntro;
 
     private void Start()
     {
@@ -28,6 +29,8 @@ public class FollowCamera : MonoBehaviour
     private void LateUpdate()
     {
         if (target == null) return;
+
+        if (cameraIntro != null && cameraIntro.isTouring) return;
 
         // 스페이스 키로 고정/해제
         if (allowSpaceLock &&Input.GetKeyDown(KeyCode.Space))
