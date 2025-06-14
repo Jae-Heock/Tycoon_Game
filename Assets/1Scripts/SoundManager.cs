@@ -1,4 +1,4 @@
-using System.Diagnostics;
+// using System.Diagnostics;
 using UnityEngine;
 using System.Collections;
 
@@ -22,6 +22,7 @@ public class SoundManager : MonoBehaviour
     public AudioClip titleBGM;       // 타이틀 화면 BGM
     public AudioClip gameBGM;        // 게임 화면 BGM
     public AudioClip tutorialBGM;    // 튜토리얼 화면 BGM
+    public AudioClip clearBGM;       // 클리어 화면 BGM
 
     [Header("Effect")]
     public AudioClip buttonClick;    // 버튼 클릭 효과음 -
@@ -103,6 +104,7 @@ public class SoundManager : MonoBehaviour
     public void PlayTitleBGM()
     {
         bgmSource.clip = titleBGM;
+        bgmSource.volume = 0.15f;
         bgmSource.loop = true;
         bgmSource.Play();
     }
@@ -120,6 +122,15 @@ public class SoundManager : MonoBehaviour
     public void PlayGameBGM()
     {
         bgmSource.clip = gameBGM;
+        bgmSource.loop = true;
+        bgmSource.Play();
+    }
+
+    public void PlayClearBGM()
+    {
+        Debug.Log("PlayClearBGM");
+        bgmSource.clip = clearBGM;
+        bgmSource.volume = 1f;
         bgmSource.loop = true;
         bgmSource.Play();
     }

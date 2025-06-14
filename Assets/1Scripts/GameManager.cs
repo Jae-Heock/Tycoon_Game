@@ -254,7 +254,7 @@ public class GameManager : MonoBehaviour
 
         // 2. 사운드 완전 정지
         SoundManager.instance.StopBGM();
-
+        SoundManager.instance.PlayClearBGM();
         // 3. 게임 전체 멈춤 (선택)
         Time.timeScale = 0;
     }
@@ -272,7 +272,7 @@ public class GameManager : MonoBehaviour
 
         // 2. 사운드 완전 정지
         SoundManager.instance.StopBGM();
-
+        SoundManager.instance.PlayClearBGM();
         // 3. 게임 전체 멈춤 (선택)
         Time.timeScale = 0;
     }
