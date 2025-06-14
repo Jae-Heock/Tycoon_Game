@@ -151,6 +151,9 @@ public class Custom : MonoBehaviour
         {
             Debug.Log("시간 초과로 손님 제거");
             GameManager.instance.SadCat();
+            // 주문 실패 카운트 증가
+            if (GameManager.instance.player != null)
+                GameManager.instance.player.customerFailCount++;
             StartCoroutine(DestroyAndRespawn(false));
         }
         
@@ -258,6 +261,8 @@ public class Custom : MonoBehaviour
                 if (player != null)
                 {
                     player.Point += player.basePoint + player.bonusPoint;
+                    // 주문 성공 카운트 증가
+                    player.customerSuccessCount++;
                 }
 
                 // 접시 추가
@@ -358,6 +363,9 @@ public class Custom : MonoBehaviour
         if (success)
         {
             SoundManager.instance.PlaySuccess();
+            // 주문 성공 카운트 증가
+            if (GameManager.instance.player != null)
+                GameManager.instance.player.customerSuccessCount++;
         }
         if (orderIconObject != null)
         {

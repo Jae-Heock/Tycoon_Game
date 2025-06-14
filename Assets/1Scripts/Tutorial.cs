@@ -44,8 +44,11 @@ public class Tutorial : MonoBehaviour
     public void Previous()
     {
         if (currentIndex == 0)
+        {
             SoundManager.instance.ButtonClick();
             return; // 첫 번째 이미지면 아무것도 하지 않음
+        }
+
 
         SoundManager.instance.ButtonClick();
         tutoiralImages[currentIndex].gameObject.SetActive(false);

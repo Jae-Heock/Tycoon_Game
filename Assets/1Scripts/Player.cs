@@ -40,6 +40,9 @@ public class Player : MonoBehaviour
     [Header("# 성공 횟수")]
     public int customerSuccessCount = 0;  // 성공한 손님 수
 
+    [Header("# 실패 횟수")]
+    public int customerFailCount = 0; // 실패한 손님 수
+
     public int basePoint = 4;       // 기본 점수
     public int bonusPoint = 0;      // 스킬로 증가되는 점수
     

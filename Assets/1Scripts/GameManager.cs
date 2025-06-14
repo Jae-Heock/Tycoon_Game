@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
     public SettingPanelController settingPanel;
     public GameObject pause;
+    public GameObject tutorial;
 
     [Header("# Game Control")]
     public float gameTime;
@@ -42,6 +43,19 @@ public class GameManager : MonoBehaviour
     [Header("나쁜 손님 UI")]
     public BadCustomerUIManager badCustomerUI;
 
+    [Header("클리어 UI")]
+    public GameObject clearPanel;
+    public Text successText;
+    public Text failText;
+    public Text pointText;
+
+    [Header("실패 UI")]
+    public GameObject failPanel;
+    public Text failSuccessText;
+    public Text failFailText;
+    public Text failPointText;
+
+    private bool isGameCleared = false;
 
     private void Awake()
     {
@@ -53,6 +67,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        tutorial.SetActive(true);
         // 게임 설정 초기화
         gameTime = 0;
         
@@ -68,6 +83,12 @@ public class GameManager : MonoBehaviour
         if (gameTime > maxGameTime)
             gameTime = maxGameTime;
 
+            // 테스트용: X 키를 누르면 즉시 5분 경과 처리
+    if (Input.GetKeyDown(KeyCode.X))
+    {
+        gameTime = maxGameTime;
+        Debug.Log("⚡ X키로 게임 시간 강제 종료!");
+    }
         // UI 업데이트
         UpdateUI();
 
@@ -111,6 +132,20 @@ public class GameManager : MonoBehaviour
                 SoundManager.instance.ResumeBGM();
             }
         }
+
+        // 5분이 지나면 점수에 따라 클리어/실패 판정
+        if (gameTime >= maxGameTime && !isGameCleared)
+        {
+            isGameCleared = true;
+            if (player.Point >= 10)
+            {
+                ShowClearPanel();
+            }
+            else
+            {
+                ShowFailPanel();
+            }
+        }
     }
 
     private void UpdateUI()
@@ -143,7 +178,7 @@ public class GameManager : MonoBehaviour
 
         // 플레이어 이동 멈춤
         if (player != null)
-            player.isMove = false; // 또는 player.canMove = false; (사용하는 변수에 따라)
+            player.isMove = false;
     }
 
     public void TogglePause()
@@ -205,4 +240,48 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         sadCat.SetActive(false);
     }
+
+    void ShowClearPanel()
+    {
+        clearPanel.SetActive(true);
+        successText.text = player.customerSuccessCount.ToString();
+        failText.text = player.customerFailCount.ToString();
+        pointText.text = player.Point.ToString();
+
+        // 1. 플레이어 이동 완전 차단
+        if (player != null)
+            player.isMove = false;
+
+        // 2. 사운드 완전 정지
+        SoundManager.instance.StopBGM();
+
+        // 3. 게임 전체 멈춤 (선택)
+        Time.timeScale = 0;
+    }
+
+    void ShowFailPanel()
+    {
+        failPanel.SetActive(true);
+        failSuccessText.text = player.customerSuccessCount.ToString();
+        failFailText.text = player.customerFailCount.ToString();
+        failPointText.text = player.Point.ToString();
+
+        // 1. 플레이어 이동 완전 차단
+        if (player != null)
+            player.isMove = false;
+
+        // 2. 사운드 완전 정지
+        SoundManager.instance.StopBGM();
+
+        // 3. 게임 전체 멈춤 (선택)
+        Time.timeScale = 0;
+    }
+
+    public void ExitGame()
+    {
+        SoundManager.instance.ButtonClick();
+        Time.timeScale = 1;
+        SceneManager.LoadScene("TitleScene");
+    }
+
 }
