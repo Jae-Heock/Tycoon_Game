@@ -4,12 +4,15 @@ using UnityEngine.UI;
 public class Tutorial : MonoBehaviour
 {
     public Image [] tutoiralImages;
+    public GameObject talkPanel;
 
     private int currentIndex = 0;
 
     public void Start()
     {
+        Debug.Log("튜토리얼 Start, SoundManager.instance: " + SoundManager.instance);
         SoundManager.instance.PlayTutorialBGM();
+        Debug.Log("튜토리얼 BGM 재생 시도, tutorialBGM: " + SoundManager.instance.tutorialBGM);
         tutoiralImages[currentIndex].gameObject.SetActive(true);
         Time.timeScale = 0;
     }
@@ -26,26 +29,28 @@ public class Tutorial : MonoBehaviour
 
         if (currentIndex == tutoiralImages.Length - 1)
         {
-            SoundManager.instance.PlayGameBGM();
+            //SoundManager.instance.PlayGameBGM();
 
             // 카메라인트로 오브젝트 활성화
-            var cameraIntro = FindFirstObjectByType<CameraIntro>();
-            cameraIntro.StartIntro();
+            //var cameraIntro = FindFirstObjectByType<CameraIntro>();
+            //cameraIntro.StartIntro();
 
-            Time.timeScale = 1;
+            // Time.timeScale = 1;
+            talkPanel.SetActive(true);
             gameObject.SetActive(false);
         }
     }
 
     public void Previous()
     {
+        if (currentIndex == 0)
+            SoundManager.instance.ButtonClick();
+            return; // 첫 번째 이미지면 아무것도 하지 않음
+
         SoundManager.instance.ButtonClick();
         tutoiralImages[currentIndex].gameObject.SetActive(false);
         currentIndex--;
-        if (currentIndex >= 0)
-        {
-            tutoiralImages[currentIndex].gameObject.SetActive(true);
-        }
+        tutoiralImages[currentIndex].gameObject.SetActive(true);
     }
 
 }
