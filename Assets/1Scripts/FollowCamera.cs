@@ -21,9 +21,9 @@ public class FollowCamera : MonoBehaviour
 
     private void Start()
     {
-        initialOffset = new Vector3(0f, 7f, -8f);  // 대각선 시점을 위한 오프셋
-        initialXRotation = 45f;  // 대각선 시점을 위한 X 회전
-        initialYRotation = 45f;  // 대각선 시점을 위한 Y 회전
+        initialOffset = new Vector3(0f, 7f, -8f);  // 오프셋셋
+        initialXRotation = 45f;  //X 축
+        initialYRotation = 45f;  // y축
     }
 
     private void LateUpdate()
