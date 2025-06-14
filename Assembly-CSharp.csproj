@@ -89,6 +89,7 @@
     <Compile Include="Assets\1Scripts\BoungZone.cs" />
     <Compile Include="Assets\1Scripts\SugarZone.cs" />
     <Compile Include="Assets\1Scripts\Clock.cs" />
+    <Compile Include="Assets\1Scripts\Tutorial.cs" />
     <Compile Include="Assets\1Scripts\SceneChanger.cs" />
     <Compile Include="Assets\1Scripts\DishZone.cs" />
     <Compile Include="Assets\1Scripts\OutlineSelection.cs" />

@@ -91,7 +91,6 @@ public class CameraIntro : MonoBehaviour
 
         if (player != null)
             player.isMove = false;
-
         string[] texts = { "3", "2", "1", "시작!" };
         for (int i = 0; i < texts.Length; i++)
         {
