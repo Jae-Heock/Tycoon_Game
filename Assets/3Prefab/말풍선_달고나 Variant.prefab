@@ -27,7 +27,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0.41, z: -0.1}
-  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
+  m_LocalScale: {x: 0.18, y: 0.18, z: 0.18}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 275139799198747496}
@@ -76,7 +76,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: dc819c6c2bc56ef468a188cbf73bf517, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0620b0fa42b6c6740a64859eb65e843e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -101,23 +101,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1854503678282351960, guid: 49ab8081caf72bf41940a1bad2a6e55b, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.5
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: 1854503678282351960, guid: 49ab8081caf72bf41940a1bad2a6e55b, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.5
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: 1854503678282351960, guid: 49ab8081caf72bf41940a1bad2a6e55b, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.5
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: 1854503678282351960, guid: 49ab8081caf72bf41940a1bad2a6e55b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -8.630602
       objectReference: {fileID: 0}
     - target: {fileID: 1854503678282351960, guid: 49ab8081caf72bf41940a1bad2a6e55b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 3.2797422
       objectReference: {fileID: 0}
     - target: {fileID: 1854503678282351960, guid: 49ab8081caf72bf41940a1bad2a6e55b, type: 3}
       propertyPath: m_LocalPosition.z
@@ -174,7 +174,7 @@ PrefabInstance:
     - target: {fileID: 9125860246821704213, guid: 49ab8081caf72bf41940a1bad2a6e55b, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: dc819c6c2bc56ef468a188cbf73bf517, type: 3}
+      objectReference: {fileID: 21300000, guid: 0620b0fa42b6c6740a64859eb65e843e, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 7464390712042043453, guid: 49ab8081caf72bf41940a1bad2a6e55b, type: 3}
