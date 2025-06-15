@@ -3280,8 +3280,8 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &215750968 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 5592059902902289897, guid: f6bbbf976f838bc44a1436582422bec8, type: 3}
-  m_PrefabInstance: {fileID: 6913309988007940993}
+  m_CorrespondingSourceObject: {fileID: 810001116766157544, guid: 7ff2df186f0f78c44b1a48e14c1fb041, type: 3}
+  m_PrefabInstance: {fileID: 6857844976629608236}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &223592902 stripped
 GameObject:
@@ -133521,7 +133521,7 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1001 &6913309988007940993
+--- !u!1001 &6857844976629608236
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -133529,59 +133529,55 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1384984827}
     m_Modifications:
-    - target: {fileID: 3148688689912684825, guid: f6bbbf976f838bc44a1436582422bec8, type: 3}
-      propertyPath: m_Name
-      value: Tycoon_Brun
-      objectReference: {fileID: 0}
-    - target: {fileID: 3148688689912684825, guid: f6bbbf976f838bc44a1436582422bec8, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5592059902902289897, guid: f6bbbf976f838bc44a1436582422bec8, type: 3}
+    - target: {fileID: 810001116766157544, guid: 7ff2df186f0f78c44b1a48e14c1fb041, type: 3}
       propertyPath: m_LocalPosition.x
       value: 7.9015064
       objectReference: {fileID: 0}
-    - target: {fileID: 5592059902902289897, guid: f6bbbf976f838bc44a1436582422bec8, type: 3}
+    - target: {fileID: 810001116766157544, guid: 7ff2df186f0f78c44b1a48e14c1fb041, type: 3}
       propertyPath: m_LocalPosition.y
       value: -1.5363102
       objectReference: {fileID: 0}
-    - target: {fileID: 5592059902902289897, guid: f6bbbf976f838bc44a1436582422bec8, type: 3}
+    - target: {fileID: 810001116766157544, guid: 7ff2df186f0f78c44b1a48e14c1fb041, type: 3}
       propertyPath: m_LocalPosition.z
       value: -4.9634533
       objectReference: {fileID: 0}
-    - target: {fileID: 5592059902902289897, guid: f6bbbf976f838bc44a1436582422bec8, type: 3}
+    - target: {fileID: 810001116766157544, guid: 7ff2df186f0f78c44b1a48e14c1fb041, type: 3}
       propertyPath: m_LocalRotation.w
       value: 0.7071068
       objectReference: {fileID: 0}
-    - target: {fileID: 5592059902902289897, guid: f6bbbf976f838bc44a1436582422bec8, type: 3}
+    - target: {fileID: 810001116766157544, guid: 7ff2df186f0f78c44b1a48e14c1fb041, type: 3}
       propertyPath: m_LocalRotation.x
       value: -0.7071068
       objectReference: {fileID: 0}
-    - target: {fileID: 5592059902902289897, guid: f6bbbf976f838bc44a1436582422bec8, type: 3}
+    - target: {fileID: 810001116766157544, guid: 7ff2df186f0f78c44b1a48e14c1fb041, type: 3}
       propertyPath: m_LocalRotation.y
       value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: 5592059902902289897, guid: f6bbbf976f838bc44a1436582422bec8, type: 3}
+    - target: {fileID: 810001116766157544, guid: 7ff2df186f0f78c44b1a48e14c1fb041, type: 3}
       propertyPath: m_LocalRotation.z
       value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: 5592059902902289897, guid: f6bbbf976f838bc44a1436582422bec8, type: 3}
+    - target: {fileID: 810001116766157544, guid: 7ff2df186f0f78c44b1a48e14c1fb041, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: -90
       objectReference: {fileID: 0}
-    - target: {fileID: 5592059902902289897, guid: f6bbbf976f838bc44a1436582422bec8, type: 3}
+    - target: {fileID: 810001116766157544, guid: 7ff2df186f0f78c44b1a48e14c1fb041, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5592059902902289897, guid: f6bbbf976f838bc44a1436582422bec8, type: 3}
+    - target: {fileID: 810001116766157544, guid: 7ff2df186f0f78c44b1a48e14c1fb041, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7860237986800033304, guid: 7ff2df186f0f78c44b1a48e14c1fb041, type: 3}
+      propertyPath: m_Name
+      value: Tycoon_Brun
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: f6bbbf976f838bc44a1436582422bec8, type: 3}
+  m_SourcePrefab: {fileID: 100100000, guid: 7ff2df186f0f78c44b1a48e14c1fb041, type: 3}
 --- !u!23 &7475945018153695011
 MeshRenderer:
   m_ObjectHideFlags: 0

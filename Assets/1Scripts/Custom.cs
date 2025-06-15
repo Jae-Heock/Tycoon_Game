@@ -163,10 +163,10 @@ public class Custom : MonoBehaviour
             orderIconObject.transform.position - Camera.main.transform.position
         );
 
-        if (waitCanvas != null && Camera.main != null)
+        if (waitSlider != null && Camera.main != null)
         {
-        waitCanvas.transform.rotation = Quaternion.LookRotation(
-            waitCanvas.transform.position - Camera.main.transform.position
+        waitSlider.transform.rotation = Quaternion.LookRotation(
+            waitSlider.transform.position - Camera.main.transform.position
         );
     }
         
