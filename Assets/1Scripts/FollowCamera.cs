@@ -9,25 +9,28 @@ public class FollowCamera : MonoBehaviour
     public float minDistance = 3f; // 최소 줌 거리
     public float maxDistance = 20f; // 최대 줌 거리
     public bool allowSpaceLock = false;     // 인트로중엔 움직임 금지지
-    private float xRotation = 0f;
-    private float yRotation = 45f; // 위에서 내려다보는 각도
+    public float xRotation = 0f;
+    public float yRotation = 45f; // 위에서 내려다보는 각도
     private bool isRotating = false;
 
     private Vector3 initialOffset;
     private float initialXRotation;
     private float initialYRotation;
-    private bool isLocked = false;
+    public bool isLocked = false;
+    private CameraIntro cameraIntro;
 
     private void Start()
     {
-        initialOffset = new Vector3(0f, 7f, -8f);  // 대각선 시점을 위한 오프셋
-        initialXRotation = 45f;  // 대각선 시점을 위한 X 회전
-        initialYRotation = 45f;  // 대각선 시점을 위한 Y 회전
+        initialOffset = new Vector3(0f, 7f, -8f);
+        initialXRotation = 45f;
+        initialYRotation = 45f;
     }
 
     private void LateUpdate()
     {
         if (target == null) return;
+
+        if (cameraIntro != null && cameraIntro.isTouring) return;
 
         // 스페이스 키로 고정/해제
         if (allowSpaceLock &&Input.GetKeyDown(KeyCode.Space))

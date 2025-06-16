@@ -59,7 +59,7 @@ public class DishZone : MonoBehaviour
         {
             isPlayerInZone = true;
             player = other.GetComponent<Player>();
-            player.currentZone = this;  // currentZone 설정
+            player.EnterZone(this);
             Debug.Log("설거지 구역에 들어왔습니다. E키를 눌러 설거지를 하세요.");
         }
     }
@@ -72,9 +72,9 @@ public class DishZone : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             isPlayerInZone = false;
-             if (player != null && player.currentZone == this)
+            if (player != null)
             {
-                player.currentZone = null;
+                player.ExitZone(this);
             }
             Debug.Log("설거지 구역을 나갔습니다.");
         }
@@ -91,6 +91,7 @@ public class DishZone : MonoBehaviour
                 {
                     isCleaning = true;
                     cleanTimer = 0f;
+                    SoundManager.instance.PlayClean();
                     if (cleanSlider != null)
                     {
                         cleanSlider.value = 0f;
@@ -107,7 +108,7 @@ public class DishZone : MonoBehaviour
                         dishInHandInstance = Instantiate(dishPrefab, player.handPoint);
                         dishInHandInstance.transform.localPosition = Vector3.zero;
                         dishInHandInstance.transform.localRotation = Quaternion.identity;
-                        dishInHandInstance.transform.localScale = Vector3.one * 5f;
+                        dishInHandInstance.transform.localScale = Vector3.one * 5;
                     }
                 }
 
@@ -214,9 +215,9 @@ public class DishZone : MonoBehaviour
         {
             case "dish":
                 GameObject dish = Instantiate(dishPrefab, dishPoint);
-                dish.transform.localPosition = Vector3.zero + Vector3.up * dishList.Count * 0.3f;
+                dish.transform.localPosition = Vector3.zero + Vector3.up * dishList.Count * 0.5f;
                 dish.transform.localRotation = Quaternion.identity;
-                dish.transform.localScale = Vector3.one * 100f;
+                dish.transform.localScale = Vector3.one * 200f;
                 dishList.Add(dish);
                 break;
         }
