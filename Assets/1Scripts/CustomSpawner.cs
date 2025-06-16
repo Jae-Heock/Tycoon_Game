@@ -88,14 +88,15 @@ public class CustomSpawner : MonoBehaviour
             // 쿨다운 중이 아니고 점유되지 않은 포인트만 선택
             if (!occupiedSpawnPoints.Contains(point) && !spawnPointCooldowns.ContainsKey(point))
             {
-                // 해당 위치에 쓰레기가 있는지 확인
-                Collider[] colliders = Physics.OverlapSphere(point.position, 0.1f);
+                // 해당 위치에 쓰레기가 있는지 확인 (반경 증가)
+                Collider[] colliders = Physics.OverlapSphere(point.position, 1f);
                 bool hasTrash = false;
                 foreach (Collider collider in colliders)
                 {
                     if (collider.CompareTag("Trash"))
                     {
                         hasTrash = true;
+                        Debug.Log($"스폰 포인트 {point.name}에 쓰레기가 있어 스킵합니다.");
                         break;
                     }
                 }
@@ -116,6 +117,7 @@ public class CustomSpawner : MonoBehaviour
 
         // 랜덤 선택
         Transform selectedSpawnPoint = validSpawnPoints[Random.Range(0, validSpawnPoints.Count)];
+        Debug.Log($"선택된 스폰 포인트: {selectedSpawnPoint.name}");
 
         bool canSpawnBad = (Time.time - gameStartTime) >= badCustomerEnableTime;
         bool canSpawnNormal = (Time.time - gameStartTime) >= normalCustomerEnableTime;
@@ -148,6 +150,11 @@ public class CustomSpawner : MonoBehaviour
             {
                 GameManager.instance.hasBadCustomer = true;
                 GameManager.instance.badCustomer = custom;
+                Debug.Log("나쁜 손님이 스폰되었습니다.");
+            }
+            else
+            {
+                Debug.Log("일반 손님이 스폰되었습니다.");
             }
 
             // 스폰 포인트 등록
@@ -194,23 +201,27 @@ public class CustomSpawner : MonoBehaviour
 
     public void OnTrashCleaned(Vector3 position)
     {
-        // 해당 위치의 스폰 포인트 찾기
+        // 해당 위치의 스폰 포인트 찾기 (반경 증가)
         Transform spawnPoint = null;
+        float minDistance = float.MaxValue;
+        float checkRadius = 1f;  // 쓰레기 제거 시 체크 반경
+
         foreach (Transform point in spawnPoints)
         {
-            if (Vector3.Distance(point.position, position) < 0.1f)
+            float distance = Vector3.Distance(point.position, position);
+            if (distance < checkRadius && distance < minDistance)
             {
+                minDistance = distance;
                 spawnPoint = point;
-                break;
             }
         }
 
         if (spawnPoint != null)
         {
+            Debug.Log($"쓰레기가 제거되어 스폰 포인트 {spawnPoint.name}가 다시 사용 가능해졌습니다.");
             // 스폰 포인트를 다시 사용 가능하게 설정
             occupiedSpawnPoints.Remove(spawnPoint);
             spawnPointCooldowns.Remove(spawnPoint);
         }
-        // 새로운 손님은 SpawnLoop에서 처리
     }
 }
