@@ -17,6 +17,9 @@ public class CustomSpawner : MonoBehaviour
     private float badCustomerEnableTime = 20f; // 20초 후부터 나쁜손님 등장
     private float normalCustomerEnableTime = 10f; // 10초 후부터 일반손님 등장
     private float gameStartTime;
+    private float minSpawnInterval = 5f;  // 최소 스폰 간격
+    private float maxSpawnInterval = 15f;  // 최대 스폰 간격
+    private bool isSpawning = false;  // 현재 스폰 중인지 여부
 
     private void Start()
     {
@@ -53,28 +56,27 @@ public class CustomSpawner : MonoBehaviour
 
     IEnumerator SpawnLoop()
     {
-        // 무한 루프를 돌며 주기적으로 손님을 스폰하는 코루틴
         while (true)
         {
-            // 현재 활성화된 손님 수 계산 (태그가 "Custom"인 객체들)
-            int activeCustomers = GameObject.FindGameObjectsWithTag("Custom").Length;
-
-            // 최대 손님 수를 계산
-            // clearedCustomerCount가 3 미만이면 최대 6명, 그 이상이면 최대 9명
-            // 하지만 최대값은 무조건 12, 최소는 1로 Clamp 처리
-            int maxCustomers = Mathf.Clamp(clearedCustomerCount < 3 ? 6 : 4, 1, 9);
-
-            // 현재 손님 수가 최대값보다 작다면 손님 스폰
-            if (activeCustomers < maxCustomers)
+            if (!isSpawning)
             {
-                SpawnRandomCustomer(); // 랜덤 위치에 손님 스폰
+                int activeCustomers = GameObject.FindGameObjectsWithTag("Custom").Length;
+                int maxCustomers = Mathf.Clamp(clearedCustomerCount < 3 ? 6 : 4, 1, 9);
+
+                if (activeCustomers < maxCustomers)
+                {
+                    isSpawning = true;
+                    SpawnRandomCustomer();
+                    isSpawning = false;
+                }
             }
 
-            // 다음 스폰을 위해 10초 대기
-            yield return new WaitForSeconds(10f);
+            // 스폰 간격을 동적으로 조절
+            float currentInterval = Mathf.Lerp(minSpawnInterval, maxSpawnInterval, 
+                (float)clearedCustomerCount / 10f);  // 손님 수에 따라 간격 조절
+            yield return new WaitForSeconds(currentInterval);
         }
-    }   
-
+    }
 
     public void SpawnRandomCustomer()
     {
@@ -166,14 +168,8 @@ public class CustomSpawner : MonoBehaviour
             spawnPointCooldowns[spawnPoint] = Time.time + 3f;
         }
 
-        StartCoroutine(RespawnRoutine(oldCustomer));
-    }
-
-    IEnumerator RespawnRoutine(GameObject oldCustomer)
-    {
+        // 즉시 새로운 손님 생성하지 않고 SpawnLoop에서 처리하도록 함
         Destroy(oldCustomer);
-        yield return new WaitForSeconds(3f);
-        SpawnRandomCustomer();
     }
 
     public void OnCustomerCleared()
@@ -214,9 +210,7 @@ public class CustomSpawner : MonoBehaviour
             // 스폰 포인트를 다시 사용 가능하게 설정
             occupiedSpawnPoints.Remove(spawnPoint);
             spawnPointCooldowns.Remove(spawnPoint);
-            
-            // 새로운 손님 생성
-            SpawnRandomCustomer();
         }
+        // 새로운 손님은 SpawnLoop에서 처리
     }
 }

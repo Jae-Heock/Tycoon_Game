@@ -61,6 +61,9 @@ public class Custom : MonoBehaviour
 
     public CustomTable assignedTable; // 손님이 배정받은 테이블
 
+    private bool isProcessed = false;  // 이미 처리된 손님인지 여부
+    private bool isLeaving = false;    // 손님이 떠나는 중인지 여부
+
     private void Start()
     {
         if (!isRequesting && !isBadCustomer)
@@ -147,15 +150,15 @@ public class Custom : MonoBehaviour
 
     private void Update()
     {
+        if (isProcessed || isLeaving) return;  // 이미 처리되었거나 떠나는 중이면 업데이트 중지
+
         waitTimer += Time.deltaTime;
         if (waitTimer > maxWaitTime)
         {
             Debug.Log("시간 초과로 손님 제거");
             GameManager.instance.SadCat();
-            // 주문 실패 카운트 증가
-            if (GameManager.instance.player != null)
-                GameManager.instance.player.customerFailCount++;
-            StartCoroutine(DestroyAndRespawn(false));
+            HandleCustomerFail();
+            return;  // HandleCustomerFail 호출 후 즉시 리턴
         }
         
         if (orderIconObject != null && Camera.main != null)
@@ -347,11 +350,74 @@ public class Custom : MonoBehaviour
 
     private void OnDestroy()
     {
-        // 아이콘 제거
+        // 이미 HandleCustomerFail에서 처리된 경우 여기서는 아무것도 하지 않음
+        if (isProcessed) return;
+
+        // UI 요소들 제거
         if (orderIconObject != null)
         {
             Destroy(orderIconObject);
             orderIconObject = null;
+        }
+
+        if (waitCanvas != null)
+        {
+            waitCanvas.enabled = false;
+        }
+
+        // 테이블 정리
+        if (assignedTable != null)
+        {
+            assignedTable.ClearTable();
+        }
+
+        // OrderListManager에서 제거
+        if (OrderListManager.Instance != null)
+        {
+            OrderListManager.Instance.UnregisterCustomer(this);
+        }
+
+        // 스포너에 알림
+        if (spawner != null)
+        {
+            spawner.OnCustomerDestroyed(gameObject);
+        }
+    }
+
+    private void HandleCustomerFail()
+    {
+        if (isProcessed) return;
+        isProcessed = true;
+        isLeaving = true;
+
+        // 실패 카운트 증가
+        if (GameManager.instance.player != null)
+        {
+            GameManager.instance.player.IncreaseFailCount();
+        }
+
+        // UI 요소들 먼저 제거
+        if (orderIconObject != null)
+        {
+            Destroy(orderIconObject);
+            orderIconObject = null;
+        }
+
+        if (waitCanvas != null)
+        {
+            waitCanvas.enabled = false;
+        }
+
+        // 테이블 정리
+        if (assignedTable != null)
+        {
+            assignedTable.ClearTable();
+        }
+
+        // OrderListManager에서 제거
+        if (OrderListManager.Instance != null)
+        {
+            OrderListManager.Instance.UnregisterCustomer(this);
         }
 
         // 스포너에 알림
@@ -360,48 +426,8 @@ public class Custom : MonoBehaviour
             spawner.OnCustomerDestroyed(gameObject);
         }
 
-        OrderListManager.Instance?.UnregisterCustomer(this);
-    }
-
-    private IEnumerator DestroyAndRespawn(bool success)
-    {
-        isRequesting = false;
-        if (success)
-        {
-            SoundManager.instance.PlaySuccess();
-            // 주문 성공 카운트 증가
-            if (GameManager.instance.player != null)
-                GameManager.instance.player.customerSuccessCount++;
-        }
-        if (orderIconObject != null)
-        {
-            Destroy(orderIconObject);
-            orderIconObject = null;
-        }
-
-        // 손님이 사라질 때 테이블 음식도 제거
-        if (assignedTable != null)
-        {
-            assignedTable.ClearTable();
-        }
-
-        yield return null;
-
-        if (spawner != null)
-        {
-            if (success)
-                spawner.OnCustomerCleared();
-
-            // 쓰레기가 있는 경우에는 새로운 손님을 생성하지 않음
-            if (currentTrash == null)
-            {
-                spawner.RespawnCustomer(this.gameObject);
-            }
-        }
-
-        // 주문 목록 갱신
-        if (OrderListManager.Instance != null)
-            OrderListManager.Instance.UpdateOrderList();
+        // 게임오브젝트 제거
+        Destroy(gameObject);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -416,13 +442,9 @@ public class Custom : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && !isProcessed && !isLeaving)
         {
-            isPlayerInZone = false;
-            if (player != null && player.currentZone == this)
-            {
-                player.currentZone = null;
-            }
+            HandleCustomerFail();
         }
     }
 
@@ -466,5 +488,64 @@ public class Custom : MonoBehaviour
     {
         SoundManager.instance.PlayBadCustomBackGround();
         yield return new WaitForSeconds(3f);
+    }
+
+    private IEnumerator DestroyAndRespawn(bool success)
+    {
+        if (isProcessed) yield break;
+        isProcessed = true;
+        isLeaving = true;
+
+        if (success)
+        {
+            SoundManager.instance.PlaySuccess();
+            // 주문 성공 카운트 증가
+            if (GameManager.instance.player != null)
+            {
+                GameManager.instance.player.customerSuccessCount++;
+                Debug.Log($"손님 성공! 현재 성공 횟수: {GameManager.instance.player.customerSuccessCount}");
+            }
+        }
+
+        // UI 요소들 제거
+        if (orderIconObject != null)
+        {
+            Destroy(orderIconObject);
+            orderIconObject = null;
+        }
+
+        if (waitCanvas != null)
+        {
+            waitCanvas.enabled = false;
+        }
+
+        // 테이블 정리
+        if (assignedTable != null)
+        {
+            assignedTable.ClearTable();
+        }
+
+        // OrderListManager에서 제거
+        if (OrderListManager.Instance != null)
+        {
+            OrderListManager.Instance.UnregisterCustomer(this);
+        }
+
+        yield return null;
+
+        if (spawner != null)
+        {
+            if (success)
+                spawner.OnCustomerCleared();
+
+            // 쓰레기가 있는 경우에는 새로운 손님을 생성하지 않음
+            if (currentTrash == null)
+            {
+                spawner.RespawnCustomer(this.gameObject);
+            }
+        }
+
+        // 게임오브젝트 제거
+        Destroy(gameObject);
     }
 }
