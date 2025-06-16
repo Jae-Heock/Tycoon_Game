@@ -28,17 +28,18 @@ public class Tutorial : MonoBehaviour
             tutoiralImages[currentIndex].gameObject.SetActive(true);
         }
 
-        if (currentIndex == tutoiralImages.Length - 1)
+        if (currentIndex >= tutoiralImages.Length)
         {
-            //SoundManager.instance.PlayGameBGM();
-
-            // 카메라인트로 오브젝트 활성화
-            //var cameraIntro = FindFirstObjectByType<CameraIntro>();
-            //cameraIntro.StartIntro();
-
-            // Time.timeScale = 1;
-            talkPanel.SetActive(true);
-            gameObject.SetActive(false);
+            // 마지막 이미지가 보이도록 수정
+            currentIndex = tutoiralImages.Length - 1;
+            tutoiralImages[currentIndex].gameObject.SetActive(true);
+            
+            // 다음 버튼을 눌렀을 때만 talkPanel로 전환
+            if (currentIndex == tutoiralImages.Length - 1)
+            {
+                talkPanel.SetActive(true);
+                gameObject.SetActive(false);
+            }
         }
     }
 
