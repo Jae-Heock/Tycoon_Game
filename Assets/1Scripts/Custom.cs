@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 
@@ -33,6 +33,7 @@ public class Custom : MonoBehaviour
     // ====== 쓰레기 관련 ======
     public GameObject trashPrefab;          // 쓰레기 프리팹
     private GameObject currentTrash;        // 현재 생성된 쓰레기
+    public float trashSpawnChance = 0.2f;   // 쓰레기 생성 확률 (20%)
 
     private Coroutine stunCoroutine;
     private Coroutine tableCheckCoroutine;
@@ -273,7 +274,7 @@ public class Custom : MonoBehaviour
                 }
 
                 // 쓰레기 생성
-                if (trashPrefab != null && spawnPoint != null)
+                if (trashPrefab != null && spawnPoint != null && Random.value < trashSpawnChance)
                 {
                     currentTrash = Instantiate(trashPrefab, spawnPoint.position, Quaternion.identity);
                 }
@@ -331,6 +332,11 @@ public class Custom : MonoBehaviour
         if (requestedFood == foodName)
         {
             Debug.Log("자동 배달 성공!");
+            // 쓰레기 생성
+            if (trashPrefab != null && spawnPoint != null && Random.value < trashSpawnChance)
+            {
+                currentTrash = Instantiate(trashPrefab, spawnPoint.position, Quaternion.identity);
+            }
             StartCoroutine(DestroyAndRespawn(true));
         }
         else
@@ -434,6 +440,12 @@ public class Custom : MonoBehaviour
             // GameManager에서 나쁜 손님 상태 제거
             GameManager.instance.hasBadCustomer = false;
             GameManager.instance.badCustomer = null;
+
+            // 쓰레기 생성
+            if (trashPrefab != null && spawnPoint != null && Random.value < trashSpawnChance)
+            {
+                currentTrash = Instantiate(trashPrefab, spawnPoint.position, Quaternion.identity);
+            }
 
             // 나쁜 손님 제거
             StartCoroutine(DestroyAndRespawn(false));
