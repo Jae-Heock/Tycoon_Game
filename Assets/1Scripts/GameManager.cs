@@ -137,7 +137,7 @@ public class GameManager : MonoBehaviour
         if (gameTime >= maxGameTime && !isGameCleared)
         {
             isGameCleared = true;
-            if (player.Point >= 10)
+            if (player.Point >= 50)
             {
                 ShowClearPanel();
             }
