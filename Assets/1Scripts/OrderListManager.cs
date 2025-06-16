@@ -107,6 +107,45 @@ public class OrderListManager : MonoBehaviour
                 {
                     slotBackground.color = new Color(1f, 0.7f, 0.7f); // 빨간색 계열로 강조
                 }
+
+                // slot의 자식 중 Bad_로 시작하는 오브젝트 찾기
+                Transform badObj = null;
+                foreach (Transform child in slot.transform)
+                {
+                    if (child.name.StartsWith("Bad_"))
+                    {
+                        badObj = child;
+                        break;
+                    }
+                }
+
+                if (badObj != null)
+                {
+                    Transform floor10Transform = badObj.Find("Floor10");
+                    if (floor10Transform != null)
+                    {
+                        Text floor10Text = floor10Transform.GetComponent<Text>();
+                        if (floor10Text != null)
+                        {
+                            int playerCount = 0;
+                            Player player = FindFirstObjectByType<Player>();
+                            switch (custom.badType)
+                            {
+                                case Custom.BadType.Dalgona: // 닭
+                                    playerCount = player != null ? player.sugarCount : 0;
+                                    break;
+                                case Custom.BadType.Hotdog: // 개
+                                    playerCount = player != null ? player.sosageCount : 0;
+                                    break;
+                                case Custom.BadType.Stun: // 쥐
+                                    playerCount = player != null ? player.flourCount : 0;
+                                    break;
+                            }
+                            playerCount = Mathf.Min(playerCount, 10);
+                            floor10Text.text = $"{playerCount}/10";
+                        }
+                    }
+                }
             }
             else
             {
@@ -156,6 +195,8 @@ public class OrderListManager : MonoBehaviour
                 }
             }
         }
+
+        
     }
 
     public void RegisterCustomer(Custom custom)
@@ -169,4 +210,20 @@ public class OrderListManager : MonoBehaviour
         customerList.Remove(custom);
         UpdateOrderList();
     }
+
+    private int GetPlayerIngredientCount(Custom.BadType type)
+    {
+        Player player = FindFirstObjectByType<Player>();
+        if (player == null) return 0;
+
+        switch (type)
+        {
+            case Custom.BadType.Dalgona: return player.sosageCount;
+            case Custom.BadType.Hotdog: return player.sugarCount;
+            case Custom.BadType.Stun: return player.flourCount;
+            default: return 0;
+        }
+    }
+
+    
 }

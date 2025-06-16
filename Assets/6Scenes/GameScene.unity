@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 3
   m_SubtractiveShadowColor: {r: 0.6543699, g: 0.6961199, b: 0.8018868, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 59573b088aaea0442bf29e0a0e9d1339, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -1138,9 +1138,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   panel: {fileID: 58769691}
   uiImage: {fileID: 406674352}
-  stunSprite: {fileID: 21300000, guid: e8e02db68a248674db63b3853a1198d1, type: 3}
-  dalgonaSprite: {fileID: 21300000, guid: a46808d4d060b1b43a378f6569b3fb71, type: 3}
-  hotdogSprite: {fileID: 21300000, guid: 92ff7ac645a90ad4d8200f2eb9682033, type: 3}
+  stunSprite: {fileID: 21300000, guid: 92ff7ac645a90ad4d8200f2eb9682033, type: 3}
+  dalgonaSprite: {fileID: 21300000, guid: e8e02db68a248674db63b3853a1198d1, type: 3}
+  hotdogSprite: {fileID: 21300000, guid: a46808d4d060b1b43a378f6569b3fb71, type: 3}
 --- !u!1 &76879078
 GameObject:
   m_ObjectHideFlags: 0
@@ -3467,7 +3467,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 230980185}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 6.71}
+  m_LocalPosition: {x: 0, y: 0, z: 5.9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -29534,6 +29534,9 @@ MonoBehaviour:
   minDistance: 3
   maxDistance: 20
   allowSpaceLock: 0
+  xRotation: 0
+  yRotation: 45
+  isLocked: 0
 --- !u!114 &963194230
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29903,7 +29906,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5592059902902289897, guid: f6bbbf976f838bc44a1436582422bec8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 8.271506
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 5592059902902289897, guid: f6bbbf976f838bc44a1436582422bec8, type: 3}
       propertyPath: m_LocalPosition.y
@@ -29911,7 +29914,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5592059902902289897, guid: f6bbbf976f838bc44a1436582422bec8, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -7.197453
+      value: -6.9
       objectReference: {fileID: 0}
     - target: {fileID: 5592059902902289897, guid: f6bbbf976f838bc44a1436582422bec8, type: 3}
       propertyPath: m_LocalRotation.w
@@ -35332,7 +35335,7 @@ Transform:
   m_GameObject: {fileID: 1032802715}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6.43, y: 6.6, z: 0}
+  m_LocalPosition: {x: 7.03, y: 6.91, z: 0.03}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -70928,7 +70931,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5ce4118c2a3f1194f97da4c792d68779, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 52.2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5ce4118c2a3f1194f97da4c792d68779, type: 3}
       propertyPath: m_LocalPosition.z
@@ -133759,6 +133762,10 @@ PrefabInstance:
     - target: {fileID: 7860237986800033304, guid: 7ff2df186f0f78c44b1a48e14c1fb041, type: 3}
       propertyPath: m_Name
       value: Tycoon_Burn
+      objectReference: {fileID: 0}
+    - target: {fileID: 7860237986800033304, guid: 7ff2df186f0f78c44b1a48e14c1fb041, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7890220293759938285, guid: 7ff2df186f0f78c44b1a48e14c1fb041, type: 3}
       propertyPath: m_LocalPosition.y

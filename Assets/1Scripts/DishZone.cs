@@ -108,7 +108,7 @@ public class DishZone : MonoBehaviour
                         dishInHandInstance = Instantiate(dishPrefab, player.handPoint);
                         dishInHandInstance.transform.localPosition = Vector3.zero;
                         dishInHandInstance.transform.localRotation = Quaternion.identity;
-                        dishInHandInstance.transform.localScale = Vector3.one * 5f;
+                        dishInHandInstance.transform.localScale = Vector3.one * 5;
                     }
                 }
 
@@ -215,9 +215,9 @@ public class DishZone : MonoBehaviour
         {
             case "dish":
                 GameObject dish = Instantiate(dishPrefab, dishPoint);
-                dish.transform.localPosition = Vector3.zero + Vector3.up * dishList.Count * 0.3f;
+                dish.transform.localPosition = Vector3.zero + Vector3.up * dishList.Count * 0.5f;
                 dish.transform.localRotation = Quaternion.identity;
-                dish.transform.localScale = Vector3.one * 100f;
+                dish.transform.localScale = Vector3.one * 200f;
                 dishList.Add(dish);
                 break;
         }

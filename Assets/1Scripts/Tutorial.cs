@@ -15,6 +15,7 @@ public class Tutorial : MonoBehaviour
         Debug.Log("튜토리얼 BGM 재생 시도, tutorialBGM: " + SoundManager.instance.tutorialBGM);
         tutoiralImages[currentIndex].gameObject.SetActive(true);
         Time.timeScale = 0;
+        SetCameraToFixedView();
     }
 
     public void Next()
@@ -54,6 +55,27 @@ public class Tutorial : MonoBehaviour
         tutoiralImages[currentIndex].gameObject.SetActive(false);
         currentIndex--;
         tutoiralImages[currentIndex].gameObject.SetActive(true);
+    }
+
+    void SetCameraToFixedView()
+    {
+        FollowCamera cam = FindFirstObjectByType<FollowCamera>();
+        if (cam != null)
+        {
+            cam.offset = new Vector3(0f, 7f, -8f); // 고정 시점 오프셋
+            cam.xRotation = 45f;
+            cam.yRotation = 45f;
+            cam.isLocked = true; // 고정 모드
+        }
+    }
+
+    void UnlockCamera()
+    {
+        FollowCamera cam = FindFirstObjectByType<FollowCamera>();
+        if (cam != null)
+        {
+            cam.isLocked = false;
+        }
     }
 
 }
