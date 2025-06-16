@@ -133577,8 +133577,20 @@ PrefabInstance:
     m_TransformParent: {fileID: 1124775175}
     m_Modifications:
     - target: {fileID: 498051556841112798, guid: 960d3d13005ba6c43b7ad5802d42e6b1, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 498051556841112798, guid: 960d3d13005ba6c43b7ad5802d42e6b1, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4646937778780090711, guid: 960d3d13005ba6c43b7ad5802d42e6b1, type: 3}
+      propertyPath: m_Value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4646937778780090711, guid: 960d3d13005ba6c43b7ad5802d42e6b1, type: 3}
+      propertyPath: m_Colors.m_ColorMultiplier
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5228422772158253407, guid: 960d3d13005ba6c43b7ad5802d42e6b1, type: 3}
       propertyPath: m_Pivot.x
