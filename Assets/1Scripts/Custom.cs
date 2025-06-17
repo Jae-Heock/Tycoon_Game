@@ -440,13 +440,13 @@ public class Custom : MonoBehaviour
         }
     }
 
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player") && !isProcessed && !isLeaving)
-        {
-            HandleCustomerFail();
-        }
-    }
+    // private void OnTriggerExit(Collider other)
+    // {
+    //     if (other.CompareTag("Player") && !isProcessed && !isLeaving)
+    //     {
+    //         HandleCustomerFail();
+    //     }
+    // }
 
     public void RemoveBadCustomer()
     {

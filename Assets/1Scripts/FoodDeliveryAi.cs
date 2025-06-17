@@ -135,7 +135,7 @@ public class FoodDeliveryAI : MonoBehaviour
         }
 
         // 쓰레기 생성
-        if (targetCustomer.trashPrefab != null && targetCustomer.spawnPoint != null)
+        if (targetCustomer.trashPrefab != null && targetCustomer.spawnPoint != null && Random.value < targetCustomer.trashSpawnChance)
         {
             Instantiate(targetCustomer.trashPrefab, targetCustomer.spawnPoint.position, Quaternion.identity);
         }
