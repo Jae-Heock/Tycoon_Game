@@ -159,15 +159,28 @@ public void SetSkillLevel(SkillData skill, int level)
     /// </summary>
     IEnumerator AutoCleanTrash(float interval)
     {
-        TrashZone trashZone = Object.FindFirstObjectByType<TrashZone>();
-
         while (true)
         {
             yield return new WaitForSeconds(interval);
 
-            if (trashZone != null && trashZone.trashCount > 0)
+            // 씬에 있는 모든 CustomTrash 찾기 (정렬 없이 더 빠른 방식)
+            CustomTrash[] trashObjects = Object.FindObjectsByType<CustomTrash>(FindObjectsSortMode.None);
+            
+            if (trashObjects.Length > 0)
             {
-                trashZone.CleanOneTrash(); // ✅ 이걸 호출해야 실제 오브젝트도 파괴됨
+                // 가장 오래된 쓰레기부터 제거
+                CustomTrash oldestTrash = trashObjects[0];
+                CustomSpawner spawner = Object.FindFirstObjectByType<CustomSpawner>();
+                
+                if (spawner != null)
+                {
+                    // CustomSpawner에 쓰레기 제거 알림
+                    spawner.OnTrashCleaned(oldestTrash.transform.position);
+                }
+                
+                // 쓰레기 오브젝트 제거
+                Destroy(oldestTrash.gameObject);
+                Debug.Log("자동으로 쓰레기가 제거되었습니다.");
             }
         }
     }
