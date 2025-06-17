@@ -17,8 +17,8 @@ public class CustomSpawner : MonoBehaviour
     private float badCustomerEnableTime = 20f; // 20초 후부터 나쁜손님 등장
     private float normalCustomerEnableTime = 10f; // 10초 후부터 일반손님 등장
     private float gameStartTime;
-    private float minSpawnInterval = 5f;  // 최소 스폰 간격
-    private float maxSpawnInterval = 15f;  // 최대 스폰 간격
+    private float minSpawnInterval = 2f;   // 최소 스폰 간격 (5초에서 2초로 감소)
+    private float maxSpawnInterval = 8f;   // 최대 스폰 간격 (15초에서 8초로 감소)
     private bool isSpawning = false;  // 현재 스폰 중인지 여부
 
     private void Start()
@@ -61,7 +61,8 @@ public class CustomSpawner : MonoBehaviour
             if (!isSpawning)
             {
                 int activeCustomers = GameObject.FindGameObjectsWithTag("Custom").Length;
-                int maxCustomers = Mathf.Clamp(clearedCustomerCount < 3 ? 6 : 4, 1, 9);
+                // 처리한 손님이 3명 이하: 최대 3명, 3명 초과: 최대 9명
+                int maxCustomers = Mathf.Clamp(clearedCustomerCount <= 3 ? 3 : 9, 1, 9);
 
                 if (activeCustomers < maxCustomers)
                 {
@@ -71,9 +72,9 @@ public class CustomSpawner : MonoBehaviour
                 }
             }
 
-            // 스폰 간격을 동적으로 조절
+            // 스폰 간격을 동적으로 조절 (더 빠른 스폰을 위해 계수 조정)
             float currentInterval = Mathf.Lerp(minSpawnInterval, maxSpawnInterval, 
-                (float)clearedCustomerCount / 10f);  // 손님 수에 따라 간격 조절
+                (float)clearedCustomerCount / 10f);  //
             yield return new WaitForSeconds(currentInterval);
         }
     }

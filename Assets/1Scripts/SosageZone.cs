@@ -18,7 +18,7 @@ public class SosageZone : MonoBehaviour
         {
             player = other.GetComponent<Player>();
             isPlayerInZone = true;
-            player.currentZone = this;
+            player.EnterZone(this);
             Debug.Log("소시지 구역에 들어왔습니다. E키를 눌러 소시지를 획득하세요.");
         }
     }
@@ -31,13 +31,8 @@ public class SosageZone : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             isPlayerInZone = false;
-            
-            // 이 존이 현재 존이었다면 null로 설정
-            if (player != null && player.currentZone == this)
-            {
-                player.currentZone = null;
-                Debug.Log("소시지 구역을 나갔습니다.");
-            }
+            player.ExitZone(this);
+            Debug.Log("소시지 구역을 나갔습니다.");
         }
     }
 
@@ -47,7 +42,7 @@ public class SosageZone : MonoBehaviour
     /// </summary>
     private void Update()
     {
-        if (isPlayerInZone && Input.GetKeyDown(KeyCode.E))
+        if (isPlayerInZone && Input.GetKeyDown(KeyCode.E) && player.currentZone == this)
         {
             SoundManager.instance.PlayGetItem();
             player.sosageCount++;

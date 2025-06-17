@@ -88,6 +88,7 @@ public class Player : MonoBehaviour
     public Transform handPoint;
 
     private List<MonoBehaviour> zonesInRange = new List<MonoBehaviour>(); // 플레이어가 감지한 모든 존
+    private bool isInteractingWithZone = false; // 현재 존과 상호작용 중인지 여부
 
     private void Awake()
     {
@@ -116,6 +117,7 @@ public class Player : MonoBehaviour
             if (currentZone == zone)
             {
                 currentZone = null;
+                isInteractingWithZone = false;
             }
             UpdateCurrentZone();
         }
@@ -124,7 +126,7 @@ public class Player : MonoBehaviour
     // 현재 존 업데이트
     private void UpdateCurrentZone()
     {
-        if (zonesInRange.Count > 0)
+        if (zonesInRange.Count > 0 && !isInteractingWithZone)
         {
             // 가장 가까운 존을 현재 존으로 설정
             MonoBehaviour closestZone = zonesInRange[0];
@@ -142,9 +144,10 @@ public class Player : MonoBehaviour
 
             currentZone = closestZone;
         }
-        else
+        else if (zonesInRange.Count == 0)
         {
             currentZone = null;
+            isInteractingWithZone = false;
         }
     }
 
@@ -184,7 +187,18 @@ public class Player : MonoBehaviour
             }
         }
 
-        bool isCookedFood = currentFood == "hotdog" || currentFood == "dalgona" || currentFood == "hottuk" || currentFood == "boung";
+        // 재료 획득 존과의 상호작용
+        if (currentZone != null && Input.GetKeyDown(KeyCode.E) && !isInteractingWithZone)
+        {
+            if (currentZone is SugarZone || currentZone is SosageZone || 
+                currentZone is FlourZone || currentZone is PotZone)
+            {
+                isInteractingWithZone = true;
+            }
+        }
+
+        bool isCookedFood = currentFood == "hotdog" || currentFood == "dalgona" || 
+                           currentFood == "hottuk" || currentFood == "boung";
         bool isDalgonaCooking = isCooking;
 
         // PICK 애니메이션 Layer 1
@@ -199,7 +213,6 @@ public class Player : MonoBehaviour
             anim.SetLayerWeight(1, 0f);
         else
             anim.SetLayerWeight(1, 0f);      // 아무것도 없으면 0f
-
     }
 
     /// <summary>
