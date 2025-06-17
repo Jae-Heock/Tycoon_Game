@@ -60,9 +60,12 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
-                // 자동으로 Player 찾아서 연결 (안 되어 있으면)
+        // 자동으로 Player 찾아서 연결 (안 되어 있으면)
         if (player == null)
             player = FindFirstObjectByType<Player>();
+        
+        // 디버그 로그 비활성화
+        Debug.unityLogger.logEnabled = false;
     }
 
     private void Start()
