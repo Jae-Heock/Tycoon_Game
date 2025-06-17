@@ -12302,16 +12302,16 @@ RectTransform:
   - {fileID: 185961483}
   - {fileID: 1001956898}
   - {fileID: 255339477}
-  - {fileID: 1929688895}
   - {fileID: 58769692}
   - {fileID: 30304634}
   - {fileID: 36139175}
   - {fileID: 1325069323}
-  - {fileID: 1861591908}
-  - {fileID: 1002110530}
-  - {fileID: 155039132}
   - {fileID: 1351442538}
   - {fileID: 1651419368}
+  - {fileID: 1861591908}
+  - {fileID: 155039132}
+  - {fileID: 1002110530}
+  - {fileID: 1929688895}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -28097,7 +28097,7 @@ MonoBehaviour:
   maxGameTime: 300
   level: 0
   clearedCustomerCount: 0
-  nextCustomer: 0100000002000000030000000400000005000000060000000700000008000000090000000a000000
+  nextCustomer: 01000000020000000200000003000000030000000400000004000000050000000500000006000000
   player: {fileID: 1128241235}
   uiLevelUp: {fileID: 36139178}
   hasBadCustomer: 0
@@ -34671,34 +34671,6 @@ PrefabInstance:
     - target: {fileID: 2898986744573042001, guid: 5a664086ff8f32a4ea1d32d58b27c42b, type: 3}
       propertyPath: m_AnchorMin.x
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4689319780863607379, guid: 5a664086ff8f32a4ea1d32d58b27c42b, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4689319780863607379, guid: 5a664086ff8f32a4ea1d32d58b27c42b, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4689319780863607379, guid: 5a664086ff8f32a4ea1d32d58b27c42b, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 1929688896}
-    - target: {fileID: 4689319780863607379, guid: 5a664086ff8f32a4ea1d32d58b27c42b, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4689319780863607379, guid: 5a664086ff8f32a4ea1d32d58b27c42b, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: HidePanel
-      objectReference: {fileID: 0}
-    - target: {fileID: 4689319780863607379, guid: 5a664086ff8f32a4ea1d32d58b27c42b, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: SettingPanelController, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 4689319780863607379, guid: 5a664086ff8f32a4ea1d32d58b27c42b, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 5610666319529502723, guid: 5a664086ff8f32a4ea1d32d58b27c42b, type: 3}
       propertyPath: quitGameUi
