@@ -527,10 +527,10 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 0
+  m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 126
   m_CollisionDetection: 0
 --- !u!136 &2593894455303890054
 CapsuleCollider:
@@ -547,7 +547,7 @@ CapsuleCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -574,12 +574,16 @@ MonoBehaviour:
   isBadCustomer: 0
   spawnPoint: {fileID: 0}
   trashPrefab: {fileID: 3524857297628762836, guid: 0199ffbd4b857284898d745ddbd66f8e, type: 3}
+  trashSpawnChance: 0.2
   orderIconObject: {fileID: 8502187650065952684}
   iconSpawnPoint: {fileID: 4249871630863794989}
   dalgonaIconPrefab: {fileID: 660925802032923064, guid: 4141adc086b7b1544949234c6ce20d14, type: 3}
   hottukIconPrefab: {fileID: 1631013877352495215, guid: 09a9e290410bb594389360f659a41057, type: 3}
   hotdogIconPrefab: {fileID: 1874798625016143097, guid: 140279f2da1413443bf1621473effb4b, type: 3}
   boungIconPrefab: {fileID: 1387654002152083336, guid: 49ab8081caf72bf41940a1bad2a6e55b, type: 3}
+  badIconDalgonaPrefab: {fileID: 0}
+  badIconHotdogPrefab: {fileID: 0}
+  badIconStunPrefab: {fileID: 0}
   waitSlider: {fileID: 961906255268103550}
   waitCanvas: {fileID: 5278082786735445220}
   iconRotationSpeed: 100

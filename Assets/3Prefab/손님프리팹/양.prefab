@@ -524,6 +524,7 @@ MonoBehaviour:
   isBadCustomer: 0
   spawnPoint: {fileID: 0}
   trashPrefab: {fileID: 3524857297628762836, guid: 0199ffbd4b857284898d745ddbd66f8e, type: 3}
+  trashSpawnChance: 0.2
   orderIconObject: {fileID: 6106010630964314609}
   iconSpawnPoint: {fileID: 3394196932286120351}
   dalgonaIconPrefab: {fileID: 660925802032923064, guid: 4141adc086b7b1544949234c6ce20d14, type: 3}
@@ -559,10 +560,10 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 0
+  m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 126
   m_CollisionDetection: 0
 --- !u!136 &1540014918553327212
 CapsuleCollider:
@@ -579,7 +580,7 @@ CapsuleCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
