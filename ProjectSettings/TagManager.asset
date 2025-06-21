@@ -9,6 +9,12 @@ TagManager:
   - Table
   - Trash
   - CustomTable
+  - Cursor
+  - InnerPenalty
+  - OuterPenalty
+  - StartFinish
+  - CheckPoint
+  - Checkpoint
   layers:
   - Default
   - TransparentFX
