@@ -60,10 +60,15 @@ public class DalgonaGameManager : MonoBehaviour
     }
 
     // 게임 시작을 준비하고, 커서를 시작 위치로 이동시킵니다.
-    void PrepareGame()
+    public void PrepareGame()
     {
-        isGameActive = false;
+        if (SoundManager.instance != null)
+        {
+            SoundManager.instance.StopBGM();
+        }
+
         accuracy = 100f;
+        isGameActive = false;
         passedCheckpoints.Clear();
 
         // [추가] 안내 문구 보이기
@@ -78,11 +83,11 @@ public class DalgonaGameManager : MonoBehaviour
             trail.Clear();
         }
 
-        // 커서를 시작 위치로 이동시켜 대기
-        if (cursorObject != null && startFinishObject != null)
-        {
-            cursorObject.transform.position = startFinishObject.transform.position;
-        }
+        // // 커서를 시작 위치로 이동시켜 대기
+        // if (cursorObject != null && startFinishObject != null)
+        // {
+        //     cursorObject.transform.position = startFinishObject.transform.position;
+        // }
 
         if (checkpointsParent != null)
         {
@@ -162,6 +167,7 @@ public class DalgonaGameManager : MonoBehaviour
     {
         if (passedCheckpoints.Add(checkpoint))
         {
+            SoundManager.instance.ButtonClick();
             Debug.Log($"체크포인트 통과! ({passedCheckpoints.Count}/{totalCheckpoints})");
             checkpoint.SetActive(false);
         }
