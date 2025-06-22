@@ -191,54 +191,37 @@ public class DalgonaGameManager : MonoBehaviour
         // 잠시 대기 (성공 메시지를 볼 수 있도록)
         yield return new WaitForSeconds(2f);
         
-        // 달고나 씬 언로드
-        SceneManager.UnloadSceneAsync("DalgonaScene");
+        // 게임 씬 복귀 공통 로직 실행
+        ReactivateGameScene();
         
-        // 게임 씬의 모든 오브젝트 다시 활성화
-        Scene gameScene = SceneManager.GetSceneByName("GameScene");
-        if (gameScene.isLoaded)
+        // 나쁜 손님 제거
+        if (GameManager.instance != null && GameManager.instance.badCustomer != null)
         {
-            GameObject[] rootObjects = gameScene.GetRootGameObjects();
-            foreach (GameObject rootObject in rootObjects)
-            {
-                rootObject.SetActive(true);
-            }
-            
-            // 게임 씬을 활성 씬으로 설정
-            SceneManager.SetActiveScene(gameScene);
-            
-            // 게임 시간 정상화
-            Time.timeScale = 1f;
-            
-            // 나쁜 손님 제거
-            if (GameManager.instance != null && GameManager.instance.badCustomer != null)
-            {
-                GameManager.instance.badCustomer.RemoveBadCustomer();
-            }
-            
-            // 플레이어 상태 리셋
-            if (GameManager.instance != null && GameManager.instance.player != null)
-            {
-                GameManager.instance.player.ResetState();
-            }
-
-            // 모든 파티클 끄기
-            if (GameManager.instance != null)
-            {
-                GameManager.instance.StopAllCookingParticles();
-            }
-            
-            // CustomSpawner 재시작
-            CustomSpawner spawner = FindFirstObjectByType<CustomSpawner>();
-            if (spawner != null)
-            {
-                // 스폰 루프를 다시 시작
-                spawner.RestartSpawning();
-                Debug.Log("CustomSpawner 스폰 루프를 재시작했습니다.");
-            }
-            
-            Debug.Log("게임 씬으로 돌아왔습니다! 나쁜 손님이 제거되었습니다.");
+            GameManager.instance.badCustomer.RemoveBadCustomer();
         }
+        
+        // 플레이어 상태 리셋
+        if (GameManager.instance != null && GameManager.instance.player != null)
+        {
+            GameManager.instance.player.ResetState();
+        }
+
+        // 모든 파티클 끄기
+        if (GameManager.instance != null)
+        {
+            GameManager.instance.StopAllCookingParticles();
+        }
+        
+        // CustomSpawner 재시작
+        CustomSpawner spawner = FindFirstObjectByType<CustomSpawner>();
+        if (spawner != null)
+        {
+            // 스폰 루프를 다시 시작
+            spawner.RestartSpawning();
+            Debug.Log("CustomSpawner 스폰 루프를 재시작했습니다.");
+        }
+        
+        Debug.Log("게임 씬으로 돌아왔습니다! 나쁜 손님이 제거되었습니다.");
     }
     
     private IEnumerator ReturnToGameSceneWithFailure()
@@ -252,16 +235,25 @@ public class DalgonaGameManager : MonoBehaviour
         // 잠시 대기 (실패 메시지를 볼 수 있도록)
         yield return new WaitForSeconds(2f);
         
+        // 게임 씬 복귀 공통 로직 실행
+        ReactivateGameScene();
+
+        Debug.Log("게임 씬으로 돌아왔습니다! 다시 도전하세요.");
+    }
+
+    private void ReactivateGameScene()
+    {
         // 달고나 씬 언로드
         SceneManager.UnloadSceneAsync("DalgonaScene");
         
         // 게임 씬의 모든 오브젝트 다시 활성화
         Scene gameScene = SceneManager.GetSceneByName("GameScene");
-        if (gameScene.isLoaded)
+        if (gameScene.IsValid())
         {
             GameObject[] rootObjects = gameScene.GetRootGameObjects();
             foreach (GameObject rootObject in rootObjects)
             {
+                // Custom.cs에서 비활성화했으므로 여기서 다시 활성화
                 rootObject.SetActive(true);
             }
             
@@ -291,8 +283,6 @@ public class DalgonaGameManager : MonoBehaviour
                 spawner.RestartSpawning();
                 Debug.Log("CustomSpawner 스폰 루프를 재시작했습니다.");
             }
-            
-            Debug.Log("게임 씬으로 돌아왔습니다! 다시 도전하세요.");
         }
     }
 

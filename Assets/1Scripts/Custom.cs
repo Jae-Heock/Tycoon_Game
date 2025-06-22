@@ -202,28 +202,21 @@ public class Custom : MonoBehaviour
         if (waitSlider != null)
             waitSlider.value = waitTimer / maxWaitTime;
 
-        // // 아이콘 회전
-        // if (orderIconObject != null)
-        // {
-        //     orderIconObject.transform.Rotate(Vector3.up * iconRotationSpeed * Time.deltaTime);
-        // }
-
-        // E키를 눌렀을 때 나쁜 손님에게 달고나 전달
-        if (isPlayerInZone && Input.GetKeyDown(KeyCode.E) && isBadCustomer && player != null)
+        // 나쁜 손님일 경우, 지정된 테이블에 달고나가 놓였는지 확인
+        if (isBadCustomer && assignedTable != null && assignedTable.HasFood())
         {
-            // 플레이어가 달고나를 가지고 있는지 확인
-            if (player.dalgonaCount > 0)
+            if (assignedTable.GetFoodName() == "dalgona")
             {
-                // 달고나 하나 소모
-                player.dalgonaCount--;
-                Debug.Log($"나쁜 손님에게 달고나를 주었습니다. 남은 달고나: {player.dalgonaCount}개");
+                Debug.Log("나쁜 손님 테이블에 달고나가 감지되었습니다. 미니게임을 시작합니다.");
                 
+                // 테이블 위의 달고나를 즉시 제거 (소모 처리)
+                assignedTable.ClearTable();
+
                 // 달고나 씬으로 전환
                 ChangeScene();
-            }
-            else
-            {
-                Debug.Log("달고나가 부족합니다! 달고나를 먼저 만들어주세요.");
+
+                // 이 프레임에서 더 이상 Update를 실행하지 않도록 리턴
+                return;
             }
         }
     }
@@ -552,7 +545,11 @@ public class Custom : MonoBehaviour
         GameObject[] rootObjects = SceneManager.GetActiveScene().GetRootGameObjects();
         foreach (GameObject rootObject in rootObjects)
         {
-            rootObject.SetActive(false);
+            // EventSystem은 비활성화하지 않음
+            if (rootObject.GetComponent<UnityEngine.EventSystems.EventSystem>() == null)
+            {
+                rootObject.SetActive(false);
+            }
         }
         
         // BGM 일시정지하지 않음 (달고나 씬에서도 계속 재생되도록)
