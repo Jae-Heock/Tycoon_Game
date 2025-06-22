@@ -691,6 +691,7 @@ MonoBehaviour:
   isBadCustomer: 0
   spawnPoint: {fileID: 0}
   trashPrefab: {fileID: 3524857297628762836, guid: 0199ffbd4b857284898d745ddbd66f8e, type: 3}
+  trashSpawnChance: 0.2
   orderIconObject: {fileID: 8609313529655860501}
   iconSpawnPoint: {fileID: 702586898675332311}
   dalgonaIconPrefab: {fileID: 8113031875897835828, guid: 972b7607e80213c469944c76fa7f0b34, type: 3}
@@ -698,8 +699,8 @@ MonoBehaviour:
   hotdogIconPrefab: {fileID: 7706896454729256389, guid: 19496c5a95233574eb053221f038805a, type: 3}
   boungIconPrefab: {fileID: 7900055197305382990, guid: 493d872487d3e48428d3daa8fb6c6535, type: 3}
   badIconDalgonaPrefab: {fileID: 7746560539557884911, guid: c5fd013497a3ef7408282775143c8f2c, type: 3}
-  badIconHotdogPrefab: {fileID: 3299169697644265241, guid: 5a4741ddbadb0c541bc6db2b42ed4bb0, type: 3}
-  badIconStunPrefab: {fileID: 2666640235459410220, guid: 857a834f05e55954bbc56d234273b34c, type: 3}
+  badIconHotdogPrefab: {fileID: 7746560539557884911, guid: c5fd013497a3ef7408282775143c8f2c, type: 3}
+  badIconStunPrefab: {fileID: 7746560539557884911, guid: c5fd013497a3ef7408282775143c8f2c, type: 3}
   waitSlider: {fileID: 5225761243504767036}
   waitCanvas: {fileID: 4982503068514874904}
   iconRotationSpeed: 0

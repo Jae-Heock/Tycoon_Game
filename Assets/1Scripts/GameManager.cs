@@ -28,10 +28,19 @@ public class GameManager : MonoBehaviour
     public Player player;
     public LevelUp uiLevelUp;
 
+    [Header("Cooking Zones")]
+    public DalgonaZone dalgonaZone;
+    public HotdogZone hotdogZone;
+    public BoungZone boungZone;
+    public Hottuk hottukZone;
+    public DishZone dishZone;
+
     public bool hasBadCustomer = false;
     public Custom badCustomer = null;
 
     [Header("UI 요소")]
+    public Canvas MainCanvas;
+    public Camera mainCamera;
     public GameObject gameOverPanel;
     public GameObject pausePanel;
     public Text scoreText;
@@ -63,6 +72,13 @@ public class GameManager : MonoBehaviour
         // 자동으로 Player 찾아서 연결 (안 되어 있으면)
         if (player == null)
             player = FindFirstObjectByType<Player>();
+        
+        // 자동으로 요리 구역 찾아서 연결
+        if (dalgonaZone == null) dalgonaZone = FindFirstObjectByType<DalgonaZone>();
+        if (hotdogZone == null) hotdogZone = FindFirstObjectByType<HotdogZone>();
+        if (boungZone == null) boungZone = FindFirstObjectByType<BoungZone>();
+        if (hottukZone == null) hottukZone = FindFirstObjectByType<Hottuk>();
+        if (dishZone == null) dishZone = FindFirstObjectByType<DishZone>();
         
         // 디버그 로그 비활성화
         Debug.unityLogger.logEnabled = false;
@@ -285,6 +301,31 @@ public class GameManager : MonoBehaviour
         SoundManager.instance.ButtonClick();
         Time.timeScale = 1;
         SceneManager.LoadScene("TitleScene");
+    }
+
+    public void StopAllCookingParticles()
+    {
+        if (dalgonaZone != null && dalgonaZone.dalgonaParticle != null)
+        {
+            dalgonaZone.dalgonaParticle.Stop();
+        }
+        if (hotdogZone != null && hotdogZone.hotdogParticle != null)
+        {
+            hotdogZone.hotdogParticle.Stop();
+        }
+        if (boungZone != null && boungZone.boungParticle != null)
+        {
+            boungZone.boungParticle.Stop();
+        }
+        if (hottukZone != null && hottukZone.hottukParticle != null)
+        {
+            hottukZone.hottukParticle.Stop();
+        }
+        if (dishZone != null && dishZone.cleanParticle != null)
+        {
+            dishZone.cleanParticle.Stop();
+        }
+        Debug.Log("All cooking and cleaning particles stopped.");
     }
 
 }

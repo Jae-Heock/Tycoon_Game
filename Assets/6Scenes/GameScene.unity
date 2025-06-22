@@ -1419,7 +1419,7 @@ MonoBehaviour:
   - {fileID: 428002659}
   - {fileID: 445820217}
   - {fileID: 1049063657}
-  badCustomerChance: 0.1
+  badCustomerChance: 0.8
 --- !u!1 &89410288
 GameObject:
   m_ObjectHideFlags: 0
@@ -15593,7 +15593,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3148688689912684825, guid: f6bbbf976f838bc44a1436582422bec8, type: 3}
       propertyPath: m_Name
-      value: DalgonaFire2
+      value: HottukFire2
       objectReference: {fileID: 0}
     - target: {fileID: 3148688689912684825, guid: f6bbbf976f838bc44a1436582422bec8, type: 3}
       propertyPath: m_IsActive
@@ -15613,11 +15613,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5592059902902289897, guid: f6bbbf976f838bc44a1436582422bec8, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.4573102
+      value: -1.46
       objectReference: {fileID: 0}
     - target: {fileID: 5592059902902289897, guid: f6bbbf976f838bc44a1436582422bec8, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -6.9
+      value: -8.69
       objectReference: {fileID: 0}
     - target: {fileID: 5592059902902289897, guid: f6bbbf976f838bc44a1436582422bec8, type: 3}
       propertyPath: m_LocalRotation.w
@@ -15831,9 +15831,9 @@ MonoBehaviour:
   hottukIcon: {fileID: 21300000, guid: 9503675aa69384e41b37f948eb988592, type: 3}
   hotdogIcon: {fileID: 21300000, guid: 39ee943e822e2ea4188b8ac0ada8e42d, type: 3}
   boungIcon: {fileID: 21300000, guid: 24a4dd922a943244091a7d7af3054b02, type: 3}
-  badDalgonaPrefab: {fileID: 6973216076539475529, guid: 1697c036dbde1f84ea727ff35bcf0a8d, type: 3}
-  badHotdogPrefab: {fileID: 542041800504482209, guid: 02c1729a53617cd4e8b46eaa3e5b6215, type: 3}
-  badStunPrefab: {fileID: 2861314164248455397, guid: d98eb968339de6249a5788f0f8a4cef9, type: 3}
+  badDalgonaPrefab: {fileID: 6973216076539475529, guid: 069362d2e13884f4ead7c5d8ba2c1878, type: 3}
+  badHotdogPrefab: {fileID: 6973216076539475529, guid: 069362d2e13884f4ead7c5d8ba2c1878, type: 3}
+  badStunPrefab: {fileID: 6973216076539475529, guid: 069362d2e13884f4ead7c5d8ba2c1878, type: 3}
   greenColor: {r: 0, g: 1, b: 0, a: 1}
   yellowColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   redColor: {r: 1, g: 0, b: 0, a: 1}
@@ -22527,19 +22527,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 5ce4118c2a3f1194f97da4c792d68779, type: 3}
   m_PrefabInstance: {fileID: 1401586385}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1128241233
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1128241232}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f0b4fdb77c402d742a43a03e95bd9f63, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 0}
 --- !u!95 &1128241234
 Animator:
   serializedVersion: 7
@@ -24783,6 +24770,7 @@ MonoBehaviour:
   hottukPoint: {fileID: 668925933}
   hottukInHand: {fileID: 0}
   hottukParticle: {fileID: 2138267883}
+  hottukBlockParticle: {fileID: 989014795}
 --- !u!135 &1268534640
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -28056,9 +28044,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5ce4118c2a3f1194f97da4c792d68779, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1128241234}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5ce4118c2a3f1194f97da4c792d68779, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1128241233}
   m_SourcePrefab: {fileID: 100100000, guid: 5ce4118c2a3f1194f97da4c792d68779, type: 3}
 --- !u!1 &1417616429
 GameObject:
@@ -28288,8 +28273,15 @@ MonoBehaviour:
   nextCustomer: 01000000020000000200000003000000030000000400000004000000050000000500000006000000
   player: {fileID: 1128241235}
   uiLevelUp: {fileID: 36139178}
+  dalgonaZone: {fileID: 0}
+  hotdogZone: {fileID: 0}
+  boungZone: {fileID: 0}
+  hottukZone: {fileID: 0}
+  dishZone: {fileID: 0}
   hasBadCustomer: 0
   badCustomer: {fileID: 1973154698152969241, guid: d97874a7dfba64143962fd8e5502a587, type: 3}
+  MainCanvas: {fileID: 805124827}
+  mainCamera: {fileID: 963194227}
   gameOverPanel: {fileID: 30304633}
   pausePanel: {fileID: 1861591907}
   scoreText: {fileID: 0}

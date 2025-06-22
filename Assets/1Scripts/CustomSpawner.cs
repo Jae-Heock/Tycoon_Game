@@ -225,4 +225,14 @@ public class CustomSpawner : MonoBehaviour
             spawnPointCooldowns.Remove(spawnPoint);
         }
     }
+
+    // 게임 오브젝트가 비활성화되었다가 다시 활성화될 때 스폰 루프를 재시작
+    public void RestartSpawning()
+    {
+        // 기존 코루틴들을 중지하고 다시 시작
+        StopAllCoroutines();
+        StartCoroutine(SpawnLoop());
+        StartCoroutine(UpdateCooldowns());
+        Debug.Log("CustomSpawner 스폰 루프가 재시작되었습니다.");
+    }
 }

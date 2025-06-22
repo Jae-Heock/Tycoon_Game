@@ -387,6 +387,95 @@ public class Player : MonoBehaviour
         moveSpeed = value; // 스킬 적용
     }
 
+    /// <summary>
+    /// 플레이어의 상태(애니메이션, 움직임, 들고 있는 아이템)를 초기 상태로 리셋합니다.
+    /// </summary>
+    public void ResetState()
+    {
+        isMove = true;
+        
+        if (anim != null)
+        {
+            // 모든 요리 관련 애니메이션 중지
+            anim.SetBool("isDal", false);
+            anim.SetBool("isHot", false);
+            anim.SetBool("isHottuk", false);
+            anim.SetBool("isBoung", false);
+
+            // '들고 있는' 상태 해제 및 IDLE 상태로 전환
+            anim.SetBool("isPick", false);
+            anim.Play("IDLE");
+        }
+        
+        // 현재 들고 있는 음식 오브젝트 제거 (나쁜 손님 관련 상황에서는 카운트 감소하지 않음)
+        if (!string.IsNullOrEmpty(currentFood))
+        {
+            // 나쁜 손님이 있는 상황에서는 카운트를 감소시키지 않고 오브젝트만 제거
+            if (GameManager.instance != null && GameManager.instance.hasBadCustomer)
+            {
+                ClearHeldFoodWithoutCountReduction();
+            }
+            else
+            {
+                ClearHeldFood();
+            }
+        }
+        
+        // 현재 요리 중인 상태가 있다면 해제
+        EndCooking();
+        
+        Debug.Log("Player state has been reset.");
+    }
+
+    /// <summary>
+    /// 들고 있는 음식 오브젝트를 제거하되 카운트는 감소시키지 않습니다 (나쁜 손님 관련 상황용)
+    /// </summary>
+    public void ClearHeldFoodWithoutCountReduction()
+    {
+        string foodToRemove = currentFood;
+        currentFood = null;
+        anim.SetBool("isPick", false);
+        anim.SetLayerWeight(1, 0f);
+
+        // 해당 음식 오브젝트만 제거하고 카운트는 유지
+        switch (foodToRemove)
+        {
+            case "hotdog":
+                if (hotdogList.Count > 0)
+                {
+                    Destroy(hotdogList[hotdogList.Count - 1]);
+                    hotdogList.RemoveAt(hotdogList.Count - 1);
+                    // hotdogCount--; // 카운트 감소하지 않음
+                }
+                break;
+            case "dalgona":
+                if (dalgonaList.Count > 0)
+                {
+                    Destroy(dalgonaList[dalgonaList.Count - 1]);
+                    dalgonaList.RemoveAt(dalgonaList.Count - 1);
+                    // dalgonaCount--; // 카운트 감소하지 않음
+                }
+                break;
+            case "hottuk":
+                if (hottukList.Count > 0)
+                {
+                    Destroy(hottukList[hottukList.Count - 1]);
+                    hottukList.RemoveAt(hottukList.Count - 1);
+                    // hottukCount--; // 카운트 감소하지 않음
+                }
+                break;
+            case "boung":
+                if (boungList.Count > 0)
+                {
+                    Destroy(boungList[boungList.Count - 1]);
+                    boungList.RemoveAt(boungList.Count - 1);
+                    // boungCount--; // 카운트 감소하지 않음
+                }
+                break;
+        }
+        Debug.Log("음식 오브젝트 제거 완료 (카운트 유지)");
+    }
+
     public void PlusPoint()
     {
         Point += basePoint + bonusPoint;  // 기본 점수 + 보너스 점수

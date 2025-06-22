@@ -27,12 +27,19 @@ public class Hottuk : MonoBehaviour
     public GameObject hottukInHand;
 
     public ParticleSystem hottukParticle;
+    
+    [Header("나쁜 손님 차단")]
+    public GameObject hottukBlockParticle;
+    private bool isHottukBlocked = false;
+
     private void Start()
     {
         cookSlider.gameObject.SetActive(false);
         dishZone = FindFirstObjectByType<DishZone>();
         anim = GetComponent<Animator>();
         hottukParticle.Stop();
+        if (hottukBlockParticle != null)
+            hottukBlockParticle.SetActive(false);
     }
 
     /// <summary>
@@ -71,6 +78,29 @@ public class Hottuk : MonoBehaviour
     /// </summary>
     private void Update()
     {
+        // 나쁜 손님 상태 확인
+        if (GameManager.instance != null && GameManager.instance.hasBadCustomer &&
+            GameManager.instance.badCustomer != null &&
+            GameManager.instance.badCustomer.badType == Custom.BadType.Dalgona)
+        {
+            SetHottukBlocked(true);
+        }
+        else
+        {
+            SetHottukBlocked(false);
+        }
+
+        if (isHottukBlocked)
+        {
+            if (isPlayerInZone && Input.GetKeyDown(KeyCode.E))
+            {
+                Debug.Log("🐔 호떡 제작이 차단되었습니다! (나쁜 손님 효과)");
+            }
+            if (hottukBlockParticle != null && !hottukBlockParticle.activeSelf)
+                hottukBlockParticle.SetActive(true);
+            return;
+        }
+        
         if (isPlayerInZone && player != null && player.currentZone == this && Input.GetKeyDown(KeyCode.E) && !isMaking)
         {
             if (!string.IsNullOrEmpty(player.currentFood))
@@ -161,5 +191,12 @@ public class Hottuk : MonoBehaviour
         Debug.Log("요리 완료!");
         isMaking = false;
         player.EndCooking();  // 요리 완료 시 EndCooking 호출
+    }
+
+    private void SetHottukBlocked(bool blocked)
+    {
+        isHottukBlocked = blocked;
+        if (hottukBlockParticle != null)
+            hottukBlockParticle.SetActive(blocked);
     }
 }

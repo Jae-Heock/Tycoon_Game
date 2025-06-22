@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Custom : MonoBehaviour
 {
@@ -150,6 +151,7 @@ public class Custom : MonoBehaviour
 
     private void Update()
     {
+        TestScene();
         if (isProcessed || isLeaving) return;  // 이미 처리되었거나 떠나는 중이면 업데이트 중지
 
         waitTimer += Time.deltaTime;
@@ -206,44 +208,22 @@ public class Custom : MonoBehaviour
         //     orderIconObject.transform.Rotate(Vector3.up * iconRotationSpeed * Time.deltaTime);
         // }
 
-        // E키를 눌렀을 때 나쁜 손님에게 자원 전달
+        // E키를 눌렀을 때 나쁜 손님에게 달고나 전달
         if (isPlayerInZone && Input.GetKeyDown(KeyCode.E) && isBadCustomer && player != null)
         {
-            switch (badType)
+            // 플레이어가 달고나를 가지고 있는지 확인
+            if (player.dalgonaCount > 0)
             {
-                case BadType.Dalgona:
-                    if (player.sugarCount >= requiredSugar)
-                    {
-                        player.sugarCount -= requiredSugar;
-                        RemoveBadCustomer();
-                    }
-                    else
-                    {
-                        Debug.Log($"설탕이 부족합니다! (필요: {requiredSugar}개)");
-                    }
-                    break;
-                case BadType.Hotdog:
-                    if (player.sosageCount >= requiredSosage)
-                    {
-                        player.sosageCount -= requiredSosage;
-                        RemoveBadCustomer();
-                    }
-                    else
-                    {
-                        Debug.Log($"소시지가 부족합니다! (필요: {requiredSosage}개)");
-                    }
-                    break;
-                case BadType.Stun:
-                    if (player.flourCount >= requiredFlour)
-                    {
-                        player.flourCount -= requiredFlour;
-                        RemoveBadCustomer();
-                    }
-                    else
-                    {
-                        Debug.Log($"밀가루가 부족합니다! (필요: {requiredFlour}개)");
-                    }
-                    break;
+                // 달고나 하나 소모
+                player.dalgonaCount--;
+                Debug.Log($"나쁜 손님에게 달고나를 주었습니다. 남은 달고나: {player.dalgonaCount}개");
+                
+                // 달고나 씬으로 전환
+                ChangeScene();
+            }
+            else
+            {
+                Debug.Log("달고나가 부족합니다! 달고나를 먼저 만들어주세요.");
             }
         }
     }
@@ -394,6 +374,14 @@ public class Custom : MonoBehaviour
         if (GameManager.instance.player != null)
         {
             GameManager.instance.player.IncreaseFailCount();
+        }
+
+        // 만약 실패한 손님이 나쁜 손님이었다면, GameManager의 플래그를 리셋
+        if (isBadCustomer)
+        {
+            GameManager.instance.hasBadCustomer = false;
+            GameManager.instance.badCustomer = null;
+            Debug.Log("타임아웃된 나쁜 손님을 처리하고 플래그를 리셋합니다.");
         }
 
         // UI 요소들 먼저 제거
@@ -547,5 +535,51 @@ public class Custom : MonoBehaviour
 
         // 게임오브젝트 제거
         Destroy(gameObject);
+    }
+
+    void TestScene()
+    {
+        if(Input.GetKeyDown(KeyCode.H))
+        {
+            ChangeScene();
+        }
+    }
+
+
+    public void ChangeScene()
+    {
+        // 현재 씬의 모든 루트 오브젝트 비활성화
+        GameObject[] rootObjects = SceneManager.GetActiveScene().GetRootGameObjects();
+        foreach (GameObject rootObject in rootObjects)
+        {
+            rootObject.SetActive(false);
+        }
+        
+        // BGM 일시정지하지 않음 (달고나 씬에서도 계속 재생되도록)
+        SceneManager.LoadScene("DalgonaScene", LoadSceneMode.Additive);
+        
+        // 달고나 씬이 로드된 후 초기화
+        StartCoroutine(InitializeDalgonaScene());
+    }
+    
+    private IEnumerator InitializeDalgonaScene()
+    {
+        // 씬 로딩 완료까지 대기
+        yield return new WaitForSeconds(0.1f);
+        
+        // 시간 스케일 복원 (달고나 게임이 정상 작동하도록)
+        Time.timeScale = 1f;
+        
+        // 달고나 게임 매니저 찾아서 초기화
+        DalgonaGameManager dalgonaManager = FindFirstObjectByType<DalgonaGameManager>();
+        if (dalgonaManager != null)
+        {
+            dalgonaManager.PrepareGame();
+            Debug.Log("달고나 씬 초기화 완료");
+        }
+        else
+        {
+            Debug.LogError("DalgonaGameManager를 찾을 수 없습니다!");
+        }
     }
 }
