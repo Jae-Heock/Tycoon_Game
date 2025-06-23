@@ -83,6 +83,7 @@ MonoBehaviour:
   badCustomBackGround: {fileID: 8300000, guid: 9b4777e723c2e41488097fa3f8f4363a, type: 3}
   success: {fileID: 8300000, guid: 9b270bbc684ecae49adea25a23bf6159, type: 3}
   fail: {fileID: 8300000, guid: 366984d197a031e41a76d0517799291c, type: 3}
+  success2: {fileID: 8300000, guid: 912467b8bd9bb2c47b3aa0e86f976c1e, type: 3}
   masterVolume: 1
 --- !u!82 &5780198781289854750
 AudioSource:

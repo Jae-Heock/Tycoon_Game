@@ -78,6 +78,7 @@
     <Compile Include="Assets\1Scripts\CursorCollisionTracker.cs" />
     <Compile Include="Assets\1Scripts\Custom.cs" />
     <Compile Include="Assets\1Scripts\HotdogZone.cs" />
+    <Compile Include="Assets\1Scripts\ErasableCube.cs" />
     <Compile Include="Assets\1Scripts\FollowCamera.cs" />
     <Compile Include="Assets\1Scripts\MouseCursorFollower.cs" />
     <Compile Include="Assets\1Scripts\CircularSlider.cs" />
@@ -94,6 +95,7 @@
     <Compile Include="Assets\1Scripts\SceneChanger.cs" />
     <Compile Include="Assets\1Scripts\DishZone.cs" />
     <Compile Include="Assets\1Scripts\OutlineSelection.cs" />
+    <Compile Include="Assets\1Scripts\SuccessPanelAnimator.cs" />
     <Compile Include="Assets\1Scripts\HotdogCollectZone.cs" />
     <Compile Include="Assets\1Scripts\FoodDeliveryAi.cs" />
     <Compile Include="Assets\1Scripts\Hottuk.cs" />

@@ -45,6 +45,7 @@ public class SoundManager : MonoBehaviour
 
     public AudioClip success; // 성공 소리 
     public AudioClip fail; // 재료없을때 나는소리 
+    public AudioClip success2; // 성공 소리2
 
 
     [Range(0f, 1f)]
@@ -309,6 +310,11 @@ public class SoundManager : MonoBehaviour
     public void PlayFail()
     {
         effectSource.PlayOneShot(fail);
+    }
+
+    public void PlaySuccess2()
+    {
+        effectSource.PlayOneShot(success2);
     }
 
 }

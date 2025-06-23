@@ -30,6 +30,11 @@ public class DalgonaGameManager : MonoBehaviour
     public Text accuracyText;
     public GameObject guideTextObject; // 시작 안내 문구 UI
     public Text timeText; // 남은 시간 표시용
+    public GameObject failPanel; // 실패 패널 추가
+    public GameObject successPanel; // 성공 패널 추가
+    [Header("패널 표시 시간")]
+    public float successPanelShowDuration = 4f; // 성공 패널 표시 시간
+    public float failPanelShowDuration = 3f; // 실패 패널 표시 시간
 
     void Awake()
     {
@@ -44,6 +49,17 @@ public class DalgonaGameManager : MonoBehaviour
         if (startFinishObject == null) startFinishObject = GameObject.FindWithTag("StartFinish");
         if (cursorObject != null) trail = cursorObject.GetComponent<TrailRenderer>();
         if (checkpointsParent != null) totalCheckpoints = checkpointsParent.childCount;
+
+        // 실패 패널 초기화
+        if (failPanel != null)
+        {
+            failPanel.SetActive(false);
+        }
+        // 성공 패널 초기화
+        if (successPanel != null)
+        {
+            successPanel.SetActive(false);
+        }
 
         PrepareGame();
     }
@@ -187,31 +203,35 @@ public class DalgonaGameManager : MonoBehaviour
         {
             SoundManager.instance.PlaySuccess();
         }
-        
-        // 잠시 대기 (성공 메시지를 볼 수 있도록)
-        yield return new WaitForSeconds(2f);
-        
+        // 성공 패널 표시
+        if (successPanel != null)
+        {
+            successPanel.SetActive(true);
+        }
+        // 설정된 시간만큼 보여줌
+        yield return new WaitForSeconds(successPanelShowDuration);
+        // 성공 패널 숨기기
+        if (successPanel != null)
+        {
+            successPanel.SetActive(false);
+        }
         // 게임 씬 복귀 공통 로직 실행
         ReactivateGameScene();
-        
         // 나쁜 손님 제거
         if (GameManager.instance != null && GameManager.instance.badCustomer != null)
         {
             GameManager.instance.badCustomer.RemoveBadCustomer();
         }
-        
         // 플레이어 상태 리셋
         if (GameManager.instance != null && GameManager.instance.player != null)
         {
             GameManager.instance.player.ResetState();
         }
-
         // 모든 파티클 끄기
         if (GameManager.instance != null)
         {
             GameManager.instance.StopAllCookingParticles();
         }
-        
         // CustomSpawner 재시작
         CustomSpawner spawner = FindFirstObjectByType<CustomSpawner>();
         if (spawner != null)
@@ -220,7 +240,6 @@ public class DalgonaGameManager : MonoBehaviour
             spawner.RestartSpawning();
             Debug.Log("CustomSpawner 스폰 루프를 재시작했습니다.");
         }
-        
         Debug.Log("게임 씬으로 돌아왔습니다! 나쁜 손님이 제거되었습니다.");
     }
     
@@ -232,8 +251,20 @@ public class DalgonaGameManager : MonoBehaviour
             SoundManager.instance.PlayFail();
         }
         
-        // 잠시 대기 (실패 메시지를 볼 수 있도록)
-        yield return new WaitForSeconds(2f);
+        // 실패 패널 표시
+        if (failPanel != null)
+        {
+            failPanel.SetActive(true);
+        }
+        
+        // 설정된 시간만큼 보여줌
+        yield return new WaitForSeconds(failPanelShowDuration);
+        
+        // 실패 패널 숨기기
+        if (failPanel != null)
+        {
+            failPanel.SetActive(false);
+        }
         
         // 게임 씬 복귀 공통 로직 실행
         ReactivateGameScene();
