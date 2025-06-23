@@ -103,11 +103,11 @@ public class GameManager : MonoBehaviour
             gameTime = maxGameTime;
 
             // 테스트용: X 키를 누르면 즉시 5분 경과 처리
-    if (Input.GetKeyDown(KeyCode.X))
-    {
-        gameTime = maxGameTime;
-        Debug.Log("⚡ X키로 게임 시간 강제 종료!");
-    }
+    // if (Input.GetKeyDown(KeyCode.X))
+    // {
+    //     gameTime = maxGameTime;
+    //     Debug.Log("⚡ X키로 게임 시간 강제 종료!");
+    // }
         // UI 업데이트
         UpdateUI();
 

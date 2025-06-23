@@ -263,12 +263,12 @@ public void SetSkillLevel(SkillData skill, int level)
         }
     }
 
-    private void Update()
-    {
-        // 테스트용: G키를 누르면 AI 생성
-        if (Input.GetKeyDown(KeyCode.G))
-        {
-            SpawnAutoDeliveryAI(1); // 1개의 AI 생성
-        }
-    }
+    // private void Update()
+    // {
+    //     // 테스트용: G키를 누르면 AI 생성
+    //     if (Input.GetKeyDown(KeyCode.G))
+    //     {
+    //         SpawnAutoDeliveryAI(1); // 1개의 AI 생성
+    //     }
+    // }
 }

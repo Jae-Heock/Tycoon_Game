@@ -18,11 +18,6 @@ public class Custom : MonoBehaviour
     private Player player;
     private string requestedFood = "";
 
-    // 나쁜 손님 관련 변수 추가
-    private int requiredSugar = 10;    // 달고나 나쁜손님에게 필요한 설탕
-    private int requiredSosage = 10;   // 핫도그 나쁜손님에게 필요한 소시지
-    private int requiredFlour = 10;    // 스턴 나쁜손님에게 필요한 밀가루
-
     public bool IsBeingDelivered => isBeingDelivered;
     public string RequestedFood => requestedFood;
 
@@ -151,7 +146,7 @@ public class Custom : MonoBehaviour
 
     private void Update()
     {
-        TestScene();
+        // TestScene();
         if (isProcessed || isLeaving) return;  // 이미 처리되었거나 떠나는 중이면 업데이트 중지
 
         waitTimer += Time.deltaTime;
@@ -530,13 +525,13 @@ public class Custom : MonoBehaviour
         Destroy(gameObject);
     }
 
-    void TestScene()
-    {
-        if(Input.GetKeyDown(KeyCode.H))
-        {
-            ChangeScene();
-        }
-    }
+    // void TestScene()
+    // {
+    //     if(Input.GetKeyDown(KeyCode.H))
+    //     {
+    //         ChangeScene();
+    //     }
+    // }
 
 
     public void ChangeScene()
